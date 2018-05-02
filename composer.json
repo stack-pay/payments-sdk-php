@@ -1,0 +1,44 @@
+{
+    "name": "stack-pay/payments-sdk-php",
+    "version": "1.0.0",
+    "description": "The PHP client library for the Stack Pay API",
+    "keywords": ["stacksports", "stackpay", "payments", "api", "sdk"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Stack Pay Developers",
+            "email": "stack-pay-developers@stacksports.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4",
+        "php-curl-class/php-curl-class": "^7.4.0"
+    },
+    "require-dev": {
+        "mockery/mockery": "^0.9",
+        "phpunit/phpunit": "^6.2",
+        "squizlabs/php_codesniffer": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "StackPay\\Payments\\": "lib"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+           "Test\\": "tests/lib/"
+        },
+        "classmap": [
+            "tests/"
+        ]
+    },
+    "scripts": {
+        "lint": [
+          "@lint:syntax",
+          "@lint:cs"
+        ],
+        "lint:fix": "@php vendor/bin/phpcbf --standard=ruleset.xml --ignore=vendor/ --colors ./src",
+        "lint:syntax": "find . -name '*.php' ! -path './vendor/*' -print0 | xargs -0 -n 1 -P 4 php -l | grep -v 'No syntax errors' || true",
+        "lint:cs": "@php vendor/bin/phpcs --standard=ruleset.xml --ignore=vendor/ --colors ./src"
+    }
+}

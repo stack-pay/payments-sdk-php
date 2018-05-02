@@ -1,0 +1,27 @@
+<?php
+
+namespace StackPay\Payments\Interfaces;
+
+interface ScheduledTransaction
+{
+    public function id();
+    public function merchant();
+    public function paymentMethod();
+    public function amount();
+    public function scheduledAt();
+
+    //-------
+
+    public function setID($id = null);
+    public function setMerchant(Merchant $merchant = null);
+    public function setPaymentMethod(PaymentMethod $paymentMethod = null);
+    public function setAmount($amount = null);
+    public function setScheduledAt(\DateTime $date = null);
+    public function setSplit(Split $split = null);
+
+    //------
+
+    public function createMerchant();
+    public function createPaymentMethod();
+    public function createSplit();
+}
