@@ -62,6 +62,7 @@ require_once(dirname(__FILE__) . '/Transforms/Requests/Structures/RefundTransfor
 require_once(dirname(__FILE__) . '/Transforms/Requests/Structures/SaleTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Requests/Structures/VoidTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Requests/Structures/CreditTransform.php');
+require_once(dirname(__FILE__) . '/Transforms/Requests/Structures/ScheduledTransaction.php');
 require_once(dirname(__FILE__) . '/Transforms/Requests/Transactions/AuthTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Requests/Transactions/HashTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Requests/Transactions/HeaderTransform.php');
@@ -82,6 +83,7 @@ require_once(dirname(__FILE__) . '/Transforms/Responses/TokenTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Responses/V1Transform.php');
 require_once(dirname(__FILE__) . '/Transforms/Responses/VoidTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Responses/CreditTransform.php');
+require_once(dirname(__FILE__) . '/Transforms/Responses/ScheduledTransaction.php');
 
 require_once(dirname(__FILE__) . '/Gateways/Gateway.php');
 require_once(dirname(__FILE__) . '/Gateways/Version1/Gateway.php');
