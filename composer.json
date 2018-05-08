@@ -1,7 +1,7 @@
 {
     "name": "stack-pay/payments-sdk-php",
-    "version": "1.0.0",
-    "description": "The PHP client library for the Stack Pay API",
+    "version": "1.0.1",
+    "description": "Stack Pay API SDK for PHP",
     "keywords": ["stacksports", "stackpay", "payments", "api", "sdk"],
     "license": "MIT",
     "authors": [
