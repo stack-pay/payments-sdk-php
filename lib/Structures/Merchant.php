@@ -18,6 +18,7 @@ class Merchant implements Interfaces\Merchant
     public $rate;
     public $link;
     public $externalID;
+    public $applicationName;
 
     public function id()
     {
@@ -77,6 +78,11 @@ class Merchant implements Interfaces\Merchant
     public function externalID()
     {
         return $this->externalID;
+    }
+
+    public function applicationName()
+    {
+        return $this->applicationName;
     }
 
     //-----------
@@ -160,6 +166,13 @@ class Merchant implements Interfaces\Merchant
     public function setExternalID($externalID = null)
     {
         $this->externalID = $externalID;
+
+        return $this;
+    }
+
+    public function setApplicationName($applicationName = null)
+    {
+        $this->applicationName = $applicationName;
 
         return $this;
     }
