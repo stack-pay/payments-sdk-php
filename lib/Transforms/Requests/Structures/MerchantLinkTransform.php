@@ -7,8 +7,9 @@ trait MerchantLinkTransform
     public function requestMerchantLink($transaction)
     {
         $transaction->request()->body([
-            'ExternalId' => $transaction->object()->externalID(),
-            'RateName'   => $transaction->object()->rate()->name()
+            'ExternalId'        => $transaction->object()->externalID(),
+            'RateName'          => $transaction->object()->rate()->name(),
+            'ApplicationName'   => $transaction->object()->applicationName(),
         ]);
     }
 }
