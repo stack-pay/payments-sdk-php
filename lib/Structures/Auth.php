@@ -58,7 +58,7 @@ class Auth extends Transaction implements Interfaces\Auth
 
     public function createToken()
     {
-        if ( !$this->token ) {
+        if (! $this->token) {
             $this->token = new Token();
         }
 
@@ -67,11 +67,10 @@ class Auth extends Transaction implements Interfaces\Auth
 
     public function createAccount()
     {
-        if ( !$this->account ) {
+        if (! $this->account) {
             $this->account = new Account();
         }
 
         return $this->account;
     }
-
 }

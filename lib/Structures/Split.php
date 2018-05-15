@@ -9,6 +9,12 @@ class Split implements Interfaces\Split
     public $merchant;
     public $amount;
 
+    public function __construct(Interfaces\Merchant $merchant = null, $amount = null)
+    {
+        $this->setMerchant($merchant);
+        $this->setAmount($amount);
+    }
+
     public function merchant()
     {
         return $this->merchant;

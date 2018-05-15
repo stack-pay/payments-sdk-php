@@ -8,9 +8,9 @@ The Stack Pay Payments SDK for PHP is an open source library through which your
 PHP application can easily interact with the
 [Stack Pay API](https://developer.mystackpay.com/docs).
 
-**Note:** This release utilizes Stack Pay API v1. There are substantial differences
-between this version of the client library and subsequent versions. Please be mindful of
-this when upgrading.
+**Note:** This release utilizes Stack Pay API v1. There are substantial
+differences between this version of the client library and subsequent versions.
+Please be mindful of this when upgrading.
 
 ## Requirements
 
@@ -26,8 +26,8 @@ This library also requires `'ext-curl': '*'`.
 
 ### Composer
 
-It is strongly recommended that you use [Composer](http://getcomposer.org) to install this
-package and its dependencies. To do this, run the following command:
+It is strongly recommended that you use [Composer](http://getcomposer.org) to
+install this package and its dependencies. To do this, run the following command:
 
 ```bash
 composer require stack-pay/payments-sdk-php
@@ -53,15 +53,15 @@ require_once('vendor/autoload.php');
 ### Manual Installation
 
 If you do not wish to use Composer, you can download the
-[latest release](https://github.com/stack-pay/payments-sdk-php/releases). Then, to use the bindings,
-include the `payments-sdk.php` file.
+[latest release](https://github.com/stack-pay/payments-sdk-php/releases). Then,
+to use the bindings, include the `payments-sdk.php` file.
 
 ```php
 require_once('/path/to/stack-pay/payments-sdk-php/lib/payments-sdk.php');
 ```
 
-You will also need to download the dependencies and manually include them as well. It is
-**strongly** recommended that you use Composer.
+You will also need to download the dependencies and manually include them as
+well. It is **strongly** recommended that you use Composer.
 
 ## Instantiating the SDK
 
@@ -87,14 +87,19 @@ $stackpay->setCurrency('CAD');
 
 The basic structures used in the SDK.
 
-#### Split Payments
+#### Merchant
 
 ```php
-$split = (new StackPay\Payments\Structures\Split())
-    ->setMerchant((new StackPay\Payments\Structures\Merchant())
-        ->setID($merchantId)
-    )
-    ->setAmount($amountInCents);
+$merchant = new StackPay\Payments\Structures\Merchant(
+    $merchantId,
+    $merchantHashKey
+);
+
+// or
+
+$merchant = (new StackPay\Payments\Structures\Merchant())
+    ->setID($merchantId)
+    ->setHashKey($merchantHashKey);
 ```
 
 #### Account
@@ -102,6 +107,16 @@ $split = (new StackPay\Payments\Structures\Split())
 ##### CreditCard
 
 ```php
+$creditCard = new StackPay\Payments\Structures\CardAccount(
+    $type, // StackPay\Payments\AccountTypes::AMEX,DISCOVER,MASTERCARD,VISA
+    $accountNumber,
+    $mmddExpirationDate,
+    $cvv2,
+    $savePaymentMethodBoolean
+);
+
+// or
+
 $creditCard = (new StackPay\Payments\Structures\Account())
     ->setSavePaymentMethod($trueOrFalse)
     ->setType(StackPay\Payments\AccountTypes::VISA) // MASTERCARD, DISCOVER, AMEX
@@ -113,6 +128,15 @@ $creditCard = (new StackPay\Payments\Structures\Account())
 ##### Bank Account
 
 ```php
+$bankAccount = new StackPay\Payments\Structures\BankAccount(
+    $type, // StackPay\Payments\AccountTypes::CHECKING,SAVINGS
+    $accountNumber,
+    $routingNumber,
+    $savePaymentMethodBoolean
+);
+
+// or
+
 $bankAccount = (new StackPay\Payments\Structures\Account())
     ->setSavePaymentMethod($trueOrFalse)
     ->setType(StackPay\Payments\AccountTypes::CHECKING) // SAVINGS
@@ -123,6 +147,13 @@ $bankAccount = (new StackPay\Payments\Structures\Account())
 #### Account Holder
 
 ```php
+$accountHolder = new StackPay\Payments\Structures\AccountHolder(
+    $accountHolderName,
+    $billingAddress
+);
+
+// or
+
 $accountHolder = (new StackPay\Payments\Structures\AccountHolder())
     ->setName($accountHolderName)
     ->setBillingAddress($billingAddress);
@@ -131,6 +162,27 @@ $accountHolder = (new StackPay\Payments\Structures\AccountHolder())
 #### Address
 
 ```php
+$address = new StackPay\Payments\Structures\Address(
+    $addressLine1,
+    $addressLine2,
+    $city,
+    $state,
+    $postalCode,
+    $country, // StackPay\Payments\Structures\Country::usa(), canada()
+);
+
+// or
+
+$address = (new StackPay\Payments\Structures\Address())
+    ->setAddress1($addressLine1)
+    ->setAddress2($addressLine2)
+    ->setCity($city)
+    ->setState($stateAbbreviation)
+    ->setPostalCode($postalCode)
+    ->setCountry(StackPay\Payments\Structures\Country::usa());
+
+// or
+
 $address = (new StackPay\Payments\Structures\Address())
     ->setAddressLines("$addressLine1.$lineSeparator.$addressLine2", $lineSeparator)
     ->setCity($city)
@@ -139,16 +191,47 @@ $address = (new StackPay\Payments\Structures\Address())
     ->setCountry(StackPay\Payments\Structures\Country::usa());
 ```
 
-#### Merchant
+#### Existing Customer
 
 ```php
-$merchant = (new StackPay\Payments\Structures\Merchant())
-    ->setID($merchantID)
-    ->setHashKey($merchantHashKey);
+$customer = new StackPay\Payments\Structures\Customer($customerId);
+
+// or
+
+$customer = (new StackPay\Payments\Structures\Customer())
+    ->setId($customerId);
+```
+
+#### Existing Transaction (for use with Refunds and Voids)
+
+```php
+$transaction = new StackPay\Payments\Structures\Transaction($transactionId);
+
+// or
+
+$transaction = (new StackPay\Payments\Structures\Transaction())
+    ->setId($transactionId);
 ```
 
 ## Generating and Processing Transactions
-How to generate request objects using the factory class and how to use them to process transactions.
+
+How to generate request objects using the factory class and how to use them to
+process transactions.
+
+#### Transaction Split
+
+```php
+$split = new StackPay\Payments\Structures\Split(
+    $merchant,
+    $amountInCents
+);
+
+// or
+
+$split = (new StackPay\Payments\Structures\Split())
+    ->setMerchant($merchant)
+    ->setAmount($amountInCents);
+```
 
 #### Sale with Account Details
 
@@ -214,10 +297,15 @@ $refund = $stackpay->processTransaction(
 ```
 
 ## Generating and Processing Scheduled Transactions
+
 Set the Scheduled At date field for the transaction
 ```php
 $scheduledAt = new DateTime('2018-03-20');
 $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
+
+// or simply
+
+$scheduledAt = new DateTime('2018-03-20', new DateTimeZone('America/New_York'));
 ```
 
 #### Schedule Transaction with Payment Method
@@ -233,7 +321,8 @@ $scheduledTransaction = StackPay\Payments\Factories\ScheduleTransaction::withPay
     StackPay\Payments\Structures\Currency $optionalCurrencyOverride = null,
     StackPay\Payments\Structures\Split $split = null
 );
-$scheduledTransaction = $stackpay->processTransaction($scheduledTransaction);
+
+$scheduledTransaction = $stackpay->createScheduledTransaction($scheduledTransaction);
 ```
 
 #### Schedule Transaction with Payment Method Token
@@ -243,6 +332,7 @@ $token = $stackpay->createTokenWithAccountDetails(
     StackPay\Payments\Structures\AccountHolder() $accountHolder,
     StackPay\Payments\Structures\Customer $optionalCustomer = null
 );
+
 $scheduledTransaction = StackPay\Payments\Factories\ScheduleTransaction::withToken(
     StackPay\Payments\Structures\Token $token,
     StackPay\Payments\Structures\Merchant $merchant,
@@ -251,7 +341,8 @@ $scheduledTransaction = StackPay\Payments\Factories\ScheduleTransaction::withTok
     StackPay\Payments\Structures\Currency $optionalCurrencyOverride = null,
     StackPay\Payments\Structures\Split $split = null
 );
-$scheduledTransaction = $stackpay->processTransaction($scheduledTransaction);
+
+$scheduledTransaction = $stackpay->createScheduledTransaction($scheduledTransaction);
 ```
 
 #### Schedule Transaction with Account Details
@@ -265,7 +356,8 @@ $scheduledTransaction = StackPay\Payments\Factories\ScheduleTransaction::withAcc
     StackPay\Payments\Structures\Currency $optionalCurrencyOverride = null,
     StackPay\Payments\Structures\Split $split = null
 );
-$scheduledTransaction = $stackpay->processTransaction($scheduledTransaction);
+
+$scheduledTransaction = $stackpay->createScheduledTransaction($scheduledTransaction);
 ```
 
 ## Documentation
@@ -283,7 +375,8 @@ composer install
 ## Tests
 
 Install dependencies as mentioned above (which will resolve
-[PHPUnit](http://packagist.org/packages/phpunit/phpunit)), then you can run the test suite:
+[PHPUnit](http://packagist.org/packages/phpunit/phpunit)), then you can run the
+test suite:
 
 ```bash
 ./vendor/bin/phpunit
