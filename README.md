@@ -108,7 +108,7 @@ $merchant = (new StackPay\Payments\Structures\Merchant())
 
 ```php
 $creditCard = new StackPay\Payments\Structures\CardAccount(
-    $type, // StackPay\Payments\AccountTypes::AMEX,DISCOVER,MASTERCARD,VISA
+    $type, // StackPay\Payments\AccountTypes::AMEX, DISCOVER, MASTERCARD, VISA
     $accountNumber,
     $mmddExpirationDate,
     $cvv2,
@@ -129,7 +129,7 @@ $creditCard = (new StackPay\Payments\Structures\Account())
 
 ```php
 $bankAccount = new StackPay\Payments\Structures\BankAccount(
-    $type, // StackPay\Payments\AccountTypes::CHECKING,SAVINGS
+    $type, // StackPay\Payments\AccountTypes::CHECKING, SAVINGS
     $accountNumber,
     $routingNumber,
     $savePaymentMethodBoolean
@@ -168,7 +168,7 @@ $address = new StackPay\Payments\Structures\Address(
     $city,
     $state,
     $postalCode,
-    $country, // StackPay\Payments\Structures\Country::usa(), canada()
+    StackPay\Payments\Structures\Country::usa() // canada()
 );
 
 // or

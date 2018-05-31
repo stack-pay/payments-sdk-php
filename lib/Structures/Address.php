@@ -37,7 +37,7 @@ class Address implements Interfaces\Address
 
     public function address1()
     {
-        if (array_key_exists(0, $this->addressLines)) {
+        if (! empty($this->addressLines[0])) {
             $this->address1 = $this->addressLines[0];
         }
 
@@ -46,7 +46,7 @@ class Address implements Interfaces\Address
 
     public function address2()
     {
-        if (array_key_exists(1, $this->addressLines)) {
+        if (! empty($this->addressLines[1])) {
             $this->address2 = $this->addressLines[1];
         }
 

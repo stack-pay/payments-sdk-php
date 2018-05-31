@@ -108,7 +108,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -118,7 +118,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => 'c27ee02a6292631a26d22cba75812f7fc7fd5674d78cbc07c6359be99cee0e1f'],
@@ -204,7 +204,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -214,7 +214,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => 'c27ee02a6292631a26d22cba75812f7fc7fd5674d78cbc07c6359be99cee0e1f'],
@@ -270,7 +270,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
             $split
         );
 
-        $scheduledTransaction = $sdk->processTransaction($transaction);
+        $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
 
         $this->assertEquals([
             "merchant_id"       => 4,
@@ -319,7 +319,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -329,7 +329,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => 'c27ee02a6292631a26d22cba75812f7fc7fd5674d78cbc07c6359be99cee0e1f'],

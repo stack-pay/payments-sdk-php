@@ -10,11 +10,8 @@ class StructureTestCase extends TestCase
 {
     protected $struct = "INVALID";
 
-    public function full(
-        $name,
-        $type,
-        $hasCreate = false
-    ) {
+    public function full($name, $type, $hasCreate = false)
+    {
         $this->getter($name);
 
         $this->setter($name, $type);
@@ -24,9 +21,8 @@ class StructureTestCase extends TestCase
         }
     }
 
-    public function getter(
-        $name
-    ) {
+    public function getter($name)
+    {
         $struct = new $this->struct;
 
         $input = "test $name";
@@ -38,19 +34,15 @@ class StructureTestCase extends TestCase
         $this->assertEquals($input, $returned, "Asserting that $name() returns $name");
     }
 
-    public function setter(
-        $name,
-        $type
-    ) {
+    public function setter($name, $type)
+    {
         $this->setter_notNull($name, $type);
 
         $this->setter_null($name, $type);
     }
 
-    public function setter_notNull(
-        $name,
-        $type
-    ) {
+    public function setter_notNull($name, $type)
+    {
         $struct = new $this->struct;
 
         $input = $this->getTestValueByType($type);
@@ -63,10 +55,8 @@ class StructureTestCase extends TestCase
         $this->assertEquals($struct, $returned);
     }
 
-    public function setter_false(
-        $name,
-        $type
-    ) {
+    public function setter_false($name, $type)
+    {
         $struct = new $this->struct;
 
         $function = "set". ucfirst($name);
@@ -77,10 +67,8 @@ class StructureTestCase extends TestCase
         $this->assertEquals($struct, $returned);
     }
 
-    public function setter_null(
-        $name,
-        $type
-    ) {
+    public function setter_null($name, $type)
+    {
         $struct = new $this->struct;
 
         $function = "set". ucfirst($name);
@@ -91,18 +79,14 @@ class StructureTestCase extends TestCase
         $this->assertEquals($struct, $returned);
     }
 
-    public function create(
-        $name,
-        $type
-    ) {
+    public function create($name, $type)
+    {
         $this->create_doesntExist($name, $type);
         $this->create_exists($name, $type);
     }
 
-    public function create_doesntExist(
-        $name,
-        $type
-    ) {
+    public function create_doesntExist($name, $type)
+    {
         $struct = new $this->struct;
 
         $function = "create". ucfirst($name);
@@ -113,10 +97,8 @@ class StructureTestCase extends TestCase
         $this->assertEquals(new $type, $struct->$name, "Asserting $function set $name to a new $type");
     }
 
-    public function create_exists(
-        $name,
-        $type
-    ) {
+    public function create_exists($name, $type)
+    {
         $struct = new $this->struct;
 
         $input = \Mockery::mock($type);
@@ -131,9 +113,8 @@ class StructureTestCase extends TestCase
         $this->assertEquals($input, $struct->$name);
     }
 
-    public function getTestValueByType(
-        $type
-    ) {
+    public function getTestValueByType($type)
+    {
         switch ($type) {
             case "bool":
                 return true;

@@ -47,7 +47,7 @@ class Gateway extends Gateways\Gateway
     use Transforms\Responses\ScheduledTransaction;
 
     protected $application              = 'PaymentSystem';
-    protected $apiVersion               = '1.0.0';
+    protected $apiVersion               = 'v1';
     protected $createTokenURL           = 'api/token';
     protected $createPaymentMethodsURL  = 'api/paymethods';
     protected $paymentsURL              = 'api/payments';

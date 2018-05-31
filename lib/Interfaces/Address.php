@@ -15,7 +15,6 @@ interface Address
     public function setAddressLines($addressLines, $lineDelimiter);
     public function setAddress1($address1 = null);
     public function setAddress2($address2 = null);
-    public function setAddress3($address3 = null);
     public function setCity($city = null);
     public function setState($state = null);
     public function setPostalCode($postalCode = null);
