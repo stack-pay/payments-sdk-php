@@ -267,7 +267,7 @@ class Gateway extends Gateways\Gateway
         $transaction->request()->endpoint($this->scheduledTransactionURL);
         $transaction->request()->hashKey($transaction->object()->merchant()->hashKey());
 
-        $transaction->response()->hashKey($this->privateKey);
+        $transaction->response()->hashKey($transaction->object()->merchant()->hashKey());
 
         $this->execute($transaction);
 
