@@ -104,10 +104,10 @@ $merchant = (new StackPay\Payments\Structures\Merchant())
 
 #### Account
 
-##### CreditCard
+##### Card Account
 
 ```php
-$creditCard = new StackPay\Payments\Structures\CardAccount(
+$cardAccount = new StackPay\Payments\Structures\CardAccount(
     $type, // StackPay\Payments\AccountTypes::AMEX, DISCOVER, MASTERCARD, VISA
     $accountNumber,
     $mmddExpirationDate,
@@ -117,7 +117,7 @@ $creditCard = new StackPay\Payments\Structures\CardAccount(
 
 // or
 
-$creditCard = (new StackPay\Payments\Structures\Account())
+$cardAccount = (new StackPay\Payments\Structures\Account())
     ->setSavePaymentMethod($trueOrFalse)
     ->setType(StackPay\Payments\AccountTypes::VISA) // MASTERCARD, DISCOVER, AMEX
     ->setNumber($accountNumber)
@@ -298,7 +298,10 @@ $refund = $stackpay->processTransaction(
 
 ## Generating and Processing Scheduled Transactions
 
-Set the Scheduled At date field for the transaction
+Scheduled transactions are run in a batch once per day at 12:00:00 UTC.
+
+Set the `Scheduled At` date field for the transaction.
+
 ```php
 $scheduledAt = new DateTime('2018-03-20');
 $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
