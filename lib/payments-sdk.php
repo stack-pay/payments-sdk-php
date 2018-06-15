@@ -92,5 +92,4 @@ require_once(dirname(__FILE__) . '/AccountTypes.php');
 require_once(dirname(__FILE__) . '/Currency.php');
 require_once(dirname(__FILE__) . '/Modes.php');
 require_once(dirname(__FILE__) . '/URLs.php');
-require_once(dirname(__FILE__) . '/Versions.php');
 require_once(dirname(__FILE__) . '/StackPay.php');

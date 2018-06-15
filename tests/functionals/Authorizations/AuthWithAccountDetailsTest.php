@@ -116,7 +116,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                     ],
                 ],
             ],
-        ],[
+        ], [
             "ID"                 => $auth->id(),
             "Status"             => $auth->status(),
             "Amount"             => $auth->amount(),
@@ -160,63 +160,66 @@ final class AuthWithAccountDetailsTest extends TestCase
             ],
         ]);
 
-        $this->assertCount( 1, $curlProvider->calls );
+        $this->assertCount(1, $curlProvider->calls);
 
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/payments',
-                'Body' => [
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/payments',
                     'Body' => [
-                        'Merchant' => 4,
-                        'Order' => [
-                            'Transaction' => [
-                                'Type'          => 'Auth',
-                                'Currency'      => 'USD',
-                                'Amount'        => 10000,
-                                'SplitAmount'   => 1000,
-                                'SplitMerchant' => 2,
-                            ],
-                            'Account' => [
-                                'Type'       => 'visa',
-                                'Number'     => '4111111111111111',
-                                'ExpireDate' => '0121',
-                                'Cvv2'       => '888'
-                            ],
-                            'AccountHolder' => [
-                                'Name'           => 'John Doe',
-                                'BillingAddress' => [
-                                    'City'     => 'Nowhere',
-                                    'State'    => 'HI',
-                                    'Zip'      => '89765',
-                                    'Country'  => 'usa',
-                                    'Address1' => '1234 Windall Lane',
-                                    'Address2' => ''
-                                ]
-                            ],
-                            'SavePaymentMethod' => null
+                        'Body' => [
+                            'Merchant' => 4,
+                            'Order' => [
+                                'Transaction' => [
+                                    'Type'          => 'Auth',
+                                    'Currency'      => 'USD',
+                                    'Amount'        => 10000,
+                                    'SplitAmount'   => 1000,
+                                    'SplitMerchant' => 2,
+                                ],
+                                'Account' => [
+                                    'Type'       => 'visa',
+                                    'Number'     => '4111111111111111',
+                                    'ExpireDate' => '0121',
+                                    'Cvv2'       => '888'
+                                ],
+                                'AccountHolder' => [
+                                    'Name'           => 'John Doe',
+                                    'BillingAddress' => [
+                                        'City'     => 'Nowhere',
+                                        'State'    => 'HI',
+                                        'Zip'      => '89765',
+                                        'Country'  => 'usa',
+                                        'Address1' => '1234 Windall Lane',
+                                        'Address2' => ''
+                                    ]
+                                ],
+                                'SavePaymentMethod' => null
+                            ]
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => 'cfe3bbf7a3883b200ddd88b3a1c0b75f17e0d73e3fda824f70ed21e73db8a28c'
+                            ]
                         ]
                     ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '2e7d5ae6a55de462efe52a7e70477efcef6860e709d5072966e836e623b41245'
-                        ]
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => 'cfe3bbf7a3883b200ddd88b3a1c0b75f17e0d73e3fda824f70ed21e73db8a28c'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '2e7d5ae6a55de462efe52a7e70477efcef6860e709d5072966e836e623b41245'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                 ]
-            ]
-            ], $curlProvider->calls );
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testBankAccount()
@@ -319,7 +322,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                     ],
                 ],
             ],
-        ],[
+        ], [
             "ID"                 => $auth->id(),
             "Status"             => $auth->status(),
             "Amount"             => $auth->amount(),
@@ -363,60 +366,63 @@ final class AuthWithAccountDetailsTest extends TestCase
             ],
         ]);
 
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/payments',
-                'Body' => [
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/payments',
                     'Body' => [
-                        'Merchant' => 4,
-                        'Order' => [
-                            'Transaction' => [
-                                'Type'          => 'Auth',
-                                'Currency'      => 'USD',
-                                'Amount'        => 10000,
-                                'SplitAmount'   => 1000,
-                                'SplitMerchant' => 2,
-                            ],
-                            'Account' => [
-                                'Type'          => 'checking',
-                                'Number'        => '4111111111111111',
-                                'RoutingNumber' => '8765309'
-                            ],
-                            'AccountHolder' => [
-                                'Name'           => 'John Doe',
-                                'BillingAddress' => [
-                                    'City'     => 'Nowhere',
-                                    'State'    => 'HI',
-                                    'Zip'      => '89765',
-                                    'Country'  => 'usa',
-                                    'Address1' => '1234 Windall Lane',
-                                    'Address2' => ''
-                                ]
-                            ],
-                            'SavePaymentMethod' => null
+                        'Body' => [
+                            'Merchant' => 4,
+                            'Order' => [
+                                'Transaction' => [
+                                    'Type'          => 'Auth',
+                                    'Currency'      => 'USD',
+                                    'Amount'        => 10000,
+                                    'SplitAmount'   => 1000,
+                                    'SplitMerchant' => 2,
+                                ],
+                                'Account' => [
+                                    'Type'          => 'checking',
+                                    'Number'        => '4111111111111111',
+                                    'RoutingNumber' => '8765309'
+                                ],
+                                'AccountHolder' => [
+                                    'Name'           => 'John Doe',
+                                    'BillingAddress' => [
+                                        'City'     => 'Nowhere',
+                                        'State'    => 'HI',
+                                        'Zip'      => '89765',
+                                        'Country'  => 'usa',
+                                        'Address1' => '1234 Windall Lane',
+                                        'Address2' => ''
+                                    ]
+                                ],
+                                'SavePaymentMethod' => null
+                            ]
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '6d384096b263f3cc2314a9fb97f979bd41c56e9ea53c3fe1994c9b8d7b8af102'
+                            ]
                         ]
                     ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '439435f731393bd72620c17f705a21cebe78993be7b193ca8c1a32ddd63d0a54'
-                        ]
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '6d384096b263f3cc2314a9fb97f979bd41c56e9ea53c3fe1994c9b8d7b8af102'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '439435f731393bd72620c17f705a21cebe78993be7b193ca8c1a32ddd63d0a54'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                 ]
-            ]
-            ], $curlProvider->calls );
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testInvalidTypeExceptions()
@@ -476,16 +482,16 @@ final class AuthWithAccountDetailsTest extends TestCase
                 null,         // Idempotency Key
                 Currency::USD
             );
-        } catch(Exceptions\InvalidAccountTypeException $e) {
+        } catch (Exceptions\InvalidAccountTypeException $e) {
             $this->assertEquals(
                 "The supplied AccountType(INVALID ACCOUNT TYPE) is invalid",
                 $e->getMessage()
             );
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->fail("Unexcepted Exception:\n\t$e->getMessage()");
         }
 
-        $this->assertCount( 0, $curlProvider->calls );
+        $this->assertCount(0, $curlProvider->calls);
     }
 
     public function testWithFactory()
@@ -590,7 +596,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                     ],
                 ],
             ],
-        ],[
+        ], [
             "ID"                 => $auth->id(),
             "Status"             => $auth->status(),
             "Amount"             => $auth->amount(),
@@ -634,63 +640,65 @@ final class AuthWithAccountDetailsTest extends TestCase
             ],
         ]);
 
-        $this->assertCount( 1, $curlProvider->calls );
+        $this->assertCount(1, $curlProvider->calls);
 
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/payments',
-                'Body' => [
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/payments',
                     'Body' => [
-                        'Merchant' => 4,
-                        'Order' => [
-                            'Transaction' => [
-                                'Type'          => 'Auth',
-                                'Currency'      => 'USD',
-                                'Amount'        => 10000,
-                                'SplitAmount'   => 1000,
-                                'SplitMerchant' => 2,
-                            ],
-                            'Account' => [
-                                'Type'       => 'visa',
-                                'Number'     => '4111111111111111',
-                                'ExpireDate' => '0121',
-                                'Cvv2'       => '888'
-                            ],
-                            'AccountHolder' => [
-                                'Name'           => 'John Doe',
-                                'BillingAddress' => [
-                                    'City'     => 'Nowhere',
-                                    'State'    => 'HI',
-                                    'Zip'      => '89765',
-                                    'Country'  => 'usa',
-                                    'Address1' => '1234 Windall Lane',
-                                    'Address2' => ''
-                                ]
-                            ],
-                            'SavePaymentMethod' => null
+                        'Body' => [
+                            'Merchant' => 4,
+                            'Order' => [
+                                'Transaction' => [
+                                    'Type'          => 'Auth',
+                                    'Currency'      => 'USD',
+                                    'Amount'        => 10000,
+                                    'SplitAmount'   => 1000,
+                                    'SplitMerchant' => 2,
+                                ],
+                                'Account' => [
+                                    'Type'       => 'visa',
+                                    'Number'     => '4111111111111111',
+                                    'ExpireDate' => '0121',
+                                    'Cvv2'       => '888'
+                                ],
+                                'AccountHolder' => [
+                                    'Name'           => 'John Doe',
+                                    'BillingAddress' => [
+                                        'City'     => 'Nowhere',
+                                        'State'    => 'HI',
+                                        'Zip'      => '89765',
+                                        'Country'  => 'usa',
+                                        'Address1' => '1234 Windall Lane',
+                                        'Address2' => ''
+                                    ]
+                                ],
+                                'SavePaymentMethod' => null
+                            ]
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => 'cfe3bbf7a3883b200ddd88b3a1c0b75f17e0d73e3fda824f70ed21e73db8a28c'
+                            ]
                         ]
                     ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '2e7d5ae6a55de462efe52a7e70477efcef6860e709d5072966e836e623b41245'
-                        ]
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => 'cfe3bbf7a3883b200ddd88b3a1c0b75f17e0d73e3fda824f70ed21e73db8a28c'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '2e7d5ae6a55de462efe52a7e70477efcef6860e709d5072966e836e623b41245'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                 ]
-            ]
-        ], $curlProvider->calls );
+            ],
+            $curlProvider->calls
+        );
     }
-
 }

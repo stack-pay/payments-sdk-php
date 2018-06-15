@@ -165,7 +165,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -175,7 +175,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => '2bd993d3adfed01b0e5cd7c3a2b6c00c27c8aaf829e814866ccc6e4137405fc5'],
@@ -337,7 +337,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -347,7 +347,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => '2bd993d3adfed01b0e5cd7c3a2b6c00c27c8aaf829e814866ccc6e4137405fc5'],

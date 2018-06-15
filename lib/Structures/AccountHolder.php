@@ -9,6 +9,12 @@ class AccountHolder implements Interfaces\AccountHolder
     public $name;
     public $billingAddress;
 
+    public function __construct($name = null, Interfaces\Address $billingAddress = null)
+    {
+        $this->setName($name);
+        $this->setBillingAddress($billingAddress);
+    }
+
     public function name()
     {
         return $this->name;

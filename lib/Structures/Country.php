@@ -11,6 +11,6 @@ class Country
 
     public static function canada()
     {
-        return 'CAD';
+        return 'CAN';
     }
 }

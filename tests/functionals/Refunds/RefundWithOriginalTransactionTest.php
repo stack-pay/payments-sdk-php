@@ -129,7 +129,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -139,7 +139,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => 'e94dbbbda80137c00ca0895b8f1799babde0cdd79d7ed33d2e651fac9dbb8738'],
@@ -264,7 +264,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -274,7 +274,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => 'e94dbbbda80137c00ca0895b8f1799babde0cdd79d7ed33d2e651fac9dbb8738'],
@@ -352,7 +352,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -362,7 +362,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => '2bc647fbb895a08d41dfff9d944be3b17472f328e495ffc8677f16d423482280'],
@@ -489,7 +489,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -499,7 +499,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => 'e94dbbbda80137c00ca0895b8f1799babde0cdd79d7ed33d2e651fac9dbb8738'],

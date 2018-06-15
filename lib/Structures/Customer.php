@@ -8,6 +8,11 @@ class Customer implements Interfaces\Customer
 {
     public $id;
 
+    public function __construct($id = null)
+    {
+        $this->setID($id);
+    }
+
     public function id()
     {
         return $this->id;

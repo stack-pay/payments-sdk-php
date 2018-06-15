@@ -57,7 +57,7 @@ final class MerchantLimitsTest extends TestCase
                 ],
                 'Header' => [
                     'Application' => 'PaymentSystem',
-                    'ApiVersion'  => '1.0.0',
+                    'ApiVersion'  => 'v1',
                     'Mode'        => 'production',
                     'Security'    => [
                         'HashMethod' => 'SHA-256',
@@ -67,7 +67,7 @@ final class MerchantLimitsTest extends TestCase
             ],
             'Headers' => [
                 0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                 2 => ['Key' => 'Mode',          'Value' => 'production'],
                 3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                 4 => ['Key' => 'Hash',          'Value' => '8daf0137654f5558cbaa86bcf3977e4e1e8f00771a4ec243d5b2be4d22d7a0b9'],

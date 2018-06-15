@@ -111,7 +111,7 @@ final class VoidPreviousTransactionTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -121,7 +121,7 @@ final class VoidPreviousTransactionTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => '10f03a4a76e077d697f7b2789c2991d07f884a5d6111cac3197ddceae7be4fc3'],
@@ -229,7 +229,7 @@ final class VoidPreviousTransactionTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -239,7 +239,7 @@ final class VoidPreviousTransactionTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => '10f03a4a76e077d697f7b2789c2991d07f884a5d6111cac3197ddceae7be4fc3'],
@@ -336,7 +336,7 @@ final class VoidPreviousTransactionTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -346,7 +346,7 @@ final class VoidPreviousTransactionTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => '4be917d786f0d172a04096528fc1bf496d5d20791358d9322426fa59af5ea6f2'],
@@ -443,7 +443,7 @@ final class VoidPreviousTransactionTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -453,7 +453,7 @@ final class VoidPreviousTransactionTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => '10f03a4a76e077d697f7b2789c2991d07f884a5d6111cac3197ddceae7be4fc3'],
@@ -550,7 +550,7 @@ final class VoidPreviousTransactionTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -560,7 +560,7 @@ final class VoidPreviousTransactionTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => 'd744934c8120b8f56aa2b5cd763762c8af7a48aeeeeb0cfd756276c436295405'],
@@ -626,7 +626,7 @@ final class VoidPreviousTransactionTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -636,7 +636,7 @@ final class VoidPreviousTransactionTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => '25915ea0ae1d0cf5fb373d5654e708c3054767d0336fd07cf807ff4d59e8169c'],

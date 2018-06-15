@@ -11,7 +11,7 @@ use StackPay\Payments\URLs;
 
 abstract class Gateway
 {
-    protected $apiVersion = '1.0.0';
+    protected $apiVersion = 'v1';
 
     protected $baseURL;
 

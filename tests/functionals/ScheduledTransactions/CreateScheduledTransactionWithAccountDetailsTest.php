@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
 
 use StackPay\Payments\StackPay;
@@ -20,7 +18,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
             [
                 'StatusCode' => 200,
                 'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"db1e145e652bf7dc238d4775e9efce6b282a78d5cd7f04c37abbacc232b428b7"}},"Body":{"data":{"id":210,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":100000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":396,"customer_id":404,"address_1":"1234 Windall Lane","city":"Nowhere","zip":"89765","state":"HI","country":"USA","type":"bank_account","account_type":"checking","account_number_last4":"3456","routing_number_last4":"7999"}},"meta":{"status":1}}}'
+                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"725295a776c2aca9ba61db2f781d99de7388f19c9d60fdabdc76156dedcff90b"}},"Body":{"data":{"id":210,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":100000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":396,"customer_id":404,"address_1":"1234 Windall Lane","city":"Nowhere","zip":"89765","state":"HI","country":"USA","type":"bank_account","account_type":"checking","account_number_last4":"3456","routing_number_last4":"7999"}},"meta":{"status":1}}}'
                 ,
                 'Headers' => []
             ]
@@ -143,7 +141,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -153,7 +151,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => '47740503880fee8e11ab2df566939166c7362478013df5bd756f4a28f989d3c0'],
@@ -170,7 +168,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
             [
                 'StatusCode' => 200,
                 'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"db1e145e652bf7dc238d4775e9efce6b282a78d5cd7f04c37abbacc232b428b7"}},"Body":{"data":{"id":210,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":100000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":396,"customer_id":404,"address_1":"1234 Windall Lane","city":"Nowhere","zip":"89765","state":"HI","country":"USA","type":"bank_account","account_type":"checking","account_number_last4":"3456","routing_number_last4":"7999"}},"meta":{"status":1}}}'
+                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"725295a776c2aca9ba61db2f781d99de7388f19c9d60fdabdc76156dedcff90b"}},"Body":{"data":{"id":210,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":100000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":396,"customer_id":404,"address_1":"1234 Windall Lane","city":"Nowhere","zip":"89765","state":"HI","country":"USA","type":"bank_account","account_type":"checking","account_number_last4":"3456","routing_number_last4":"7999"}},"meta":{"status":1}}}'
                 ,
                 'Headers' => []
             ]
@@ -223,7 +221,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
             $split
         );
 
-        $scheduledTransaction = $sdk->processTransaction($transaction);
+        $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
 
         $this->assertEquals([
             "merchant_id"       => 4,
@@ -265,7 +263,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
             ],
         ]);
 
-        $this->assertCount(1,       $curlProvider->calls);
+        $this->assertCount(1, $curlProvider->calls);
 
         $this->assertEquals([
             0 => [
@@ -293,7 +291,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -303,7 +301,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => '47740503880fee8e11ab2df566939166c7362478013df5bd756f4a28f989d3c0'],
@@ -320,7 +318,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
             [
                 'StatusCode' => 200,
                 'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"cc6cc1f813a772680217eb76b5d6eb734d95753fedb8e432f71bc71e4b62cee2"}},"Body":{"data":{"id":212,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":100000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":398,"customer_id":406,"address_1":"1234 Windall Lane","city":"Nowhere","zip":"89765","state":"HI","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"1111","expire_month":12,"expire_year":"2020"}},"meta":{"status":1}}}'
+                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"136f161641dbae9d7398a223267feca53cd7bc2db73bb53be639a6adb8023013"}},"Body":{"data":{"id":212,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":100000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":398,"customer_id":406,"address_1":"1234 Windall Lane","city":"Nowhere","zip":"89765","state":"HI","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"1111","expire_month":12,"expire_year":"2020"}},"meta":{"status":1}}}'
                 ,
                 'Headers' => []
             ]
@@ -450,7 +448,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -460,7 +458,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => '623109e4f643ad8afab03797d0ba1450034f0a550ce90f98f70b87f7c7e773dd'],

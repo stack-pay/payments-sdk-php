@@ -20,7 +20,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
             [
                 'StatusCode' => 200,
                 'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"d6ee60e975274178b7d29f1f8e06cc6f5165d32546230058892e67d204d2632d"}},"Body":{"data":{"id":206,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":25000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":392,"customer_id":400,"address_1":"123 Thumble Lane","city":"New York","zip":"12345","address_2":"Apt. 765","state":"NY","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"1111","expire_month":8,"expire_year":2019}},"meta":{"status":1}}}'
+                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"d1fe5529c88d33eef7495162aa78f1af80db1ecad77be81c36fe1e13790e4f06"}},"Body":{"data":{"id":206,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":25000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":392,"customer_id":400,"address_1":"123 Thumble Lane","city":"New York","zip":"12345","address_2":"Apt. 765","state":"NY","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"1111","expire_month":8,"expire_year":2019}},"meta":{"status":1}}}'
                 ,
                 'Headers' => []
             ]
@@ -108,7 +108,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -118,7 +118,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => 'b705becfb9d941963c19eed35da4a8cb9a33245193b2cad14eb172e3bcbd1b4a'],
@@ -135,7 +135,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
             [
                 'StatusCode' => 200,
                 'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"d6ee60e975274178b7d29f1f8e06cc6f5165d32546230058892e67d204d2632d"}},"Body":{"data":{"id":206,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":25000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":392,"customer_id":400,"address_1":"123 Thumble Lane","city":"New York","zip":"12345","address_2":"Apt. 765","state":"NY","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"1111","expire_month":8,"expire_year":2019}},"meta":{"status":1}}}'
+                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"d1fe5529c88d33eef7495162aa78f1af80db1ecad77be81c36fe1e13790e4f06"}},"Body":{"data":{"id":206,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":25000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":392,"customer_id":400,"address_1":"123 Thumble Lane","city":"New York","zip":"12345","address_2":"Apt. 765","state":"NY","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"1111","expire_month":8,"expire_year":2019}},"meta":{"status":1}}}'
                 ,
                 'Headers' => []
             ]
@@ -174,7 +174,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
             $split
         );
 
-        $scheduledTransaction = $sdk->processTransaction($transaction);
+        $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
 
         $this->assertEquals([
             "merchant_id"       => 4,
@@ -223,7 +223,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -233,7 +233,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => 'b705becfb9d941963c19eed35da4a8cb9a33245193b2cad14eb172e3bcbd1b4a'],
@@ -318,7 +318,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
                     ],
                     'Header' => [
                         'Application' => 'PaymentSystem',
-                        'ApiVersion'  => '1.0.0',
+                        'ApiVersion'  => 'v1',
                         'Mode'        => 'production',
                         'Security'    => [
                             'HashMethod' => 'SHA-256',
@@ -328,7 +328,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
                 ],
                 'Headers' => [
                     0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                     2 => ['Key' => 'Mode',          'Value' => 'production'],
                     3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                     4 => ['Key' => 'Hash',          'Value' => 'ca735301fdab3e69182827831f2f5eda4bc5db91f77ccd6960e519541aa30a2b'],
