@@ -1,14 +1,12 @@
 <?php
 
-declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
 
 use StackPay\Payments\Structures;
 
 class StructureTestCase extends TestCase
 {
-    protected $struct = "INVALID";
+    protected $struct = 'INVALID';
 
     public function full($name, $type, $hasCreate = false)
     {
@@ -25,7 +23,7 @@ class StructureTestCase extends TestCase
     {
         $struct = new $this->struct;
 
-        $input = "test $name";
+        $input = 'test '. $name;
 
         $struct->$name = $input;
 
@@ -47,7 +45,7 @@ class StructureTestCase extends TestCase
 
         $input = $this->getTestValueByType($type);
 
-        $function = "set". ucfirst($name);
+        $function = 'set'. ucfirst($name);
 
         $returned = $struct->$function($input);
 
@@ -59,7 +57,7 @@ class StructureTestCase extends TestCase
     {
         $struct = new $this->struct;
 
-        $function = "set". ucfirst($name);
+        $function = 'set'. ucfirst($name);
 
         $returned = $struct->$function(false);
 
@@ -71,7 +69,7 @@ class StructureTestCase extends TestCase
     {
         $struct = new $this->struct;
 
-        $function = "set". ucfirst($name);
+        $function = 'set'. ucfirst($name);
 
         $returned = $struct->$function(null);
 
@@ -89,7 +87,7 @@ class StructureTestCase extends TestCase
     {
         $struct = new $this->struct;
 
-        $function = "create". ucfirst($name);
+        $function = 'create'. ucfirst($name);
 
         $returned = $struct->$function();
 
@@ -105,7 +103,7 @@ class StructureTestCase extends TestCase
 
         $struct->$name = $input;
 
-        $function = "create". ucfirst($name);
+        $function = 'create'. ucfirst($name);
 
         $returned = $struct->$function();
 
@@ -116,13 +114,13 @@ class StructureTestCase extends TestCase
     public function getTestValueByType($type)
     {
         switch ($type) {
-            case "bool":
+            case 'bool':
                 return true;
 
-            case "int":
+            case 'int':
                 return rand();
 
-            case "string":
+            case 'string':
                 return uniqid();
 
             default:

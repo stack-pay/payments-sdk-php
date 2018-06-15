@@ -20,7 +20,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
             [
                 'StatusCode' => 200,
                 'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"d6ee60e975274178b7d29f1f8e06cc6f5165d32546230058892e67d204d2632d"}},"Body":{"data":{"id":206,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":25000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":392,"customer_id":400,"address_1":"123 Thumble Lane","city":"New York","zip":"12345","address_2":"Apt. 765","state":"NY","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"1111","expire_month":8,"expire_year":2019}},"meta":{"status":1}}}'
+                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"d1fe5529c88d33eef7495162aa78f1af80db1ecad77be81c36fe1e13790e4f06"}},"Body":{"data":{"id":206,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":25000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":392,"customer_id":400,"address_1":"123 Thumble Lane","city":"New York","zip":"12345","address_2":"Apt. 765","state":"NY","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"1111","expire_month":8,"expire_year":2019}},"meta":{"status":1}}}'
                 ,
                 'Headers' => []
             ]
@@ -135,7 +135,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
             [
                 'StatusCode' => 200,
                 'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"d6ee60e975274178b7d29f1f8e06cc6f5165d32546230058892e67d204d2632d"}},"Body":{"data":{"id":206,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":25000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":392,"customer_id":400,"address_1":"123 Thumble Lane","city":"New York","zip":"12345","address_2":"Apt. 765","state":"NY","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"1111","expire_month":8,"expire_year":2019}},"meta":{"status":1}}}'
+                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"d1fe5529c88d33eef7495162aa78f1af80db1ecad77be81c36fe1e13790e4f06"}},"Body":{"data":{"id":206,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":25000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":392,"customer_id":400,"address_1":"123 Thumble Lane","city":"New York","zip":"12345","address_2":"Apt. 765","state":"NY","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"1111","expire_month":8,"expire_year":2019}},"meta":{"status":1}}}'
                 ,
                 'Headers' => []
             ]

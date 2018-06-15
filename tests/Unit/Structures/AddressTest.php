@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use StackPay\Payments\Structures;
 
 final class AddressTest extends StructureTestCase
@@ -10,31 +8,31 @@ final class AddressTest extends StructureTestCase
 
     public function test_address1()
     {
-        $this->full("address1", "string", false);
+        $this->full('address1', 'string', false);
     }
 
     public function test_address2()
     {
-        $this->full("address2", "string", false);
+        $this->full('address2', 'string', false);
     }
 
     public function test_city()
     {
-        $this->full("city", "string", false);
+        $this->full('city', 'string', false);
     }
 
     public function test_state()
     {
-        $this->full("state", "string", false);
+        $this->full('state', 'string', false);
     }
 
     public function test_postalCode()
     {
-        $this->full("postalCode", "string", false);
+        $this->full('postalCode', 'string', false);
     }
 
     public function test_country()
     {
-        $this->full("country", "string", false);
+        $this->full('country', 'string', false);
     }
 }

@@ -20,7 +20,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
             [
                 'StatusCode' => 200,
                 'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"74ccad09f3bd31cbda3c903dc67382f34ff7ec7b54be209c82795027bb03498c"}},"Body":{"data":{"id":154,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":10000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":1,"customer_id":36,"address_1":"5246 Shanon Union Suite 334","city":"South Ian","zip":"25765-4505","address_2":"Apt. 748","state":"NH","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"509","expire_month":4,"expire_year":2024}},"meta":{"status":1}}}'
+                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"03aa02b3a2cc055dcb2f900ca46ab05b36d664cfecf157762034ff960ba0d0c4"}},"Body":{"data":{"id":154,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":10000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":1,"customer_id":36,"address_1":"5246 Shanon Union Suite 334","city":"South Ian","zip":"25765-4505","address_2":"Apt. 748","state":"NH","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"509","expire_month":4,"expire_year":2024}},"meta":{"status":1}}}'
                 ,
                 'Headers' => []
             ]
@@ -231,7 +231,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
             [
                 'StatusCode' => 200,
                 'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"b4a239a934772cab7b1d5cf13a58c6433192b35b750e254d5103ba4a08db6b1e"}},"Body":{"data":{"id":154,"merchant":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":10000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":1,"customer_id":36,"address_1":"5246 Shanon Union Suite 334","city":"South Ian","zip":"25765-4505","address_2":"Apt. 748","state":"NH","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"509","expire_month":4,"expire_year":2024}},"meta":{"status":1}}}'
+                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"7235cfc84ccc8203c61ad1c63f807038e1bd704268d6699df3a474eab8c4f869"}},"Body":{"data":{"id":154,"merchant":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":10000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":1,"customer_id":36,"address_1":"5246 Shanon Union Suite 334","city":"South Ian","zip":"25765-4505","address_2":"Apt. 748","state":"NH","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"509","expire_month":4,"expire_year":2024}},"meta":{"status":1}}}'
                 ,
                 'Headers' => []
             ]
