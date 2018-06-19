@@ -6,11 +6,30 @@ use StackPay\Payments\Interfaces;
 
 class PaymentMethod implements Interfaces\PaymentMethod
 {
-    public $account;
-    public $accountHolder;
+    // standard
     public $id;
     public $customer;
     public $status;
+
+    // V1Translator
+    public $account;
+    public $accountHolder;
+
+    // V1RESTTranslator
+    public $token;
+    public $type;
+    public $accountNumber;
+    public $routingNumber;
+    public $cvv2;
+    public $expirationMonth;
+    public $expirationYear;
+    public $billingName;
+    public $billingAddress1;
+    public $billingAddress2;
+    public $billingCity;
+    public $billingState;
+    public $billingZip;
+    public $billingCountry;
 
     public function account()
     {

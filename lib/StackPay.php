@@ -3,6 +3,7 @@
 namespace StackPay\Payments;
 
 use Curl\Curl;
+use GuzzleHttp\Client;
 
 use StackPay\Payments\Structures\Transactions;
 
@@ -11,16 +12,27 @@ use StackPay\Payments\Structures\Transactions;
  */
 class StackPay
 {
-    protected $currency;
+    public static $publicKey;
+    public static $privateKey;
+    public static $mode = 'production';
+    public static $currency = 'USD';
+    public static $httpClient;
+
     protected $gateway;
 
-    public function __construct($publicKey, $privateKey)
+    public function __construct($publicKey, $privateKey, $httpClient = null)
     {
+        self::$publicKey    = $publicKey;
+        self::$privateKey   = $privateKey;
+        self::$httpClient   = $httpClient ?: new Client();
+
         $this->gateway = new Gateways\Version1\Gateway($publicKey, $privateKey);
     }
 
     public function enableTestMode($alternate_url = null)
     {
+        self::$mode = 'development';
+
         $this->gateway->enableTestMode();
 
         $this->gateway->baseURL($alternate_url);
@@ -37,6 +49,8 @@ class StackPay
 
     public function setCurrency($currency)
     {
+        self::$currency = $currency;
+
         $this->gateway->currency($currency);
 
         return $this;
@@ -428,6 +442,7 @@ class StackPay
 
         return $this->gateway->generateMerchantLink($transaction);
     }
+
     public function createScheduledTransaction(
         Interfaces\ScheduledTransaction $scheduledTransaction,
         $idempotencyKey = null
@@ -448,6 +463,18 @@ class StackPay
         $transaction->idempotencyKey($idempotencyKey);
 
         return $this->gateway->getScheduledTransaction($transaction);
+    }
+
+    public function retryScheduledTransaction(
+        Interfaces\ScheduledTransaction $scheduledTransaction,
+        Interfaces\PaymentMethod $paymentMethod = null,
+        $idempotencyKey = null
+    ) {
+        $transaction = new Transactions\IdempotentTransaction($scheduledTransaction);
+
+        $transaction->idempotencyKey($idempotencyKey);
+
+        return $this->gateway->retryScheduledTransaction($transaction, $paymentMethod);
     }
 
     public function deleteScheduledTransaction(

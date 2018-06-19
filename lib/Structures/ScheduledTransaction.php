@@ -7,24 +7,30 @@ use StackPay\Payments\Interfaces;
 
 class ScheduledTransaction extends Auth implements Interfaces\ScheduledTransaction
 {
+    // standard
     public $id;
-    public $customer;
+    public $externalId;
     public $merchant;
     public $paymentMethod;
     public $amount;
-    public $scheduledAt;
     public $currencyCode;
+    public $scheduledAt;
+
+    // V1Translator
     public $split;
-    public $type;
+
+    // V1RESTTranslator
+    public $splitMerchant;
+    public $splitAmount;
 
     public function id()
     {
         return $this->id;
     }
 
-    public function customer()
+    public function externalId()
     {
-        return $this->customer;
+        return $this->externalId;
     }
 
     public function merchant()
@@ -57,14 +63,16 @@ class ScheduledTransaction extends Auth implements Interfaces\ScheduledTransacti
         return $this->split;
     }
 
-    public function type()
-    {
-        return 'ScheduledTransaction';
-    }
-
     public function setID($id = null)
     {
         $this->id = $id;
+
+        return $this;
+    }
+
+    public function setExternalId($externalId = null)
+    {
+        $this->externalId = $externalId;
 
         return $this;
     }
@@ -136,5 +144,13 @@ class ScheduledTransaction extends Auth implements Interfaces\ScheduledTransacti
         }
 
         return $this->split;
+    }
+
+    public function addSplit(Structures\Merchant $merchant, $amount)
+    {
+        $this->splitMerchant    = $merchant;
+        $this->splitAmount      = $amount;
+
+        return $this;
     }
 }

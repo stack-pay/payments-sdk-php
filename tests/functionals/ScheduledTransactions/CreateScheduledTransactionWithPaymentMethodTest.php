@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
 
 use StackPay\Payments\StackPay;
@@ -33,7 +31,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
 
         $sdk->setCurlProvider($curlProvider);
 
-        $scheduledAt = new DateTime("2018-01-10 12:00");
+        $scheduledAt = new DateTime('2018-01-10 12:00');
         $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
 
         $merchant = (new Structures\Merchant())
@@ -61,72 +59,79 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
 
         $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
 
-        $this->assertEquals([
-            "merchant_id"       => 4,
-            "scheduled_at"      => "2018-01-10",
-            "timezone"          => "America/New_York",
-            "currency_code"     => "USD",
-            "amount"            => 10000, //amount
-            "split_amount"      => 1000,
-            "split_merchant_id" => 2,
-            "payment_method"    => [
-                "method"    =>  "id",
-                "id"        =>  $paymentMethod->id()
+        $this->assertEquals(
+            [
+                'merchant_id'       => 4,
+                'scheduled_at'      => '2018-01-10',
+                'timezone'          => 'America/New_York',
+                'currency_code'     => 'USD',
+                'amount'            => 10000, //amount
+                'split_amount'      => 1000,
+                'split_merchant_id' => 2,
+                'payment_method'    => [
+                    'method'    =>  'id',
+                    'id'        =>  $paymentMethod->id()
+                ],
             ],
-        ],[
-            "merchant_id"       => $scheduledTransaction->merchant()->id(),
-            "scheduled_at"      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
-            "timezone"          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
-            "currency_code"     => $scheduledTransaction->currencyCode(),
-            "amount"            => $scheduledTransaction->amount(),
-            "split_amount"      => $scheduledTransaction->split()->amount(),
-            "split_merchant_id" => $scheduledTransaction->split()->merchant()->id(),
-            "payment_method"    => [
-                "method"    => "id",
-                "id"        => $scheduledTransaction->paymentMethod()->id()
-            ],
-        ]);
+            [
+                'merchant_id'       => $scheduledTransaction->merchant()->id(),
+                'scheduled_at'      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
+                'timezone'          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
+                'currency_code'     => $scheduledTransaction->currencyCode(),
+                'amount'            => $scheduledTransaction->amount(),
+                'split_amount'      => $scheduledTransaction->split()->amount(),
+                'split_merchant_id' => $scheduledTransaction->split()->merchant()->id(),
+                'payment_method'    => [
+                    'method'    => 'id',
+                    'id'        => $scheduledTransaction->paymentMethod()->id()
+                ],
+            ]
+        );
 
         $this->assertCount(1, $curlProvider->calls);
 
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
-                'Body' => [
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
                     'Body' => [
-                        "merchant_id"       => 4,
-                        "scheduled_at"      => "2018-01-10",
-                        "timezone"          => "America/New_York",
-                        "currency_code"     => "USD",
-                        "amount"            => 10000, //amount
-                        "split_amount"      => 1000,
-                        "split_merchant_id" => 2,
-                        "payment_method"    => [
-                            "method"    =>  "id",
-                            "id"        =>  $paymentMethod->id()
+                        'Body' => [
+                            'merchant_id'       => 4,
+                            'external_id'       => null,
+                            'scheduled_at'      => '2018-01-10',
+                            'timezone'          => 'America/New_York',
+                            'currency_code'     => 'USD',
+                            'amount'            => 10000, //amount
+                            'split_amount'      => 1000,
+                            'split_merchant_id' => 2,
+                            'payment_method'    => [
+                                'method'    =>  'id',
+                                'id'        =>  $paymentMethod->id()
+                            ],
                         ],
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => 'c27ee02a6292631a26d22cba75812f7fc7fd5674d78cbc07c6359be99cee0e1f'
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '4ad85a0038536e43594f8544d838e867fb46c01dc3038a5a2ce061683c4586a1'
+                            ]
                         ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '4ad85a0038536e43594f8544d838e867fb46c01dc3038a5a2ce061683c4586a1'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => 'c27ee02a6292631a26d22cba75812f7fc7fd5674d78cbc07c6359be99cee0e1f'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                 ]
-            ]
-        ], $curlProvider->calls );
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testInvalidPaymentMethod()
@@ -177,52 +182,56 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
         try {
             $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
         } catch (Exceptions\RequestErrorException $e) {
-            $this->assertEquals('PaymentMethod is invalid or unavailable.', $e->message());
-            $this->assertEquals(409,                                        $e->code());
+            $this->assertEquals('PaymentMethod is invalid or unavailable.', $e->getMessage());
+            $this->assertEquals(409, $e->getCode());
         } catch (\Exception $e) {
             $this->fail('Unexpected exception thrown: '. $e->getMessage());
         }
 
         $this->assertCount(1, $curlProvider->calls);
 
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
-                'Body' => [
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
                     'Body' => [
-                        "merchant_id"       => 4,
-                        "scheduled_at"      => "2018-01-10",
-                        "timezone"          => "America/New_York",
-                        "currency_code"     => "USD",
-                        "amount"            => 10000, //amount
-                        "split_amount"      => 1000,
-                        "split_merchant_id" => 2,
-                        "payment_method"    => [
-                            "method"    =>  "id",
-                            "id"        =>  $paymentMethod->id()
+                        'Body' => [
+                            'merchant_id'       => 4,
+                            'external_id'       => null,
+                            'scheduled_at'      => '2018-01-10',
+                            'timezone'          => 'America/New_York',
+                            'currency_code'     => 'USD',
+                            'amount'            => 10000, //amount
+                            'split_amount'      => 1000,
+                            'split_merchant_id' => 2,
+                            'payment_method'    => [
+                                'method'    =>  'id',
+                                'id'        =>  $paymentMethod->id()
+                            ],
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '4ad85a0038536e43594f8544d838e867fb46c01dc3038a5a2ce061683c4586a1'
+                            ]
                         ],
                     ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => 'c27ee02a6292631a26d22cba75812f7fc7fd5674d78cbc07c6359be99cee0e1f'
-                        ]
-                    ],
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => 'c27ee02a6292631a26d22cba75812f7fc7fd5674d78cbc07c6359be99cee0e1f'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '4ad85a0038536e43594f8544d838e867fb46c01dc3038a5a2ce061683c4586a1'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
                 ]
-            ]
-        ], $curlProvider->calls );
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testWithPaymentMethodFactory()
@@ -244,7 +253,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
 
         $sdk->setCurlProvider($curlProvider);
 
-        $scheduledAt = new DateTime("2018-01-10 12:00");
+        $scheduledAt = new DateTime('2018-01-10 12:00');
         $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
 
         $merchant = (new Structures\Merchant())
@@ -272,71 +281,78 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
 
         $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
 
-        $this->assertEquals([
-            "merchant_id"       => 4,
-            "scheduled_at"      => "2018-01-10",
-            "timezone"          => "America/New_York",
-            "currency_code"     => "USD",
-            "amount"            => 10000, //amount
-            "split_amount"      => 1000,
-            "split_merchant_id" => 2,
-            "payment_method"    => [
-                "method"    =>  "id",
-                "id"        =>  $paymentMethod->id()
+        $this->assertEquals(
+            [
+                'merchant_id'       => 4,
+                'scheduled_at'      => '2018-01-10',
+                'timezone'          => 'America/New_York',
+                'currency_code'     => 'USD',
+                'amount'            => 10000, //amount
+                'split_amount'      => 1000,
+                'split_merchant_id' => 2,
+                'payment_method'    => [
+                    'method'    =>  'id',
+                    'id'        =>  $paymentMethod->id()
+                ],
             ],
-        ],[
-            "merchant_id"       => $scheduledTransaction->merchant()->id(),
-            "scheduled_at"      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
-            "timezone"          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
-            "currency_code"     => $scheduledTransaction->currencyCode(),
-            "amount"            => $scheduledTransaction->amount(),
-            "split_amount"      => $scheduledTransaction->split()->amount(),
-            "split_merchant_id" => $scheduledTransaction->split()->merchant()->id(),
-            "payment_method"    => [
-                "method"    => "id",
-                "id"        => $scheduledTransaction->paymentMethod()->id()
-            ],
-        ]);
+            [
+                'merchant_id'       => $scheduledTransaction->merchant()->id(),
+                'scheduled_at'      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
+                'timezone'          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
+                'currency_code'     => $scheduledTransaction->currencyCode(),
+                'amount'            => $scheduledTransaction->amount(),
+                'split_amount'      => $scheduledTransaction->split()->amount(),
+                'split_merchant_id' => $scheduledTransaction->split()->merchant()->id(),
+                'payment_method'    => [
+                    'method'    => 'id',
+                    'id'        => $scheduledTransaction->paymentMethod()->id()
+                ],
+            ]
+        );
 
         $this->assertCount(1, $curlProvider->calls);
 
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
-                'Body' => [
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
                     'Body' => [
-                        "merchant_id"       => 4,
-                        "scheduled_at"      => "2018-01-10",
-                        "timezone"          => "America/New_York",
-                        "currency_code"     => "USD",
-                        "amount"            => 10000, //amount
-                        "split_amount"      => 1000,
-                        "split_merchant_id" => 2,
-                        "payment_method"    => [
-                            "method"    =>  "id",
-                            "id"        =>  $paymentMethod->id()
+                        'Body' => [
+                            'merchant_id'       => 4,
+                            'external_id'       => null,
+                            'scheduled_at'      => '2018-01-10',
+                            'timezone'          => 'America/New_York',
+                            'currency_code'     => 'USD',
+                            'amount'            => 10000, //amount
+                            'split_amount'      => 1000,
+                            'split_merchant_id' => 2,
+                            'payment_method'    => [
+                                'method'    =>  'id',
+                                'id'        =>  $paymentMethod->id()
+                            ],
                         ],
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => 'c27ee02a6292631a26d22cba75812f7fc7fd5674d78cbc07c6359be99cee0e1f'
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '4ad85a0038536e43594f8544d838e867fb46c01dc3038a5a2ce061683c4586a1'
+                            ]
                         ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '4ad85a0038536e43594f8544d838e867fb46c01dc3038a5a2ce061683c4586a1'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => 'c27ee02a6292631a26d22cba75812f7fc7fd5674d78cbc07c6359be99cee0e1f'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                 ]
-            ]
-        ], $curlProvider->calls );
+            ],
+            $curlProvider->calls
+        );
     }
 }

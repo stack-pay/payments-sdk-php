@@ -31,7 +31,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
 
         $sdk->setCurlProvider($curlProvider);
 
-        $scheduledAt = new DateTime("2018-01-10 12:00");
+        $scheduledAt = new DateTime('2018-01-10 12:00');
         $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
 
         $account = (new Structures\Account())
@@ -73,93 +73,100 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
 
         $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
 
-        $this->assertEquals([
-            "merchant_id"       => 4,
-            "scheduled_at"      => "2018-01-10",
-            "timezone"          => "America/New_York",
-            "currency_code"     => "USD",
-            "amount"            => 10000, //amount
-            "split_amount"      => 1000,
-            "split_merchant_id" => 2,
-            "payment_method"    => [
-                "method"            => "bank_account",
-                "type"              => "checking",
-                "account_number"    => "123456",
-                "routing_number"    => "012367999",
-                "billing_name"      => "John Doe",
-                "billing_address_1" => "1234 Windall Lane",
-                "billing_city"      => "Nowhere",
-                "billing_state"     => "HI",
-                "billing_zip"       => "89765",
-            ],
-        ],[
-            "merchant_id"       => $scheduledTransaction->merchant()->id(),
-            "scheduled_at"      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
-            "timezone"          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
-            "currency_code"     => $scheduledTransaction->currencyCode(),
-            "amount"            => $scheduledTransaction->amount(),
-            "split_amount"      => $scheduledTransaction->split()->amount(),
-            "split_merchant_id" => $scheduledTransaction->split()->merchant()->id(),
-            "payment_method"    => [
-                "method"            => "bank_account",
-                "type"              => $scheduledTransaction->account()->type(),
-                "account_number"    => $scheduledTransaction->account()->number(),
-                "routing_number"    => $scheduledTransaction->account()->routingNumber,
-                "billing_name"      => $scheduledTransaction->accountHolder()->name(),
-                "billing_address_1" => $scheduledTransaction->accountHolder()->billingAddress()->address1(),
-                "billing_city"      => $scheduledTransaction->accountHolder()->billingAddress()->city(),
-                "billing_state"     => $scheduledTransaction->accountHolder()->billingAddress()->state(),
-                "billing_zip"       => $scheduledTransaction->accountHolder()->billingAddress()->postalCode()
-            ],
-        ]);
-
-        $this->assertCount(1,       $curlProvider->calls);
-
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
-                'Body' => [
-                    'Body' => [
-                        "merchant_id"       => 4,
-                        "scheduled_at"      => "2018-01-10",
-                        "timezone"          => "America/New_York",
-                        "currency_code"     => "USD",
-                        "amount"            => 10000, //amount
-                        "split_amount"      => 1000,
-                        "split_merchant_id" => 2,
-                        "payment_method"    => [
-                            "method"            => "bank_account",
-                            "type"              => "checking",
-                            "account_number"    => "123456",
-                            "routing_number"    => "012367999",
-                            "billing_name"      => "John Doe",
-                            "billing_address_1" => "1234 Windall Lane",
-                            "billing_city"      => "Nowhere",
-                            "billing_state"     => "HI",
-                            "billing_zip"       => "89765"
-                        ],
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '47740503880fee8e11ab2df566939166c7362478013df5bd756f4a28f989d3c0'
-                        ]
-                    ]
+        $this->assertEquals(
+            [
+                'merchant_id'       => 4,
+                'scheduled_at'      => '2018-01-10',
+                'timezone'          => 'America/New_York',
+                'currency_code'     => 'USD',
+                'amount'            => 10000, //amount
+                'split_amount'      => 1000,
+                'split_merchant_id' => 2,
+                'payment_method'    => [
+                    'method'            => 'bank_account',
+                    'type'              => 'checking',
+                    'account_number'    => '123456',
+                    'routing_number'    => '012367999',
+                    'billing_name'      => 'John Doe',
+                    'billing_address_1' => '1234 Windall Lane',
+                    'billing_city'      => 'Nowhere',
+                    'billing_state'     => 'HI',
+                    'billing_zip'       => '89765',
                 ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '47740503880fee8e11ab2df566939166c7362478013df5bd756f4a28f989d3c0'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
-                ]
+            ],
+            [
+                'merchant_id'       => $scheduledTransaction->merchant()->id(),
+                'scheduled_at'      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
+                'timezone'          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
+                'currency_code'     => $scheduledTransaction->currencyCode(),
+                'amount'            => $scheduledTransaction->amount(),
+                'split_amount'      => $scheduledTransaction->split()->amount(),
+                'split_merchant_id' => $scheduledTransaction->split()->merchant()->id(),
+                'payment_method'    => [
+                    'method'            => 'bank_account',
+                    'type'              => $scheduledTransaction->account()->type(),
+                    'account_number'    => $scheduledTransaction->account()->number(),
+                    'routing_number'    => $scheduledTransaction->account()->routingNumber,
+                    'billing_name'      => $scheduledTransaction->accountHolder()->name(),
+                    'billing_address_1' => $scheduledTransaction->accountHolder()->billingAddress()->address1(),
+                    'billing_city'      => $scheduledTransaction->accountHolder()->billingAddress()->city(),
+                    'billing_state'     => $scheduledTransaction->accountHolder()->billingAddress()->state(),
+                    'billing_zip'       => $scheduledTransaction->accountHolder()->billingAddress()->postalCode()
+                ],
             ]
-        ], $curlProvider->calls );
+        );
+
+        $this->assertCount(1, $curlProvider->calls);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
+                    'Body' => [
+                        'Body' => [
+                            'merchant_id'       => 4,
+                            'external_id'       => null,
+                            'scheduled_at'      => '2018-01-10',
+                            'timezone'          => 'America/New_York',
+                            'currency_code'     => 'USD',
+                            'amount'            => 10000, //amount
+                            'split_amount'      => 1000,
+                            'split_merchant_id' => 2,
+                            'payment_method'    => [
+                                'method'            => 'bank_account',
+                                'type'              => 'checking',
+                                'account_number'    => '123456',
+                                'routing_number'    => '012367999',
+                                'billing_name'      => 'John Doe',
+                                'billing_address_1' => '1234 Windall Lane',
+                                'billing_city'      => 'Nowhere',
+                                'billing_state'     => 'HI',
+                                'billing_zip'       => '89765'
+                            ],
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '85aa4d911230c1f1be146cced55dadae42fe94da6971d74c9b6d900b0ecbda97'
+                            ]
+                        ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '85aa4d911230c1f1be146cced55dadae42fe94da6971d74c9b6d900b0ecbda97'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
+                ]
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testWithAccountDetailsFactory()
@@ -181,7 +188,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
 
         $sdk->setCurlProvider($curlProvider);
 
-        $scheduledAt = new DateTime("2018-01-10 12:00");
+        $scheduledAt = new DateTime('2018-01-10 12:00');
         $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
 
         $account = (new Structures\Account())
@@ -223,93 +230,100 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
 
         $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
 
-        $this->assertEquals([
-            "merchant_id"       => 4,
-            "scheduled_at"      => "2018-01-10",
-            "timezone"          => "America/New_York",
-            "currency_code"     => "USD",
-            "amount"            => 10000, //amount
-            "split_amount"      => 1000,
-            "split_merchant_id" => 2,
-            "payment_method"    => [
-                "method"            => "bank_account",
-                "type"              => "checking",
-                "account_number"    => "123456",
-                "routing_number"    => "012367999",
-                "billing_name"      => "John Doe",
-                "billing_address_1" => "1234 Windall Lane",
-                "billing_city"      => "Nowhere",
-                "billing_state"     => "HI",
-                "billing_zip"       => "89765",
+        $this->assertEquals(
+            [
+                'merchant_id'       => 4,
+                'scheduled_at'      => '2018-01-10',
+                'timezone'          => 'America/New_York',
+                'currency_code'     => 'USD',
+                'amount'            => 10000, //amount
+                'split_amount'      => 1000,
+                'split_merchant_id' => 2,
+                'payment_method'    => [
+                    'method'            => 'bank_account',
+                    'type'              => 'checking',
+                    'account_number'    => '123456',
+                    'routing_number'    => '012367999',
+                    'billing_name'      => 'John Doe',
+                    'billing_address_1' => '1234 Windall Lane',
+                    'billing_city'      => 'Nowhere',
+                    'billing_state'     => 'HI',
+                    'billing_zip'       => '89765',
+                ],
             ],
-        ],[
-            "merchant_id"       => $scheduledTransaction->merchant()->id(),
-            "scheduled_at"      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
-            "timezone"          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
-            "currency_code"     => $scheduledTransaction->currencyCode(),
-            "amount"            => $scheduledTransaction->amount(),
-            "split_amount"      => $scheduledTransaction->split()->amount(),
-            "split_merchant_id" => $scheduledTransaction->split()->merchant()->id(),
-            "payment_method"    => [
-                "method"            => "bank_account",
-                "type"              => $scheduledTransaction->account()->type(),
-                "account_number"    => $scheduledTransaction->account()->number(),
-                "routing_number"    => $scheduledTransaction->account()->routingNumber,
-                "billing_name"      => $scheduledTransaction->accountHolder()->name(),
-                "billing_address_1" => $scheduledTransaction->accountHolder()->billingAddress()->address1(),
-                "billing_city"      => $scheduledTransaction->accountHolder()->billingAddress()->city(),
-                "billing_state"     => $scheduledTransaction->accountHolder()->billingAddress()->state(),
-                "billing_zip"       => $scheduledTransaction->accountHolder()->billingAddress()->postalCode()
-            ],
-        ]);
+            [
+                'merchant_id'       => $scheduledTransaction->merchant()->id(),
+                'scheduled_at'      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
+                'timezone'          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
+                'currency_code'     => $scheduledTransaction->currencyCode(),
+                'amount'            => $scheduledTransaction->amount(),
+                'split_amount'      => $scheduledTransaction->split()->amount(),
+                'split_merchant_id' => $scheduledTransaction->split()->merchant()->id(),
+                'payment_method'    => [
+                    'method'            => 'bank_account',
+                    'type'              => $scheduledTransaction->account()->type(),
+                    'account_number'    => $scheduledTransaction->account()->number(),
+                    'routing_number'    => $scheduledTransaction->account()->routingNumber,
+                    'billing_name'      => $scheduledTransaction->accountHolder()->name(),
+                    'billing_address_1' => $scheduledTransaction->accountHolder()->billingAddress()->address1(),
+                    'billing_city'      => $scheduledTransaction->accountHolder()->billingAddress()->city(),
+                    'billing_state'     => $scheduledTransaction->accountHolder()->billingAddress()->state(),
+                    'billing_zip'       => $scheduledTransaction->accountHolder()->billingAddress()->postalCode()
+                ],
+            ]
+        );
 
         $this->assertCount(1, $curlProvider->calls);
 
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
-                'Body' => [
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
                     'Body' => [
-                        "merchant_id"       => 4,
-                        "scheduled_at"      => "2018-01-10",
-                        "timezone"          => "America/New_York",
-                        "currency_code"     => "USD",
-                        "amount"            => 10000, //amount
-                        "split_amount"      => 1000,
-                        "split_merchant_id" => 2,
-                        "payment_method"    => [
-                            "method"            => "bank_account",
-                            "type"              => "checking",
-                            "account_number"    => "123456",
-                            "routing_number"    => "012367999",
-                            "billing_name"      => "John Doe",
-                            "billing_address_1" => "1234 Windall Lane",
-                            "billing_city"      => "Nowhere",
-                            "billing_state"     => "HI",
-                            "billing_zip"       => "89765",
+                        'Body' => [
+                            'merchant_id'       => 4,
+                            'external_id'       => null,
+                            'scheduled_at'      => '2018-01-10',
+                            'timezone'          => 'America/New_York',
+                            'currency_code'     => 'USD',
+                            'amount'            => 10000, //amount
+                            'split_amount'      => 1000,
+                            'split_merchant_id' => 2,
+                            'payment_method'    => [
+                                'method'            => 'bank_account',
+                                'type'              => 'checking',
+                                'account_number'    => '123456',
+                                'routing_number'    => '012367999',
+                                'billing_name'      => 'John Doe',
+                                'billing_address_1' => '1234 Windall Lane',
+                                'billing_city'      => 'Nowhere',
+                                'billing_state'     => 'HI',
+                                'billing_zip'       => '89765',
+                            ],
                         ],
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '47740503880fee8e11ab2df566939166c7362478013df5bd756f4a28f989d3c0'
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '85aa4d911230c1f1be146cced55dadae42fe94da6971d74c9b6d900b0ecbda97'
+                            ]
                         ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '85aa4d911230c1f1be146cced55dadae42fe94da6971d74c9b6d900b0ecbda97'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '47740503880fee8e11ab2df566939166c7362478013df5bd756f4a28f989d3c0'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                 ]
-            ]
-        ], $curlProvider->calls );
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testWithCreditCard()
@@ -331,7 +345,7 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
 
         $sdk->setCurlProvider($curlProvider);
 
-        $scheduledAt = new DateTime("2018-01-10 12:00");
+        $scheduledAt = new DateTime('2018-01-10 12:00');
         $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
 
         $account = (new Structures\Account())
@@ -374,98 +388,105 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
 
         $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
 
-        $this->assertEquals([
-            "merchant_id"       => 4,
-            "scheduled_at"      => "2018-01-10",
-            "timezone"          => "America/New_York",
-            "currency_code"     => "USD",
-            "amount"            => 10000, //amount
-            "split_amount"      => 1000,
-            "split_merchant_id" => 2,
-            "payment_method"    => [
-                "method"            => "credit_card",
-                "type"              => "visa",
-                "account_number"    => "4111111111111111",
-                "cvv2"              => "777",
-                "expiration_month"  => "12",
-                "expiration_year"   => "20",
-                "billing_name"      => "John Doe",
-                "billing_address_1" => "1234 Windall Lane",
-                "billing_city"      => "Nowhere",
-                "billing_state"     => "HI",
-                "billing_zip"       => "89765",
-            ],
-        ],[
-            "merchant_id"       => $scheduledTransaction->merchant()->id(),
-            "scheduled_at"      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
-            "timezone"          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
-            "currency_code"     => $scheduledTransaction->currencyCode(),
-            "amount"            => $scheduledTransaction->amount(),
-            "split_amount"      => $scheduledTransaction->split()->amount(),
-            "split_merchant_id" => $scheduledTransaction->split()->merchant()->id(),
-            "payment_method"    => [
-                "method"            => "credit_card",
-                "type"              => $scheduledTransaction->account()->type(),
-                "account_number"    => $scheduledTransaction->account()->number(),
-                "cvv2"              => $scheduledTransaction->account()->cvv2(),
-                "expiration_month"  => $scheduledTransaction->account()->expireMonth(),
-                "expiration_year"   => $scheduledTransaction->account()->expireYear(),
-                "billing_name"      => $scheduledTransaction->accountHolder()->name(),
-                "billing_address_1" => $scheduledTransaction->accountHolder()->billingAddress()->address1(),
-                "billing_city"      => $scheduledTransaction->accountHolder()->billingAddress()->city(),
-                "billing_state"     => $scheduledTransaction->accountHolder()->billingAddress()->state(),
-                "billing_zip"       => $scheduledTransaction->accountHolder()->billingAddress()->postalCode()
-            ],
-        ]);
-
-        $this->assertCount(1,       $curlProvider->calls);
-
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
-                'Body' => [
-                    'Body' => [
-                        "merchant_id"       => 4,
-                        "scheduled_at"      => "2018-01-10",
-                        "timezone"          => "America/New_York",
-                        "currency_code"     => "USD",
-                        "amount"            => 10000, //amount
-                        "split_amount"      => 1000,
-                        "split_merchant_id" => 2,
-                        "payment_method"    => [
-                            "method"            => "credit_card",
-                            "type"              => "visa",
-                            "account_number"    => "4111111111111111",
-                            "cvv2"              => 777,
-                            "expiration_month"  => "12",
-                            "expiration_year"   => "20",
-                            "billing_name"      => "John Doe",
-                            "billing_address_1" => "1234 Windall Lane",
-                            "billing_city"      => "Nowhere",
-                            "billing_state"     => "HI",
-                            "billing_zip"       => "89765",
-                        ],
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '623109e4f643ad8afab03797d0ba1450034f0a550ce90f98f70b87f7c7e773dd'
-                        ]
-                    ]
+        $this->assertEquals(
+            [
+                'merchant_id'       => 4,
+                'scheduled_at'      => '2018-01-10',
+                'timezone'          => 'America/New_York',
+                'currency_code'     => 'USD',
+                'amount'            => 10000, //amount
+                'split_amount'      => 1000,
+                'split_merchant_id' => 2,
+                'payment_method'    => [
+                    'method'            => 'credit_card',
+                    'type'              => 'visa',
+                    'account_number'    => '4111111111111111',
+                    'cvv2'              => '777',
+                    'expiration_month'  => '12',
+                    'expiration_year'   => '20',
+                    'billing_name'      => 'John Doe',
+                    'billing_address_1' => '1234 Windall Lane',
+                    'billing_city'      => 'Nowhere',
+                    'billing_state'     => 'HI',
+                    'billing_zip'       => '89765',
                 ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '623109e4f643ad8afab03797d0ba1450034f0a550ce90f98f70b87f7c7e773dd'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
-                ]
+            ],
+            [
+                'merchant_id'       => $scheduledTransaction->merchant()->id(),
+                'scheduled_at'      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
+                'timezone'          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
+                'currency_code'     => $scheduledTransaction->currencyCode(),
+                'amount'            => $scheduledTransaction->amount(),
+                'split_amount'      => $scheduledTransaction->split()->amount(),
+                'split_merchant_id' => $scheduledTransaction->split()->merchant()->id(),
+                'payment_method'    => [
+                    'method'            => 'credit_card',
+                    'type'              => $scheduledTransaction->account()->type(),
+                    'account_number'    => $scheduledTransaction->account()->number(),
+                    'cvv2'              => $scheduledTransaction->account()->cvv2(),
+                    'expiration_month'  => $scheduledTransaction->account()->expireMonth(),
+                    'expiration_year'   => $scheduledTransaction->account()->expireYear(),
+                    'billing_name'      => $scheduledTransaction->accountHolder()->name(),
+                    'billing_address_1' => $scheduledTransaction->accountHolder()->billingAddress()->address1(),
+                    'billing_city'      => $scheduledTransaction->accountHolder()->billingAddress()->city(),
+                    'billing_state'     => $scheduledTransaction->accountHolder()->billingAddress()->state(),
+                    'billing_zip'       => $scheduledTransaction->accountHolder()->billingAddress()->postalCode()
+                ],
             ]
-        ], $curlProvider->calls );
+        );
+
+        $this->assertCount(1, $curlProvider->calls);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
+                    'Body' => [
+                        'Body' => [
+                            'merchant_id'       => 4,
+                            'external_id'       => null,
+                            'scheduled_at'      => '2018-01-10',
+                            'timezone'          => 'America/New_York',
+                            'currency_code'     => 'USD',
+                            'amount'            => 10000, //amount
+                            'split_amount'      => 1000,
+                            'split_merchant_id' => 2,
+                            'payment_method'    => [
+                                'method'            => 'credit_card',
+                                'type'              => 'visa',
+                                'account_number'    => '4111111111111111',
+                                'cvv2'              => 777,
+                                'expiration_month'  => '12',
+                                'expiration_year'   => '20',
+                                'billing_name'      => 'John Doe',
+                                'billing_address_1' => '1234 Windall Lane',
+                                'billing_city'      => 'Nowhere',
+                                'billing_state'     => 'HI',
+                                'billing_zip'       => '89765',
+                            ],
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => 'bb3808c33dec9f92b26704501f85a2b8ef475a91363d0a3fb21d79e3f1f5a661'
+                            ]
+                        ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => 'bb3808c33dec9f92b26704501f85a2b8ef475a91363d0a3fb21d79e3f1f5a661'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
+                ]
+            ],
+            $curlProvider->calls
+        );
     }
 }

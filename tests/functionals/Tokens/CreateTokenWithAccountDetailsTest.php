@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
 
 use StackPay\Payments\StackPay;
@@ -56,40 +54,43 @@ final class CreateTokenWithAccountDetailsTest extends TestCase
             $accountHolder
         );
 
-        $this->assertEquals('z2CsRkTedDEwI0b',  $token->token());
+        $this->assertEquals('z2CsRkTedDEwI0b', $token->token());
 
-        $this->assertCount(1,                   $curlProvider->calls);
+        $this->assertCount(1, $curlProvider->calls);
 
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/token',
-                'Body' => [
-                    'Order' => [
-                        'Account'       => [
-                            'Type'       => 'visa',
-                            'Number'     => '4111111111111111',
-                            'ExpireDate' => '0101',
-                            'Cvv2'       => '888'
-                        ],
-                        'AccountHolder' => [
-                            'Name'           => 'John Doe',
-                            'BillingAddress' => [
-                                'City'     => 'Nowhere',
-                                'State'    => 'HI',
-                                'Zip'      => '89765',
-                                'Country'  => 'usa',
-                                'Address1' => '1234 Windall Lane',
-                                'Address2' => ''
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/token',
+                    'Body' => [
+                        'Order' => [
+                            'Account'       => [
+                                'Type'       => 'visa',
+                                'Number'     => '4111111111111111',
+                                'ExpireDate' => '0101',
+                                'Cvv2'       => '888'
+                            ],
+                            'AccountHolder' => [
+                                'Name'           => 'John Doe',
+                                'BillingAddress' => [
+                                    'City'     => 'Nowhere',
+                                    'State'    => 'HI',
+                                    'Zip'      => '89765',
+                                    'Country'  => 'usa',
+                                    'Address1' => '1234 Windall Lane',
+                                    'Address2' => ''
+                                ]
                             ]
                         ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Authorization', 'Value' => 'Bearer 8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea'],
+                        1 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Authorization', 'Value' => 'Bearer 8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea'],
-                    1 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                 ]
-            ]
-            ], $curlProvider->calls );
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testBankAccount()
@@ -132,39 +133,42 @@ final class CreateTokenWithAccountDetailsTest extends TestCase
             $accountHolder
         );
 
-        $this->assertEquals('z2CsRkTedDEwI0b',  $token->token());
+        $this->assertEquals('z2CsRkTedDEwI0b', $token->token());
 
-        $this->assertCount(1,                   $curlProvider->calls);
+        $this->assertCount(1, $curlProvider->calls);
 
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/token',
-                'Body' => [
-                    'Order' => [
-                        'Account'       => [
-                            'Type'          => 'savings',
-                            'Number'        => '4111111111111111',
-                            'RoutingNumber' => '8765309'
-                        ],
-                        'AccountHolder' => [
-                            'Name'           => 'John Doe',
-                            'BillingAddress' => [
-                                'City'     => 'Nowhere',
-                                'State'    => 'HI',
-                                'Zip'      => '89765',
-                                'Country'  => 'usa',
-                                'Address1' => '1234 Windall Lane',
-                                'Address2' => ''
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/token',
+                    'Body' => [
+                        'Order' => [
+                            'Account'       => [
+                                'Type'          => 'savings',
+                                'Number'        => '4111111111111111',
+                                'RoutingNumber' => '8765309'
+                            ],
+                            'AccountHolder' => [
+                                'Name'           => 'John Doe',
+                                'BillingAddress' => [
+                                    'City'     => 'Nowhere',
+                                    'State'    => 'HI',
+                                    'Zip'      => '89765',
+                                    'Country'  => 'usa',
+                                    'Address1' => '1234 Windall Lane',
+                                    'Address2' => ''
+                                ]
                             ]
                         ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Authorization', 'Value' => 'Bearer 8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea'],
+                        1 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Authorization', 'Value' => 'Bearer 8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea'],
-                    1 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                 ]
-            ]
-            ], $curlProvider->calls );
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testInvalidAccountTypeException()
@@ -202,17 +206,17 @@ final class CreateTokenWithAccountDetailsTest extends TestCase
             ->setName('John Doe')
             ->setBillingAddress($address);
 
-        try{
+        try {
             $token = $sdk->createTokenWithAccountDetails(
                 $account,
                 $accountHolder
             );
-        } catch(Exceptions\InvalidAccountTypeException $e) {
+        } catch (Exceptions\InvalidAccountTypeException $e) {
             $this->assertEquals(
                 "The supplied AccountType(INVALID ACCOUNT TYPE) is invalid",
                 $e->getMessage()
             );
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->fail("Unexcepted Exception:\n\t$e->getMessage()");
         }
 
@@ -256,50 +260,52 @@ final class CreateTokenWithAccountDetailsTest extends TestCase
             ->setName('John Doe')
             ->setBillingAddress($address);
 
-        try
-        {
+        try {
             $token = $sdk->createTokenWithAccountDetails(
                 $account,
                 $accountHolder
             );
-        } catch(Exceptions\RequestErrorException $e) {
-            $this->assertEquals($e->message(), 'Gateway validation exception. Invalid card.');
-            $this->assertEquals($e->code(),    304);
+        } catch (Exceptions\RequestErrorException $e) {
+            $this->assertEquals($e->getMessage(), 'Gateway validation exception. Invalid card.');
+            $this->assertEquals($e->getCode(), 304);
         } catch (\Exception $e) {
-            $this->fail('Unexpected exception thrown: '.$e->getMessage());
+            $this->fail('Unexpected exception thrown: '. $e->getMessage());
         }
 
-        $this->assertCount(1,$curlProvider->calls);
+        $this->assertCount(1, $curlProvider->calls);
 
-        $this->assertEquals([
-        0 => [
-            'URL'  => 'https://api.mystackpay.com/api/token',
-            'Body' => [
-                'Order' => [
-                    'Account'       => [
-                        'Type'       => 'visa',
-                        'Number'     => '4111123456780099',
-                        'ExpireDate' => '0101',
-                        'Cvv2'       => '888'
-                    ],
-                    'AccountHolder' => [
-                        'Name'           => 'John Doe',
-                        'BillingAddress' => [
-                            'City'     => 'Nowhere',
-                            'State'    => 'HI',
-                            'Zip'      => '89765',
-                            'Country'  => 'usa',
-                            'Address1' => '1234 Windall Lane',
-                            'Address2' => ''
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/token',
+                    'Body' => [
+                        'Order' => [
+                            'Account'       => [
+                                'Type'       => 'visa',
+                                'Number'     => '4111123456780099',
+                                'ExpireDate' => '0101',
+                                'Cvv2'       => '888'
+                            ],
+                            'AccountHolder' => [
+                                'Name'           => 'John Doe',
+                                'BillingAddress' => [
+                                    'City'     => 'Nowhere',
+                                    'State'    => 'HI',
+                                    'Zip'      => '89765',
+                                    'Country'  => 'usa',
+                                    'Address1' => '1234 Windall Lane',
+                                    'Address2' => ''
+                                ]
+                            ]
                         ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Authorization', 'Value' => 'Bearer 8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea'],
+                        1 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
                 ]
             ],
-            'Headers' => [
-                0 => ['Key' => 'Authorization', 'Value' => 'Bearer 8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea'],
-                1 => ['Key' => 'Content-Type',  'Value' => 'application/json']
-            ]
-        ]
-        ], $curlProvider->calls );
+            $curlProvider->calls
+        );
     }
 }

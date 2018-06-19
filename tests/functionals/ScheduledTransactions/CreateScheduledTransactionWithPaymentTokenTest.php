@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
 
 use StackPay\Payments\StackPay;
@@ -33,7 +31,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
 
         $sdk->setCurlProvider($curlProvider);
 
-        $scheduledAt = new DateTime("2018-01-10 12:00");
+        $scheduledAt = new DateTime('2018-01-10 12:00');
         $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
 
         $merchant = (new Structures\Merchant())
@@ -61,72 +59,79 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
 
         $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
 
-        $this->assertEquals([
-            "merchant_id"       => 4,
-            "scheduled_at"      => "2018-01-10",
-            "timezone"          => "America/New_York",
-            "currency_code"     => "USD",
-            "amount"            => 10000, //amount
-            "split_amount"      => 1000,
-            "split_merchant_id" => 2,
-            "payment_method"    => [
-                "method"    => "token",
-                "token"     => $token->token(),
-            ],
-        ],[
-            "merchant_id"       => $scheduledTransaction->merchant()->id(),
-            "scheduled_at"      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
-            "timezone"          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
-            "currency_code"     => $scheduledTransaction->currencyCode(),
-            "amount"            => $scheduledTransaction->amount(),
-            "split_amount"      => $scheduledTransaction->split()->amount(),
-            "split_merchant_id" => $scheduledTransaction->split()->merchant()->id(),
-            "payment_method"    => [
-                "method"    => "token",
-                "token"     => $scheduledTransaction->token()->token(),
-            ],
-        ]);
-
-        $this->assertCount(1,       $curlProvider->calls);
-
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
-                'Body' => [
-                    'Body' => [
-                        "merchant_id"       => 4,
-                        "scheduled_at"      => "2018-01-10",
-                        "timezone"          => "America/New_York",
-                        "currency_code"     => "USD",
-                        "amount"            => 10000, //amount
-                        "split_amount"      => 1000,
-                        "split_merchant_id" => 2,
-                        "payment_method"    => [
-                            "method"    => "token",
-                            "token"     => $token->token(),
-                        ],
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => 'b705becfb9d941963c19eed35da4a8cb9a33245193b2cad14eb172e3bcbd1b4a'
-                        ]
-                    ]
+        $this->assertEquals(
+            [
+                'merchant_id'       => 4,
+                'scheduled_at'      => '2018-01-10',
+                'timezone'          => 'America/New_York',
+                'currency_code'     => 'USD',
+                'amount'            => 10000, //amount
+                'split_amount'      => 1000,
+                'split_merchant_id' => 2,
+                'payment_method'    => [
+                    'method'    => 'token',
+                    'token'     => $token->token(),
                 ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => 'b705becfb9d941963c19eed35da4a8cb9a33245193b2cad14eb172e3bcbd1b4a'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
-                ]
+            ],
+            [
+                'merchant_id'       => $scheduledTransaction->merchant()->id(),
+                'scheduled_at'      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
+                'timezone'          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
+                'currency_code'     => $scheduledTransaction->currencyCode(),
+                'amount'            => $scheduledTransaction->amount(),
+                'split_amount'      => $scheduledTransaction->split()->amount(),
+                'split_merchant_id' => $scheduledTransaction->split()->merchant()->id(),
+                'payment_method'    => [
+                    'method'    => 'token',
+                    'token'     => $scheduledTransaction->token()->token(),
+                ],
             ]
-        ], $curlProvider->calls );
+        );
+
+        $this->assertCount(1, $curlProvider->calls);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
+                    'Body' => [
+                        'Body' => [
+                            'merchant_id'       => 4,
+                            'external_id'       => null,
+                            'scheduled_at'      => '2018-01-10',
+                            'timezone'          => 'America/New_York',
+                            'currency_code'     => 'USD',
+                            'amount'            => 10000, //amount
+                            'split_amount'      => 1000,
+                            'split_merchant_id' => 2,
+                            'payment_method'    => [
+                                'method'    => 'token',
+                                'token'     => $token->token(),
+                            ],
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '4e8e9634c6aa44222d0c3b206d6b4ef449a92a2e9a2922774c2883a4006370a3'
+                            ]
+                        ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '4e8e9634c6aa44222d0c3b206d6b4ef449a92a2e9a2922774c2883a4006370a3'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
+                ]
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testWithPaymentTokenFactory()
@@ -148,7 +153,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
 
         $sdk->setCurlProvider($curlProvider);
 
-        $scheduledAt = new DateTime("2018-01-10 12:00");
+        $scheduledAt = new DateTime('2018-01-10 12:00');
         $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
 
         $merchant = (new Structures\Merchant())
@@ -176,72 +181,79 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
 
         $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
 
-        $this->assertEquals([
-            "merchant_id"       => 4,
-            "scheduled_at"      => "2018-01-10",
-            "timezone"          => "America/New_York",
-            "currency_code"     => "USD",
-            "amount"            => 10000, //amount
-            "split_amount"      => 1000,
-            "split_merchant_id" => 2,
-            "payment_method"    => [
-                "method"    => "token",
-                "token"     => $token->token()
-            ],
-        ],[
-            "merchant_id"       => $scheduledTransaction->merchant()->id(),
-            "scheduled_at"      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
-            "timezone"          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
-            "currency_code"     => $scheduledTransaction->currencyCode(),
-            "amount"            => $scheduledTransaction->amount(),
-            "split_amount"      => $scheduledTransaction->split()->amount(),
-            "split_merchant_id" => $scheduledTransaction->split()->merchant()->id(),
-            "payment_method"    => [
-                "method"    => "token",
-                "token"     => $scheduledTransaction->token()->token()
-            ],
-        ]);
-
-        $this->assertCount(1,       $curlProvider->calls);
-
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
-                'Body' => [
-                    'Body' => [
-                        "merchant_id"       => 4,
-                        "scheduled_at"      => "2018-01-10",
-                        "timezone"          => "America/New_York",
-                        "currency_code"     => "USD",
-                        "amount"            => 10000, //amount
-                        "split_amount"      => 1000,
-                        "split_merchant_id" => 2,
-                        "payment_method"    => [
-                            "method"    => "token",
-                            "token"     => $token->token(),
-                        ],
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => 'b705becfb9d941963c19eed35da4a8cb9a33245193b2cad14eb172e3bcbd1b4a'
-                        ]
-                    ]
+        $this->assertEquals(
+            [
+                'merchant_id'       => 4,
+                'scheduled_at'      => '2018-01-10',
+                'timezone'          => 'America/New_York',
+                'currency_code'     => 'USD',
+                'amount'            => 10000, //amount
+                'split_amount'      => 1000,
+                'split_merchant_id' => 2,
+                'payment_method'    => [
+                    'method'    => 'token',
+                    'token'     => $token->token()
                 ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => 'b705becfb9d941963c19eed35da4a8cb9a33245193b2cad14eb172e3bcbd1b4a'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
-                ]
+            ],
+            [
+                'merchant_id'       => $scheduledTransaction->merchant()->id(),
+                'scheduled_at'      => $scheduledTransaction->scheduledAt()->format('Y-m-d'),
+                'timezone'          => $scheduledTransaction->scheduledAt()->getTimezone()->getName(),
+                'currency_code'     => $scheduledTransaction->currencyCode(),
+                'amount'            => $scheduledTransaction->amount(),
+                'split_amount'      => $scheduledTransaction->split()->amount(),
+                'split_merchant_id' => $scheduledTransaction->split()->merchant()->id(),
+                'payment_method'    => [
+                    'method'    => 'token',
+                    'token'     => $scheduledTransaction->token()->token()
+                ],
             ]
-        ], $curlProvider->calls );
+        );
+
+        $this->assertCount(1, $curlProvider->calls);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
+                    'Body' => [
+                        'Body' => [
+                            'merchant_id'       => 4,
+                            'external_id'       => '',
+                            'scheduled_at'      => '2018-01-10',
+                            'timezone'          => 'America/New_York',
+                            'currency_code'     => 'USD',
+                            'amount'            => 10000, //amount
+                            'split_amount'      => 1000,
+                            'split_merchant_id' => 2,
+                            'payment_method'    => [
+                                'method'    => 'token',
+                                'token'     => $token->token(),
+                            ],
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '4e8e9634c6aa44222d0c3b206d6b4ef449a92a2e9a2922774c2883a4006370a3'
+                            ]
+                        ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '4e8e9634c6aa44222d0c3b206d6b4ef449a92a2e9a2922774c2883a4006370a3'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
+                ]
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testInvalidToken()
@@ -263,7 +275,7 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
 
         $sdk->setCurlProvider($curlProvider);
 
-        $scheduledAt = new DateTime("2018-01-10 12:00");
+        $scheduledAt = new DateTime('2018-01-10 12:00');
         $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
 
         $merchant = (new Structures\Merchant())
@@ -291,51 +303,55 @@ final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
         try {
             $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
         } catch (Exceptions\RequestErrorException $e) {
-            $this->assertEquals('Token is invalid or expired.', $e->message());
-            $this->assertEquals(404,                            $e->code());
+            $this->assertEquals('Token is invalid or expired.', $e->getMessage());
+            $this->assertEquals(404, $e->getCode());
         } catch (\Exception $e) {
             $this->fail('Unexpected exception thrown: '. $e->getMessage());
         }
 
         $this->assertCount(1, $curlProvider->calls);
 
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
-                'Body' => [
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/scheduled-transactions',
                     'Body' => [
-                        "merchant_id"       => 4,
-                        "scheduled_at"      => "2018-01-10",
-                        "timezone"          => "America/New_York",
-                        "currency_code"     => "USD",
-                        "amount"            => 10000, //amount
-                        "split_amount"      => 1000,
-                        "split_merchant_id" => 2,
-                        "payment_method"    => [
-                            "method"    => "token",
-                            "token"     => $token->token()
+                        'Body' => [
+                            'merchant_id'       => 4,
+                            'external_id'       => null,
+                            'scheduled_at'      => '2018-01-10',
+                            'timezone'          => 'America/New_York',
+                            'currency_code'     => 'USD',
+                            'amount'            => 10000, //amount
+                            'split_amount'      => 1000,
+                            'split_merchant_id' => 2,
+                            'payment_method'    => [
+                                'method'    => 'token',
+                                'token'     => $token->token()
+                            ],
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '496a6e187345fdcdcb2a48f59b5178dd0db4f9e834a5c5b280edbf782bb1822d'
+                            ]
                         ],
                     ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => 'ca735301fdab3e69182827831f2f5eda4bc5db91f77ccd6960e519541aa30a2b'
-                        ]
-                    ],
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => 'ca735301fdab3e69182827831f2f5eda4bc5db91f77ccd6960e519541aa30a2b'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '496a6e187345fdcdcb2a48f59b5178dd0db4f9e834a5c5b280edbf782bb1822d'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
                 ]
-            ]
-        ], $curlProvider->calls );
+            ],
+            $curlProvider->calls
+        );
     }
 }
