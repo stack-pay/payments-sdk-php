@@ -20,6 +20,12 @@ class Merchant implements Interfaces\Merchant
     public $externalID;
     public $applicationName;
 
+    public function __construct($id = null, $request_hash_key = null)
+    {
+        $this->setID($id);
+        $this->setHashKey($request_hash_key);
+    }
+
     public function id()
     {
         return $this->id;

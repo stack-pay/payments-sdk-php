@@ -57,7 +57,7 @@ final class MerchantLinkTest extends TestCase
                         ],
                         'Header' => [
                             'Application' => 'PaymentSystem',
-                            'ApiVersion'  => '1.0.0',
+                            'ApiVersion'  => 'v1',
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
@@ -67,7 +67,7 @@ final class MerchantLinkTest extends TestCase
                     ],
                     'Headers' => [
                         0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                        1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                         4 => ['Key' => 'Hash',          'Value' => 'db39324c2ee45ee022de0cf18bb3790555e652e9309bc6e8d0d187a6b89259ef'],

@@ -11,8 +11,24 @@ class Address implements Interfaces\Address
     public $address2;
     public $city;
     public $state;
-    public $country;
     public $postalCode;
+    public $country;
+
+    public function __construct(
+        $addressLine1 = null,
+        $addressLine2 = null,
+        $city = null,
+        $state = null,
+        $postalCode = null,
+        $country = null
+    ) {
+        $this->setAddress1($addressLine1);
+        $this->setAddress2($addressLine2);
+        $this->setCity($city);
+        $this->setState($state);
+        $this->setPostalCode($postalCode);
+        $this->setCountry($country);
+    }
 
     public function addressLines()
     {
@@ -21,19 +37,19 @@ class Address implements Interfaces\Address
 
     public function address1()
     {
-        if( array_key_exists(0, $this->addressLines) )
-        {
+        if (! empty($this->addressLines[0])) {
             $this->address1 = $this->addressLines[0];
         }
+
         return $this->address1;
     }
 
     public function address2()
     {
-        if( array_key_exists(1, $this->addressLines) )
-        {
+        if (! empty($this->addressLines[1])) {
             $this->address2 = $this->addressLines[1];
         }
+
         return $this->address2;
     }
 
@@ -78,13 +94,6 @@ class Address implements Interfaces\Address
     {
         $this->addressLines[1] = $address2;
         $this->address2 = $address2;
-
-        return $this;
-    }
-
-    public function setAddress3($address3 = null)
-    {
-        $this->addressLines[2] = $address3;
 
         return $this;
     }

@@ -47,7 +47,7 @@ class Gateway extends Gateways\Gateway
     use Transforms\Responses\ScheduledTransaction;
 
     protected $application              = 'PaymentSystem';
-    protected $apiVersion               = '1.0.0';
+    protected $apiVersion               = 'v1';
     protected $createTokenURL           = 'api/token';
     protected $createPaymentMethodsURL  = 'api/paymethods';
     protected $paymentsURL              = 'api/payments';
@@ -262,12 +262,12 @@ class Gateway extends Gateways\Gateway
 
     public function createScheduledTransaction($transaction)
     {
-        $this->requestScheduledTransaction($transaction);
-
         $transaction->request()->endpoint($this->scheduledTransactionURL);
         $transaction->request()->hashKey($transaction->object()->merchant()->hashKey());
 
         $transaction->response()->hashKey($transaction->object()->merchant()->hashKey());
+
+        $this->requestScheduledTransaction($transaction);
 
         $this->execute($transaction);
 

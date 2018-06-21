@@ -65,7 +65,7 @@ final class MerchantRatesTest extends TestCase
                 'Body'    => null,
                 'Header' => [
                     'Application' => 'PaymentSystem',
-                    'ApiVersion'  => '1.0.0',
+                    'ApiVersion'  => 'v1',
                     'Mode'        => 'production',
                     'Security'    => [
                         'HashMethod' => 'SHA-256',
@@ -75,7 +75,7 @@ final class MerchantRatesTest extends TestCase
             ],
             'Headers' => [
                 0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                1 => ['Key' => 'ApiVersion',    'Value' => '1.0.0'],
+                1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                 2 => ['Key' => 'Mode',          'Value' => 'production'],
                 3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
                 4 => ['Key' => 'Hash',          'Value' => '09ad3aef2def29ff0ff353a299e74987fdf0f19f43cf9ca66077ed3eca3c326e'],

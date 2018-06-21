@@ -21,6 +21,11 @@ class Transaction implements Interfaces\Transaction
     public $amount;
     public $externalID;
 
+    public function __construct($id = null)
+    {
+        $this->setId($id);
+    }
+
     public function id()
     {
         return $this->id;

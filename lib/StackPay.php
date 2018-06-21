@@ -7,8 +7,7 @@ use Curl\Curl;
 use StackPay\Payments\Structures\Transactions;
 
 /**
- * The core SDK class. This class will be used to process payments, new
- * merchants, and SPI url generation.
+ * The core SDK class.
  */
 class StackPay
 {
@@ -43,8 +42,10 @@ class StackPay
         return $this;
     }
 
-    public function createToken(Interfaces\Token $token, $idempotencyKey = null)
-    {
+    public function createToken(
+        Interfaces\Token $token,
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($token);
 
         $transaction->idempotencyKey($idempotencyKey);
@@ -53,12 +54,11 @@ class StackPay
     }
 
     public function createTokenWithAccountDetails(
-        Interfaces\Account       $account,
+        Interfaces\Account $account,
         Interfaces\AccountHolder $accountHolder,
-        Interfaces\Customer      $customer       = null,
-                                 $idempotencyKey = null
-    )
-    {
+        Interfaces\Customer $customer = null,
+        $idempotencyKey = null
+    ) {
         return $this->createToken(
             (new Structures\Token())
                 ->setAccount($account)
@@ -70,9 +70,8 @@ class StackPay
 
     public function createPaymentMethod(
         Interfaces\PaymentMethod $paymentMethod,
-                                 $idempotencyKey = null
-    )
-    {
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($paymentMethod);
         $transaction->idempotencyKey($idempotencyKey);
 
@@ -80,12 +79,11 @@ class StackPay
     }
 
     public function createPaymentMethodWithAccountDetails(
-        Interfaces\Account       $account,
+        Interfaces\Account $account,
         Interfaces\AccountHolder $accountHolder,
-        Interfaces\Customer      $customer       = null,
-                                 $idempotencyKey = null
-    )
-    {
+        Interfaces\Customer $customer = null,
+        $idempotencyKey = null
+    ) {
         return $this->createPaymentMethod(
             (new Structures\PaymentMethod())
                 ->setAccount($account)
@@ -96,11 +94,10 @@ class StackPay
     }
 
     public function createPaymentMethodWithToken(
-        Interfaces\Token    $token,
-        Interfaces\Customer $customer       = null,
-                            $idempotencyKey = null
-    )
-    {
+        Interfaces\Token $token,
+        Interfaces\Customer $customer = null,
+        $idempotencyKey = null
+    ) {
         return $this->createPaymentMethod(
             $token,
             $idempotencyKey
@@ -109,9 +106,8 @@ class StackPay
 
     public function processTransaction(
         Interfaces\Transaction $transaction,
-                               $idempotencyKey = null
-    )
-    {
+        $idempotencyKey = null
+    ) {
         if (method_exists($transaction, 'currency') &&
             method_exists($transaction, 'setCurrency') &&
             ! $transaction->currency()
@@ -135,9 +131,6 @@ class StackPay
             case 'Void':
                 return $this->voidTransaction($transaction, $idempotencyKey);
 
-            case 'ScheduledTransaction':
-                return $this->createScheduledTransaction($transaction, $idempotencyKey);
-
             default:
                 throw new \Exception('Unknown Payment type');
         }
@@ -145,9 +138,8 @@ class StackPay
 
     public function auth(
         Interfaces\Auth $auth,
-                        $idempotencyKey = null
-    )
-    {
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($auth);
 
         $transaction->idempotencyKey($idempotencyKey);
@@ -157,13 +149,12 @@ class StackPay
 
     public function authWithPaymentMethod(
         Interfaces\PaymentMethod $paymentMethod,
-        Interfaces\Merchant      $merchant,
-                                 $amount,
-        Interfaces\Split         $split          = null,
-                                 $idempotencyKey = null,
-                                 $currency       = null
-    )
-    {
+        Interfaces\Merchant $merchant,
+        $amount,
+        Interfaces\Split $split = null,
+        $idempotencyKey = null,
+        $currency = null
+    ) {
         return $this->auth(
             (new Structures\Auth())
                ->setPaymentMethod($paymentMethod)
@@ -176,16 +167,15 @@ class StackPay
     }
 
     public function authWithAccountDetails(
-        Interfaces\Account       $account,
+        Interfaces\Account $account,
         Interfaces\AccountHolder $accountHolder,
-        Interfaces\Merchant      $merchant,
-                                 $amount,
-        Interfaces\Customer      $customer       = null,
-        Interfaces\Split         $split          = null,
-                                 $idempotencyKey = null,
-                                 $currency       = null
-    )
-    {
+        Interfaces\Merchant $merchant,
+        $amount,
+        Interfaces\Customer $customer = null,
+        Interfaces\Split $split = null,
+        $idempotencyKey = null,
+        $currency = null
+    ) {
         return $this->auth(
             (new Structures\Auth())
                 ->setAccount($account)
@@ -200,15 +190,14 @@ class StackPay
     }
 
     public function authWithToken(
-        Interfaces\Token         $token,
-        Interfaces\Merchant      $merchant,
-                                 $amount,
-        Interfaces\Customer      $customer       = null,
-        Interfaces\Split         $split          = null,
-                                 $idempotencyKey = null,
-                                 $currency       = null
-    )
-    {
+        Interfaces\Token $token,
+        Interfaces\Merchant $merchant,
+        $amount,
+        Interfaces\Customer $customer = null,
+        Interfaces\Split $split = null,
+        $idempotencyKey = null,
+        $currency = null
+    ) {
         return $this->auth(
             (new Structures\Auth())
                 ->setToken($token)
@@ -223,9 +212,8 @@ class StackPay
 
     public function capture(
         Interfaces\Capture $capture,
-                           $idempotencyKey = null
-    )
-    {
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($capture);
 
         $transaction->idempotencyKey($idempotencyKey);
@@ -235,12 +223,11 @@ class StackPay
 
     public function captureWithOriginalTransaction(
         Interfaces\Transaction $originalTransaction,
-                               $amount,
-                               $splitAmount,
-        Interfaces\Merchant    $merchant       = null,
-                               $idempotencyKey = null
-    )
-    {
+        $amount,
+        $splitAmount,
+        Interfaces\Merchant $merchant = null,
+        $idempotencyKey = null
+    ) {
         $capture = (new Structures\Capture())
             ->setOriginalTransaction($originalTransaction)
             ->setMerchant($merchant ? $merchant : $originalTransaction->merchant())
@@ -253,9 +240,8 @@ class StackPay
 
     public function refund(
         Interfaces\Refund $refund,
-                          $idempotencyKey = null
-    )
-    {
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($refund);
 
         $transaction->idempotencyKey($idempotencyKey);
@@ -265,12 +251,11 @@ class StackPay
 
     public function refundWithOriginalTransaction(
         Interfaces\Transaction $originalTransaction,
-                               $amount,
-        Interfaces\Split       $split          = null,
-        Interfaces\Merchant    $merchant       = null,
-                               $idempotencyKey = null
-    )
-    {
+        $amount,
+        Interfaces\Split $split = null,
+        Interfaces\Merchant $merchant = null,
+        $idempotencyKey = null
+    ) {
         return $this->refund(
             (new Structures\Refund())
                 ->setOriginalTransaction($originalTransaction)
@@ -283,9 +268,8 @@ class StackPay
 
     public function sale(
         Interfaces\Sale $sale,
-                        $idempotencyKey = null
-    )
-    {
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($sale);
 
         $transaction->idempotencyKey($idempotencyKey);
@@ -294,16 +278,15 @@ class StackPay
     }
 
     public function saleWithAccountDetails(
-        Interfaces\Account       $account,
+        Interfaces\Account $account,
         Interfaces\AccountHolder $accountHolder,
-        Interfaces\Merchant      $merchant,
-                                 $amount,
-        Interfaces\Customer      $customer       = null,
-        Interfaces\Split         $split          = null,
-                                 $idempotencyKey = null,
-                                 $currency       = null
-    )
-    {
+        Interfaces\Merchant $merchant,
+        $amount,
+        Interfaces\Customer $customer = null,
+        Interfaces\Split $split = null,
+        $idempotencyKey = null,
+        $currency = null
+    ) {
         return $this->sale(
             (new Structures\Sale())
                 ->setAccount($account)
@@ -319,14 +302,13 @@ class StackPay
 
     public function saleWithPaymentMethod(
         Interfaces\PaymentMethod $paymentMethod,
-        Interfaces\Merchant      $merchant,
-                                 $amount,
-        Interfaces\Customer      $customer       = null,
-        Interfaces\Split         $split          = null,
-                                 $idempotencyKey = null,
-                                 $currency       = null
-    )
-    {
+        Interfaces\Merchant $merchant,
+        $amount,
+        Interfaces\Customer $customer = null,
+        Interfaces\Split $split = null,
+        $idempotencyKey = null,
+        $currency = null
+    ) {
         return $this->sale(
             (new Structures\Sale())
                 ->setPaymentMethod($paymentMethod)
@@ -340,15 +322,14 @@ class StackPay
     }
 
     public function saleWithToken(
-        Interfaces\Token    $token,
+        Interfaces\Token $token,
         Interfaces\Merchant $merchant,
-                            $amount,
-        Interfaces\Customer $customer       = null,
-        Interfaces\Split    $split          = null,
-                            $idempotencyKey = null,
-                            $currency       = null
-    )
-    {
+        $amount,
+        Interfaces\Customer $customer = null,
+        Interfaces\Split $split = null,
+        $idempotencyKey = null,
+        $currency = null
+    ) {
         return $this->sale(
             (new Structures\Sale())
                 ->setToken($token)
@@ -363,9 +344,8 @@ class StackPay
 
     public function voidTransaction(
         Interfaces\VoidTransaction $void,
-                                   $idempotencyKey = null
-    )
-    {
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($void);
 
         $transaction->idempotencyKey($idempotencyKey);
@@ -375,10 +355,9 @@ class StackPay
 
     public function voidWithOriginalTransaction(
         Interfaces\Transaction $originalTransaction,
-        Interfaces\Merchant    $merchant        = null,
-                               $idempotencyKey  = null
-    )
-    {
+        Interfaces\Merchant $merchant = null,
+        $idempotencyKey = null
+    ) {
         return $this->voidTransaction(
             (new Structures\VoidTransaction())
                 ->setOriginalTransaction($originalTransaction)
@@ -388,10 +367,9 @@ class StackPay
     }
 
     public function credit(
-        Interfaces\Credit  $credit,
-                           $idempotencyKey = null
-    )
-    {
+        Interfaces\Credit $credit,
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($credit);
 
         $transaction->idempotencyKey($idempotencyKey);
@@ -401,27 +379,25 @@ class StackPay
 
     public function creditWithPaymentMethod(
         Interfaces\PaymentMethod $paymentMethod,
-        Interfaces\Merchant      $merchant,
-                                 $amount,
-                                 $currency       = null,
-                                 $idempotencyKey = null
-    )
-    {
+        Interfaces\Merchant $merchant,
+        $amount,
+        $currency = null,
+        $idempotencyKey = null
+    ) {
         return $this->credit(
             (new Structures\Credit())
                 ->setMerchant($merchant)
                 ->setPaymentMethod($paymentMethod)
                 ->setAmount($amount)
                 ->setCurrency($currency ?: $this->gateway->currency()),
-                $idempotencyKey
+            $idempotencyKey
         );
     }
 
     public function merchantRates(
-        Interfaces\Merchant $merchant       = null,
-                            $idempotencyKey = null
-    )
-    {
+        Interfaces\Merchant $merchant = null,
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction(
             $merchant ? $merchant : new Structures\Merchant()
         );
@@ -433,9 +409,8 @@ class StackPay
 
     public function merchantLimits(
         Interfaces\Merchant $merchant,
-                            $idempotencyKey = null
-    )
-    {
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($merchant);
 
         $transaction->idempotencyKey($idempotencyKey);
@@ -445,9 +420,8 @@ class StackPay
 
     public function generateMerchantLink(
         Interfaces\Merchant $merchant,
-                            $idempotencyKey = null
-    )
-    {
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($merchant);
 
         $transaction->idempotencyKey($idempotencyKey);
@@ -456,9 +430,8 @@ class StackPay
     }
     public function createScheduledTransaction(
         Interfaces\ScheduledTransaction $scheduledTransaction,
-                                        $idempotencyKey = null
-    )
-    {
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($scheduledTransaction);
 
         $transaction->idempotencyKey($idempotencyKey);
@@ -468,9 +441,8 @@ class StackPay
 
     public function getScheduledTransaction(
         Interfaces\ScheduledTransaction $scheduledTransaction,
-                                        $idempotencyKey = null
-    )
-    {
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($scheduledTransaction);
 
         $transaction->idempotencyKey($idempotencyKey);
@@ -480,9 +452,8 @@ class StackPay
 
     public function deleteScheduledTransaction(
         Interfaces\ScheduledTransaction $scheduledTransaction,
-                                        $idempotencyKey = null
-    )
-    {
+        $idempotencyKey = null
+    ) {
         $transaction = new Transactions\IdempotentTransaction($scheduledTransaction);
 
         $transaction->idempotencyKey($idempotencyKey);
