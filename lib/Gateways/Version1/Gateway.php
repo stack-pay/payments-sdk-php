@@ -262,12 +262,12 @@ class Gateway extends Gateways\Gateway
 
     public function createScheduledTransaction($transaction)
     {
-        $this->requestScheduledTransaction($transaction);
-
         $transaction->request()->endpoint($this->scheduledTransactionURL);
         $transaction->request()->hashKey($transaction->object()->merchant()->hashKey());
 
         $transaction->response()->hashKey($transaction->object()->merchant()->hashKey());
+
+        $this->requestScheduledTransaction($transaction);
 
         $this->execute($transaction);
 
@@ -292,12 +292,12 @@ class Gateway extends Gateways\Gateway
 
     public function retryScheduledTransaction($transaction, $paymentMethod = null)
     {
-        $this->requestRetryScheduledTransaction($transaction, $paymentMethod);
-
         $transaction->request()->endpoint($this->scheduledTransactionURL .'/'. $transaction->object()->id() .'/attempts');
         $transaction->request()->hashKey($this->privateKey);
 
         $transaction->response()->hashKey($this->privateKey);
+
+        $this->requestRetryScheduledTransaction($transaction, $paymentMethod);
 
         $this->execute($transaction, 'POST');
 
