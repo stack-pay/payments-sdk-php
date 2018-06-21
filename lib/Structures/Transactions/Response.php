@@ -85,7 +85,7 @@ class Response
 
     public function body($body = null)
     {
-        if (! $this->locked && $body) {
+        if (! $this->locked && ! is_null($body)) {
             $this->body = $body;
         }
 

@@ -262,12 +262,12 @@ class Gateway extends Gateways\Gateway
 
     public function createScheduledTransaction($transaction)
     {
-        $this->requestScheduledTransaction($transaction);
-
         $transaction->request()->endpoint($this->scheduledTransactionURL);
         $transaction->request()->hashKey($transaction->object()->merchant()->hashKey());
 
         $transaction->response()->hashKey($transaction->object()->merchant()->hashKey());
+
+        $this->requestScheduledTransaction($transaction);
 
         $this->execute($transaction);
 
