@@ -66,7 +66,7 @@ class Request
 
             case 'development':
             default:
-                $hostname = 'https://sandbox-api.mystackpay.com';
+                $hostname = StackPay::$baseUrl ?: 'https://sandbox-api.mystackpay.com';
                 break;
         }
 

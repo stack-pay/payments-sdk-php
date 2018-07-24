@@ -80,7 +80,7 @@ class V1RESTTranslator
 
         $paymentMethodElement = array_merge(
             $paymentMethodElement,
-            $this->buildAccountHolderElement($account)
+            $this->buildAccountHolderElement($paymentMethod)
         );
 
         if ($paymentMethod->customer) {
@@ -103,7 +103,7 @@ class V1RESTTranslator
 
         $paymentMethodElement = array_merge(
             $paymentMethodElement,
-            $this->buildAccountHolderElement($account)
+            $this->buildAccountHolderElement($paymentMethod)
         );
 
         if ($paymentMethod->customer) {

@@ -8,7 +8,7 @@ trait CreatePaymentMethodTransform
     {
         $body = [ 'Order' => [] ];
 
-        if (method_exists($transaction->object(),'token') &&
+        if (method_exists($transaction->object(), 'token') &&
             $transaction->object()->token()
         ) {
             $body['Order']['Token'] = $transaction->object()->token();

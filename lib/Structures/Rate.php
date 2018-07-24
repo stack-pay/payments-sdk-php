@@ -6,24 +6,42 @@ use StackPay\Payments\Interfaces;
 
 class Rate implements Interfaces\Rate
 {
-    public $feeRate;
-    public $feeTransaction;
-    public $feeNotes;
+    public $bankFeeRate;
+    public $bankFeeTransaction;
+    public $bankFeeNotes;
+    public $cardFeeRate;
+    public $cardFeeTransaction;
+    public $cardFeeNotes;
     public $name;
 
-    public function feeRate()
+    public function bankFeeRate()
     {
-        return $this->feeRate;
+        return $this->bankFeeRate;
     }
 
-    public function feeTransaction()
+    public function bankFeeTransaction()
     {
-        return $this->feeTransaction;
+        return $this->bankFeeTransaction;
     }
 
-    public function feeNotes()
+    public function bankFeeNotes()
     {
-        return $this->feeNotes;
+        return $this->bankFeeNotes;
+    }
+
+    public function cardFeeRate()
+    {
+        return $this->cardFeeRate;
+    }
+
+    public function cardFeeTransaction()
+    {
+        return $this->cardFeeTransaction;
+    }
+
+    public function cardFeeNotes()
+    {
+        return $this->cardFeeNotes;
     }
 
     public function name()
@@ -33,23 +51,44 @@ class Rate implements Interfaces\Rate
 
     // ----
 
-    public function setFeeRate($feeRate = null)
+    public function setBankFeeRate($bankFeeRate = null)
     {
-        $this->feeRate = $feeRate;
+        $this->bankFeeRate = $bankFeeRate;
 
         return $this;
     }
 
-    public function setFeeTransaction($feeTransaction = null)
+    public function setBankFeeTransaction($bankFeeTransaction = null)
     {
-        $this->feeTransaction = $feeTransaction;
+        $this->bankFeeTransaction = $bankFeeTransaction;
 
         return $this;
     }
 
-    public function setFeeNotes($feeNotes = null)
+    public function setBankFeeNotes($bankFeeNotes = null)
     {
-        $this->feeNotes = $feeNotes;
+        $this->bankFeeNotes = $bankFeeNotes;
+
+        return $this;
+    }
+
+    public function setCardFeeRate($cardFeeRate = null)
+    {
+        $this->cardFeeRate = $cardFeeRate;
+
+        return $this;
+    }
+
+    public function setCardFeeTransaction($cardFeeTransaction = null)
+    {
+        $this->cardFeeTransaction = $cardFeeTransaction;
+
+        return $this;
+    }
+
+    public function setCardFeeNotes($cardFeeNotes = null)
+    {
+        $this->cardFeeNotes = $cardFeeNotes;
 
         return $this;
     }

@@ -11,10 +11,10 @@ class ScheduledTransactionRequest extends Request
     {
         $request = new self();
 
-        $request->method   = 'POST';
-        $request->endpoint = '/api/scheduled-transactions';
-        $request->hashKey  = $scheduledTransaction->merchant->hashKey;
-        $request->body     = $this->restTranslator->buildScheduledTransactionElement($scheduledTransaction);
+        $request->method    = 'POST';
+        $request->endpoint  = '/api/scheduled-transactions';
+        $request->hashKey   = $scheduledTransaction->merchant->hashKey;
+        $request->body      = $this->restTranslator->buildScheduledTransactionElement($scheduledTransaction);
 
         return $request;
     }
@@ -23,10 +23,10 @@ class ScheduledTransactionRequest extends Request
     {
         $request = new self();
 
-        $request->method   = 'DELETE';
-        $request->endpoint = '/api/scheduled-transactions/'. $scheduledTransaction->id;
-        $request->hashKey  = StackPay::$privateKey;
-        $request->body     = null;
+        $request->method    = 'DELETE';
+        $request->endpoint  = '/api/scheduled-transactions/'. $scheduledTransaction->id;
+        $request->hashKey   = StackPay::$privateKey;
+        $request->body      = null;
 
         return $request;
     }
@@ -35,10 +35,10 @@ class ScheduledTransactionRequest extends Request
     {
         $request = new self();
 
-        $request->method   = 'GET';
-        $request->endpoint = '/api/scheduled-transactions/'. $scheduledTransaction->id;
-        $request->hashKey  = StackPay::$privateKey;
-        $request->body     = null;
+        $request->method    = 'GET';
+        $request->endpoint  = '/api/scheduled-transactions/'. $scheduledTransaction->id;
+        $request->hashKey   = StackPay::$privateKey;
+        $request->body      = null;
 
         return $request;
     }
@@ -47,10 +47,18 @@ class ScheduledTransactionRequest extends Request
     {
         $request = new self();
 
-        $request->method   = 'POST';
-        $request->endpoint = '/api/scheduled-transactions/'. $scheduledTransaction->id .'/attempts';
-        $request->hashKey  = StackPay::$privateKey;
-        $request->body     = $this->restTranslator->buildScheduledTransactionElement($scheduledTransaction);
+        $request->method    = 'POST';
+        $request->endpoint  = '/api/scheduled-transactions/'. $scheduledTransaction->id .'/attempts';
+        $request->hashKey   = StackPay::$privateKey;
+        $request->body      = null;
+
+        if ($scheduledTransaction->paymentMethod) {
+            $request->body  = [
+                'payment_method' => $this->restTranslator->buildPaymentMethodElement(
+                    $scheduledTransaction->paymentMethod
+                )
+            ];
+        }
 
         return $request;
     }
