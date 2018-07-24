@@ -16,8 +16,8 @@ class PaymentMethodRequest extends Request
         $request->endpoint  = '/api/paymethods';
         $request->hashKey   = StackPay::$privateKey;
         $request->body      = [
-            'Account'       => $this->translator->buildAccountElement($account),
-            'AccountHolder' => $this->translator->buildAccountHolderElement($accountHolder),
+            'Account'       => $request->translator->buildAccountElement($account),
+            'AccountHolder' => $request->translator->buildAccountHolderElement($accountHolder),
         ];
 
         return $request;
@@ -42,7 +42,7 @@ class PaymentMethodRequest extends Request
         $request->method    = 'POST';
         $request->endpoint  = '/api/paymethods';
         $request->hashKey   = StackPay::$privateKey;
-        $request->body      = $this->translator->buildTokenElement($token);
+        $request->body      = $request->translator->buildTokenElement($token);
 
         return $request;
     }

@@ -2,6 +2,7 @@
 
 namespace StackPay\Payments\Structures;
 
+use StackPay\Payments\AccountTypes;
 use StackPay\Payments\Interfaces;
 
 class PaymentMethod implements Interfaces\PaymentMethod
@@ -120,5 +121,25 @@ class PaymentMethod implements Interfaces\PaymentMethod
         }
 
         return $this->customer;
+    }
+
+    //----
+
+    public function isBankAccount()
+    {
+        return in_array($this->type, [
+            AccountTypes::CHECKING,
+            AccountTypes::SAVINGS,
+        ]);
+    }
+
+    public function isCardAccount()
+    {
+        return in_array($this->type, [
+            AccountTypes::AMEX,
+            AccountTypes::DISCOVER,
+            AccountTypes::MASTERCARD,
+            AccountTypes::VISA,
+        ]);
     }
 }

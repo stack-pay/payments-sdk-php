@@ -14,7 +14,7 @@ class MerchantApplicationRequest extends Request
         $request->method   = 'POST';
         $request->endpoint = '/api/merchants/link';
         $request->hashKey  = StackPay::$privateKey;
-        $request->body     = $this->translator->buildMerchantApplicationElement($merchantApplication);
+        $request->body     = $request->translator->buildMerchantApplicationElement($merchantApplication);
 
         return $request;
     }

@@ -14,7 +14,7 @@ class ScheduledTransactionRequest extends Request
         $request->method    = 'POST';
         $request->endpoint  = '/api/scheduled-transactions';
         $request->hashKey   = $scheduledTransaction->merchant->hashKey;
-        $request->body      = $this->restTranslator->buildScheduledTransactionElement($scheduledTransaction);
+        $request->body      = $request->restTranslator->buildScheduledTransactionElement($scheduledTransaction);
 
         return $request;
     }
@@ -54,7 +54,7 @@ class ScheduledTransactionRequest extends Request
 
         if ($scheduledTransaction->paymentMethod) {
             $request->body  = [
-                'payment_method' => $this->restTranslator->buildPaymentMethodElement(
+                'payment_method' => $request->restTranslator->buildPaymentMethodElement(
                     $scheduledTransaction->paymentMethod
                 )
             ];

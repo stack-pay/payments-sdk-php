@@ -11,13 +11,16 @@ class V1RESTTranslator
     {
         $accountHolderElement = [
             'billing_name'      => $paymentMethod->billingName,
-            'billing_address1'  => $paymentMethod->billingAddress1,
-            'billing_address2'  => $paymentMethod->billingAddress2,
+            'billing_address_1' => $paymentMethod->billingAddress1,
             'billing_city'      => $paymentMethod->billingCity,
             'billing_state'     => $paymentMethod->billingState,
             'billing_zip'       => $paymentMethod->billingZip,
             'billing_country'   => $paymentMethod->billingCountry,
         ];
+
+        if ($paymentMethod->billingAddress2) {
+            $accountHolderElement['billing_address_2'] = $paymentMethod->billingAddress2;
+        }
 
         return $accountHolderElement;
     }

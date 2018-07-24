@@ -14,7 +14,7 @@ class CustomerRequest extends Request
         $request->method   = 'POST';
         $request->endpoint = '/api/customers';
         $request->hashKey  = StackPay::$privateKey;
-        $request->body     = $this->translator->buildCustomerElement($customer);
+        $request->body     = $request->translator->buildCustomerElement($customer);
 
         return $request;
     }
