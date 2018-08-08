@@ -49,7 +49,7 @@ class Response
         $this->http_response    = $http_response;
         $this->payload          = json_decode($this->http_response->getBody());
 
-        $this->body             = ! empty($this->payload->Body)
+        $this->body             = property_exists($this->payload, 'Body')
             ? $this->payload->Body
             : $this->payload;
 

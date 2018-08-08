@@ -1,4 +1,5 @@
 <?php
+
 require_once(dirname(__FILE__) . '/Exceptions/HashValidationException.php');
 require_once(dirname(__FILE__) . '/Exceptions/RequestErrorException.php');
 
@@ -21,6 +22,7 @@ require_once(dirname(__FILE__) . '/Interfaces/PaymentMethod.php');
 require_once(dirname(__FILE__) . '/Interfaces/Rate.php');
 require_once(dirname(__FILE__) . '/Interfaces/Refund.php');
 require_once(dirname(__FILE__) . '/Interfaces/Sale.php');
+require_once(dirname(__FILE__) . '/Interfaces/ScheduledTransaction.php');
 require_once(dirname(__FILE__) . '/Interfaces/Split.php');
 require_once(dirname(__FILE__) . '/Interfaces/Token.php');
 require_once(dirname(__FILE__) . '/Interfaces/VoidTransaction.php');
@@ -30,22 +32,25 @@ require_once(dirname(__FILE__) . '/Providers/CurlProvider.php');
 require_once(dirname(__FILE__) . '/Structures/Account.php');
 require_once(dirname(__FILE__) . '/Structures/AccountHolder.php');
 require_once(dirname(__FILE__) . '/Structures/Address.php');
+require_once(dirname(__FILE__) . '/Structures/Country.php');
+require_once(dirname(__FILE__) . '/Structures/Customer.php');
+require_once(dirname(__FILE__) . '/Structures/PaymentMethod.php');
+require_once(dirname(__FILE__) . '/Structures/Rate.php');
+require_once(dirname(__FILE__) . '/Structures/Split.php');
+require_once(dirname(__FILE__) . '/Structures/Token.php');
+
+require_once(dirname(__FILE__) . '/Structures/Merchant.php');
+require_once(dirname(__FILE__) . '/Structures/Order.php');
 require_once(dirname(__FILE__) . '/Structures/Transaction.php');
 require_once(dirname(__FILE__) . '/Structures/Auth.php');
 require_once(dirname(__FILE__) . '/Structures/Capture.php');
-require_once(dirname(__FILE__) . '/Structures/Country.php');
-require_once(dirname(__FILE__) . '/Structures/Customer.php');
-require_once(dirname(__FILE__) . '/Structures/Merchant.php');
-require_once(dirname(__FILE__) . '/Structures/Order.php');
-require_once(dirname(__FILE__) . '/Structures/PaymentMethod.php');
-require_once(dirname(__FILE__) . '/Structures/Rate.php');
+require_once(dirname(__FILE__) . '/Structures/Sale.php');
+require_once(dirname(__FILE__) . '/Structures/ScheduledTransaction.php');
 require_once(dirname(__FILE__) . '/Structures/Reversal.php');
 require_once(dirname(__FILE__) . '/Structures/Refund.php');
-require_once(dirname(__FILE__) . '/Structures/Sale.php');
-require_once(dirname(__FILE__) . '/Structures/Split.php');
-require_once(dirname(__FILE__) . '/Structures/Token.php');
-require_once(dirname(__FILE__) . '/Structures/Transactions/Transaction.php');
 require_once(dirname(__FILE__) . '/Structures/VoidTransaction.php');
+
+require_once(dirname(__FILE__) . '/Structures/Transactions/Transaction.php');
 require_once(dirname(__FILE__) . '/Structures/Transactions/IdempotentTransaction.php');
 require_once(dirname(__FILE__) . '/Structures/Transactions/Request.php');
 require_once(dirname(__FILE__) . '/Structures/Transactions/Response.php');
@@ -63,12 +68,14 @@ require_once(dirname(__FILE__) . '/Transforms/Requests/Structures/SaleTransform.
 require_once(dirname(__FILE__) . '/Transforms/Requests/Structures/VoidTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Requests/Structures/CreditTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Requests/Structures/ScheduledTransaction.php');
+
 require_once(dirname(__FILE__) . '/Transforms/Requests/Transactions/AuthTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Requests/Transactions/HashTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Requests/Transactions/HeaderTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Requests/Transactions/IdempotencyTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Requests/Transactions/JSONTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Requests/Transactions/V1Transform.php');
+
 require_once(dirname(__FILE__) . '/Transforms/Responses/AuthTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Responses/CaptureTransform.php');
 require_once(dirname(__FILE__) . '/Transforms/Responses/CreatePaymentMethodTransform.php');

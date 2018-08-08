@@ -3,31 +3,36 @@
 namespace StackPay\Payments\Requests\v1;
 
 use StackPay\Payments\StackPay;
-use StackPay\Payments\Structures\Customer;
+use StackPay\Payments\Structures;
 
 class CustomerRequest extends Request
 {
-    public static function create(Customer $customer)
+    protected $customer;
+
+    public function __construct(Structures\Customer $customer)
     {
-        $request = new self();
+        parent::__construct();
 
-        $request->method   = 'POST';
-        $request->endpoint = '/api/customers';
-        $request->hashKey  = StackPay::$privateKey;
-        $request->body     = $request->translator->buildCustomerElement($customer);
-
-        return $request;
+        $this->customer = $customer;
     }
 
-    public static function delete(Customer $customer)
+    public function create()
     {
-        $request = new self();
+        $this->method   = 'POST';
+        $this->endpoint = '/api/customers';
+        $this->hashKey  = StackPay::$privateKey;
+        $this->body     = $this->translator->buildCustomerElement($this->customer);
 
-        $request->method   = 'DELETE';
-        $request->endpoint = '/api/customers/'. $customer->id;
-        $request->hashKey  = StackPay::$privateKey;
-        $request->body     = null;
+        return $this;
+    }
 
-        return $request;
+    public function delete()
+    {
+        $this->method   = 'DELETE';
+        $this->endpoint = '/api/customers/'. $this->customer->id;
+        $this->hashKey  = StackPay::$privateKey;
+        $this->body     = null;
+
+        return $this;
     }
 }

@@ -17,6 +17,9 @@ class Request
 
     public $response;
 
+    public $translator;
+    public $restTranslator;
+
     public function __construct()
     {
         $this->translator       = new Translators\V1Translator;

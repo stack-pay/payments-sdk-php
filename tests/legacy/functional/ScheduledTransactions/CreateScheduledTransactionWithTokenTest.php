@@ -10,7 +10,7 @@ use StackPay\Payments\Structures;
 
 use Test\Mocks\Providers\MockCurlProvider;
 
-final class CreateScheduledTransactionWithPaymentTokenTest extends TestCase
+final class CreateScheduledTransactionWithTokenTest extends TestCase
 {
     public function testSuccessfulCase()
     {

@@ -58,6 +58,13 @@ class StackPay
         return $this;
     }
 
+    public function setHttpClient(Client $httpClient)
+    {
+        self::$httpClient = $httpClient;
+
+        return $this;
+    }
+
     public function createToken(
         Interfaces\Token $token,
         $idempotencyKey = null

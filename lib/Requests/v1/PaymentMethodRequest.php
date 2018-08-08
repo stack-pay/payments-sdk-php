@@ -8,42 +8,45 @@ use StackPay\Payments\Structures;
 
 class PaymentMethodRequest extends Request
 {
-    public static function create(Structures\Account $account, Structures\AccountHolder $accountHolder)
-    {
-        $request = new self();
+    protected $paymentMethod;
 
-        $request->method    = 'POST';
-        $request->endpoint  = '/api/paymethods';
-        $request->hashKey   = StackPay::$privateKey;
-        $request->body      = [
-            'Account'       => $request->translator->buildAccountElement($account),
-            'AccountHolder' => $request->translator->buildAccountHolderElement($accountHolder),
+    public function __construct(Structures\PaymentMethod $paymentMethod)
+    {
+        parent::__construct();
+
+        $this->paymentMethod = $paymentMethod;
+    }
+
+    public function create()
+    {
+        $this->method   = 'POST';
+        $this->endpoint = '/api/paymethods';
+        $this->hashKey  = StackPay::$privateKey;
+        $this->body     = [
+            'Account'       => $this->translator->buildAccountElement($this->paymentMethod->account),
+            'AccountHolder' => $this->translator->buildAccountHolderElement($this->paymentMethod->accountHolder),
         ];
 
-        return $request;
+        return $this;
     }
 
-    public static function delete(Structures\PaymentMethod $paymentMethod)
+    public function delete()
     {
-        $request = new self();
+        $this->method   = 'DELETE';
+        $this->endpoint = '/api/payment-methods/'. $this->paymentMethod->id;
+        $this->hashKey  = StackPay::$privateKey;
+        $this->body     = null;
 
-        $request->method   = 'DELETE';
-        $request->endpoint = '/api/payment-methods/'. $paymentMethod->id;
-        $request->hashKey  = StackPay::$privateKey;
-        $request->body     = null;
-
-        return $request;
+        return $this;
     }
 
-    public static function token(Structures\Token $token)
+    public function token()
     {
-        $request = new self();
+        $this->method    = 'POST';
+        $this->endpoint  = '/api/paymethods';
+        $this->hashKey   = StackPay::$privateKey;
+        $this->body      = $this->translator->buildTokenElement($this->paymentMethod->token);
 
-        $request->method    = 'POST';
-        $request->endpoint  = '/api/paymethods';
-        $request->hashKey   = StackPay::$privateKey;
-        $request->body      = $request->translator->buildTokenElement($token);
-
-        return $request;
+        return $this;
     }
 }

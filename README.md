@@ -27,7 +27,9 @@ This library also requires `'ext-curl': '*'`.
 ### Composer
 
 It is strongly recommended that you use [Composer](http://getcomposer.org) to
-install this package and its dependencies. To do this, run the following command:
+install this package and its dependencies. Some methods utilize `GuzzleHttp`. If you do not install via Composer, these methods will be difficult to use.
+
+To install via Composer, run the following command:
 
 ```bash
 composer require stack-pay/payments-sdk-php
@@ -60,8 +62,7 @@ to use the bindings, include the `payments-sdk.php` file.
 require_once('/path/to/stack-pay/payments-sdk-php/lib/payments-sdk.php');
 ```
 
-You will also need to download the dependencies and manually include them as
-well. It is **strongly** recommended that you use Composer.
+You will also need to download the dependencies and manually include them, which can be extremely cumbersome. It is **strongly** recommended that you use Composer.
 
 ## Instantiating the SDK
 
@@ -296,11 +297,13 @@ $refund = $stackpay->processTransaction(
 );
 ```
 
-## Generating and Processing Scheduled Transactions
+## Scheduled Transactions
 
-Scheduled transactions are run in a batch once per day at 12:00:00 UTC.
+The following examples are recommended when the SDK is installed via Composer. These methods use `GuzzleHttp` which is very difficult to use without a good autoloader.
 
-Set the `Scheduled At` date field for the transaction.
+Scheduled transactions run in a batch once per day on the given date at `12:00:00 UTC`.
+
+Use a DateTime object to set the value for the `scheduledAt` field. Use of a timezone is optional. It is recommended that you experiment with this value knowing that the API will process the date as described above.
 
 ```php
 $scheduledAt = new DateTime('2018-03-20');
@@ -311,56 +314,144 @@ $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
 $scheduledAt = new DateTime('2018-03-20', new DateTimeZone('America/New_York'));
 ```
 
-#### Schedule Transaction with Payment Method
+#### Create a Scheduled Transaction
+
+##### via stored Payment Method
 ```php
-$paymentMethod = (new \StackPay\Payments\Structures\PaymentMethod())
-    ->setID(50);
+$merchant          = new \StackPay\Payments\Structures\Merchant;
+$merchant->id      = 12345;
+$merchant->hashKey = 'merchant-hash-key-value';
 
-$scheduledTransaction = StackPay\Payments\Factories\ScheduleTransaction::withPaymentMethod(
-    StackPay\Payments\Structures\PaymentMethod $paymentMethod,
-    StackPay\Payments\Structures\Merchant $merchant,
-    $amountInCents,
-    \DateTime $scheduledAt,
-    StackPay\Payments\Structures\Currency $optionalCurrencyOverride = null,
-    StackPay\Payments\Structures\Split $split = null
-);
+$paymentMethod     = new \StackPay\Payments\Structures\PaymentMethod;
+$paymentMethod->id = 12345;
 
-$scheduledTransaction = $stackpay->createScheduledTransaction($scheduledTransaction);
+$scheduledTransaction = new \StackPay\Payments\Structures\ScheduledTransaction;
+$scheduledTransaction->merchant      = $merchant;
+$scheduledTransaction->paymentMethod = $paymentMethod;
+$scheduledTransaction->amount        = 5000;
+$scheduledTransaction->currencyCode  = 'USD';
+$scheduledTransaction->scheduledAt   = new DateTime('first day of next week');
+$scheduledTransaction->externalId    = 'id-in-remote-system';
+
+$request = (new \StackPay\Payments\Requests\v1\ScheduledTransactionRequest($scheduledTransaction))
+            ->create();
+
+$response = $request->send();
 ```
 
-#### Schedule Transaction with Payment Method Token
+##### via Payment Method Token
 ```php
-$token = $stackpay->createTokenWithAccountDetails(
-    StackPay\Payments\Structures\Account() $account,
-    StackPay\Payments\Structures\AccountHolder() $accountHolder,
-    StackPay\Payments\Structures\Customer $optionalCustomer = null
-);
+$merchant          = new \StackPay\Payments\Structures\Merchant;
+$merchant->id      = 12345;
+$merchant->hashKey = 'merchant-hash-key-value';
 
-$scheduledTransaction = StackPay\Payments\Factories\ScheduleTransaction::withToken(
-    StackPay\Payments\Structures\Token $token,
-    StackPay\Payments\Structures\Merchant $merchant,
-    $amountInCents,
-    \DateTime $scheduledAt,
-    StackPay\Payments\Structures\Currency $optionalCurrencyOverride = null,
-    StackPay\Payments\Structures\Split $split = null
-);
+$paymentMethod        = new \StackPay\Payments\Structures\PaymentMethod;
+$paymentMethod->token = 'payment-method-token';
 
-$scheduledTransaction = $stackpay->createScheduledTransaction($scheduledTransaction);
+$scheduledTransaction = new \StackPay\Payments\Structures\ScheduledTransaction;
+$scheduledTransaction->merchant      = $merchant;
+$scheduledTransaction->paymentMethod = $paymentMethod;
+$scheduledTransaction->amount        = 5000;
+$scheduledTransaction->currencyCode  = 'USD';
+$scheduledTransaction->scheduledAt   = new DateTime('first day of next week');
+$scheduledTransaction->externalId    = 'id-in-remote-system';
+
+$request = (new \StackPay\Payments\Requests\v1\ScheduledTransactionRequest($scheduledTransaction))
+            ->create();
+
+$response = $request->send();
 ```
 
-#### Schedule Transaction with Account Details
+##### via Account Details
 ```php
-$scheduledTransaction = StackPay\Payments\Factories\ScheduleTransaction::withAccountDetails(
-    StackPay\Payments\Structures\Account $account,
-    StackPay\Payments\Structures\AccountHolder $accountHolder,
-    StackPay\Payments\Structures\Merchant $merchant,
-    $amountInCents,
-    \DateTime $scheduledAt,
-    StackPay\Payments\Structures\Currency $optionalCurrencyOverride = null,
-    StackPay\Payments\Structures\Split $split = null
-);
+$merchant          = new \StackPay\Payments\Structures\Merchant;
+$merchant->id      = 12345;
+$merchant->hashKey = 'merchant-hash-key-value';
 
-$scheduledTransaction = $stackpay->createScheduledTransaction($scheduledTransaction);
+$paymentMethod                  = new \StackPay\Payments\Structures\PaymentMethod;
+$paymentMethod->accountNumber   = '4111111111111111';
+$paymentMethod->expirationMonth = '12';
+$paymentMethod->expirationYear  = '25';
+$paymentMethod->cvv2            = '999';
+$paymentMethod->billingName     = 'Stack Payman';
+$paymentMethod->billingAddress1 = '5360 Legacy Drive #150';
+$paymentMethod->billingCity     = 'Plano';
+$paymentMethod->billingState    = 'TX';
+$paymentMethod->billingZip      = '75024';
+$paymentMethod->billingCountry  = \StackPay\Payments\Structures\Country::usa();
+
+$scheduledTransaction                = new \StackPay\Payments\Structures\ScheduledTransaction;
+$scheduledTransaction->merchant      = $merchant;
+$scheduledTransaction->paymentMethod = $paymentMethod;
+$scheduledTransaction->amount        = 5000;
+$scheduledTransaction->currencyCode  = 'USD';
+$scheduledTransaction->scheduledAt   = new DateTime('first day of next week');
+$scheduledTransaction->externalId    = 'id-in-remote-system';
+
+$request = (new \StackPay\Payments\Requests\v1\ScheduledTransactionRequest($scheduledTransaction))
+            ->create();
+
+$response = $request->send();
+```
+
+#### Get Scheduled Transaction
+
+```php
+$scheduledTransaction     = new \StackPay\Payments\Structures\ScheduledTransaction;
+$scheduledTransaction->id = 12345;
+
+$request = (new \StackPay\Payments\Requests\v1\ScheduledTransactionRequest($scheduledTransaction))
+            ->get();
+
+$response = $request->send();
+```
+
+#### Retry Scheduled Transaction
+
+This method is only available when a scheduled transaction is in a `failed` state.
+
+##### with currently attached Payment Method
+
+```php
+$scheduledTransaction     = new \StackPay\Payments\Structures\ScheduledTransaction;
+$scheduledTransaction->id = 12345;
+
+$request = (new \StackPay\Payments\Requests\v1\ScheduledTransactionRequest($scheduledTransaction))
+            ->retry();
+
+$response = $request->send();
+```
+
+##### with a different Payment Method
+
+Example below shows the simplest example: via stored Payment Method (from above). A different can be attached using a token or account details as well by building the `$paymentMethod` object as shown in the Create examples above.
+
+```php
+$paymentMethod     = new \StackPay\Payments\Structures\PaymentMethod;
+$paymentMethod->id = 12345;
+
+$scheduledTransaction                = new \StackPay\Payments\Structures\ScheduledTransaction;
+$scheduledTransaction->id            = 12345;
+$scheduledTransaction->paymentMethod = $paymentMethod;
+
+$request = (new \StackPay\Payments\Requests\v1\ScheduledTransactionRequest($scheduledTransaction))
+            ->retry();
+
+$response = $request->send();
+```
+
+#### Delete Scheduled Transaction
+
+This method is only available when a scheduled transaction is in a `scheduled` state.
+
+```php
+$scheduledTransaction     = new \StackPay\Payments\Structures\ScheduledTransaction;
+$scheduledTransaction->id = 12345;
+
+$request = (new \StackPay\Payments\Requests\v1\ScheduledTransactionRequest($scheduledTransaction))
+            ->delete();
+
+$response = $request->send();
 ```
 
 ## Documentation
@@ -385,11 +476,7 @@ test suite:
 ./vendor/bin/phpunit
 ```
 
-Or to run an individual test file:
-
-```bash
-./vendor/bin/phpunit tests/SaleTest.php
-```
+If you plan to use these tests, it is highly recommended that you familiarize yourself with PHPUnit as well as the `phpunit.xml` configuration file included with this package.
 
 ## Support
 

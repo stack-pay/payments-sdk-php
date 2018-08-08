@@ -7,27 +7,32 @@ use StackPay\Payments\Structures;
 
 class MerchantApplicationRequest extends Request
 {
-    public static function open(Structures\MerchantApplication $merchantApplication)
+    protected $merchantApplication;
+
+    public function __construct(Structures\MerchantApplication $merchantApplication)
     {
-        $request = new self();
+        parent::__construct();
 
-        $request->method   = 'POST';
-        $request->endpoint = '/api/merchants/link';
-        $request->hashKey  = StackPay::$privateKey;
-        $request->body     = $request->translator->buildMerchantApplicationElement($merchantApplication);
-
-        return $request;
+        $this->merchantApplication = $merchantApplication;
     }
 
-    public static function cancel(Structures\MerchantApplication $merchantApplication)
+    public function open()
     {
-        $request = new self();
+        $this->method   = 'POST';
+        $this->endpoint = '/api/merchants/link';
+        $this->hashKey  = StackPay::$privateKey;
+        $this->body     = $this->translator->buildMerchantApplicationElement($this->merchantApplication);
 
-        $request->method   = 'DELETE';
-        $request->endpoint = '/api/merchant-applications/'. $merchantApplication->token;
-        $request->hashKey  = StackPay::$privateKey;
-        $request->body     = null;
+        return $this;
+    }
 
-        return $request;
+    public function cancel()
+    {
+        $this->method   = 'DELETE';
+        $this->endpoint = '/api/merchant-applications/'. $this->merchantApplication->token;
+        $this->hashKey  = StackPay::$privateKey;
+        $this->body     = null;
+
+        return $this;
     }
 }

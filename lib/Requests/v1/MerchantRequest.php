@@ -7,29 +7,38 @@ use StackPay\Payments\Structures;
 
 class MerchantRequest extends Request
 {
-    public static function limits(Structures\Merchant $merchant)
+    protected $merchant;
+
+    public function __construct(Structures\Merchant $merchant = null)
     {
-        $request = new self();
+        parent::__construct();
 
-        $request->method   = 'POST';
-        $request->endpoint = '/api/merchants/limits';
-        $request->hashKey  = StackPay::$privateKey;
-        $request->body     = [
-            'Merchant' => $merchant->id,
-        ];
-
-        return $request;
+        $this->merchant = $merchant;
     }
 
-    public static function rates()
+    public function limits(Structures\Merchant $merchant = null)
     {
-        $request = new self();
+        if (empty($merchant) && empty($this->merchant)) {
+            throw new \Exception('No merchant given. Unable to retrieve limits.');
+        }
 
-        $request->method   = 'POST';
-        $request->endpoint = '/api/merchants/rates';
-        $request->hashKey  = StackPay::$privateKey;
-        $request->body     = null;
+        $this->method   = 'POST';
+        $this->endpoint = '/api/merchants/limits';
+        $this->hashKey  = StackPay::$privateKey;
+        $this->body     = [
+            'Merchant' => $merchant ? $merchant->id ? $this->merchant->id,
+        ];
 
-        return $request;
+        return $this;
+    }
+
+    public function rates()
+    {
+        $this->method   = 'POST';
+        $this->endpoint = '/api/merchants/rates';
+        $this->hashKey  = StackPay::$privateKey;
+        $this->body     = null;
+
+        return $this;
     }
 }
