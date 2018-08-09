@@ -21,6 +21,10 @@ trait SaleTransform
             $body['Order']['Token'] = $transaction->object()->token()->token();
         }
 
+        if ($transaction->object()->masterPassTransactionId()) {
+            $body['Order']['MasterPass']['TransactionId'] = $transaction->object()->masterPassTransactionId();
+        }
+
         if ($transaction->object()->paymentMethod() &&
             $transaction->object()->paymentMethod()->id()
         ) {

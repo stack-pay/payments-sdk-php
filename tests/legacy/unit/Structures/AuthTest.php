@@ -43,6 +43,11 @@ final class AuthTest extends StructureTestCase
         $this->full('token', Structures\Token::class, true);
     }
 
+    public function test_masterPassTransactionId()
+    {
+        $this->full('masterPassTransactionId', 'string');
+    }
+
     public function test_paymentMethod()
     {
         $this->full('paymentMethod', Structures\PaymentMethod::class, true);

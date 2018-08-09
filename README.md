@@ -24,7 +24,7 @@ This library also requires `'ext-curl': '*'`.
 
 ## Installation
 
-### Composer
+### Composer (recommended)
 
 It is strongly recommended that you use [Composer](http://getcomposer.org) to
 install this package and its dependencies. Some methods utilize `GuzzleHttp`. If you do not install via Composer, these methods will be difficult to use.
@@ -52,7 +52,7 @@ To use the bindings, use Composer's
 require_once('vendor/autoload.php');
 ```
 
-### Manual Installation
+### Manual Installation (not recommended)
 
 If you do not wish to use Composer, you can download the
 [latest release](https://github.com/stack-pay/payments-sdk-php/releases). Then,
@@ -214,11 +214,6 @@ $transaction = (new StackPay\Payments\Structures\Transaction())
     ->setId($transactionId);
 ```
 
-## Generating and Processing Transactions
-
-How to generate request objects using the factory class and how to use them to
-process transactions.
-
 #### Transaction Split
 
 ```php
@@ -234,7 +229,80 @@ $split = (new StackPay\Payments\Structures\Split())
     ->setAmount($amountInCents);
 ```
 
-#### Sale with Account Details
+## Main SDK Transaction Methods (scheduled for deprecation)
+
+The following is a sampling of direct SDK transaction method signatures. It is not exhaustive.
+
+These methods build the request, send it, and process the response.
+
+This method of SDK usage is scheduled for deprecation. It will eventually be replaced with a process similar to what is shown in the Scheduled Transactions section below.
+
+### Sale
+
+#### via stored Payment Method
+
+```php
+$processedTransaction = $StackPay->saleWithPaymentMethod(
+    Structures\PaymentMethod $paymentMethod,
+    Structures\Merchant $merchant,
+    $amount,
+    Structures\Split $split = null,
+    $idempotencyKey = null,
+    $currency = null
+);
+```
+
+#### via Token
+
+```php
+$processedTransaction = $StackPay->saleWithToken(
+    Structures\Token $token,
+    Structures\Merchant $merchant,
+    $amount,
+    Structures\Split $split = null,
+    $idempotencyKey = null,
+    $currency = null
+);
+```
+
+#### via Account Details
+
+```php
+$processedTransaction = $StackPay->saleWithAccountDetails(
+    Structures\Account $account,
+    Structures\AccountHolder $accountHolder,
+    Structures\Merchant $merchant,
+    $amount,
+    Structures\Customer $customer = null,
+    Structures\Split $split = null,
+    $idempotencyKey = null,
+    $currency = null
+);
+```
+
+#### via MasterPass
+
+```php
+$processedTransaction = $StackPay->saleWithMasterPass(
+    $masterPassTransactionId,
+    Structures\Merchant $merchant,
+    $amount,
+    Structures\Customer $customer = null,
+    Structures\Split $split = null,
+    $idempotencyKey = null,
+    $currency = null
+);
+```
+
+## Transaction Factories (scheduled for deprecation)
+
+Generate request objects using factory classes and process them.
+
+This method of SDK usage is scheduled for deprecation. It will eventually be replaced with a process similar to what is shown in the Scheduled Transactions section below.
+
+### Sale
+
+#### with Account Details
 
 ```php
 $saleRequest = StackPay\Payments\Factories\Sale::withAccountDetails(
@@ -253,7 +321,7 @@ $sale = $stackpay->processTransaction(
 );
 ```
 
-#### Sale with Payment Method
+#### with Payment Method
 
 ```php
 $saleRequest = StackPay\Payments\Factories\Sale::withPaymentMethod(
@@ -270,7 +338,60 @@ $sale = $stackpay->processTransaction(
 );
 ```
 
-#### Void
+### Auth
+
+#### with Account Details
+
+```php
+$authRequest = StackPay\Payments\Factories\Auth::withAccountDetails(
+    StackPay\Payments\Structures\Account $account,
+    StackPay\Payments\Structures\AccountHolder $accountHolder,
+    StackPay\Payments\Structures\Merchant $merchant,
+    $amountInCents,
+    StackPay\Payments\Structures\Customer $optionalCustomer = null,
+    StackPay\Payments\Structures\Split $optionalSplit = null,
+    StackPay\Payments\Structures\Currency $optionalCurrencyOverride
+);
+
+$auth = $stackpay->processTransaction(
+    $authRequest,
+    $optionalIdempotencyKey
+);
+```
+
+#### with Payment Method
+
+```php
+$authRequest = StackPay\Payments\Factories\Auth::withPaymentMethod(
+    StackPay\Payments\Structures\PaymentMethod $paymentMethod,
+    StackPay\Payments\Structures\Merchant $merchant,
+    $amountInCents,
+    StackPay\Payments\Structures\Split $optionalSplit = null,
+    StackPay\Payments\Structures\Currency $optionalCurrencyOverride
+);
+
+$auth = $stackpay->processTransaction(
+    $authRequest,
+    $optionalIdempotencyKey
+);
+```
+
+### Capture
+
+```php
+$captureRequest = StackPay\Payments\Factories\Capture::previousTransaction(
+    StackPay\Payments\Structures\Transaction $previousTransaction,
+    $amountInCents,
+    StackPay\Payments\Structures\Split $optionalSplit = null, // used for setting splitAmount, splitMerchant can not be changed
+);
+
+$capture = $stackpay->processTransaction(
+    $captureRequest,
+    $optionalIdempotencyKey
+);
+```
+
+### Void
 
 ```php
 $voidRequest = StackPay\Payments\Factories\VoidTransaction::previousTransaction(
@@ -283,7 +404,7 @@ $void = $stackpay->processTransaction(
 );
 ```
 
-#### Refund
+### Refund
 
 ```php
 $refundRequest = StackPay\Payments\Factories\Refund::previousTransaction(
@@ -330,7 +451,7 @@ $scheduledTransaction->merchant      = $merchant;
 $scheduledTransaction->paymentMethod = $paymentMethod;
 $scheduledTransaction->amount        = 5000;
 $scheduledTransaction->currencyCode  = 'USD';
-$scheduledTransaction->scheduledAt   = new DateTime('first day of next week');
+$scheduledTransaction->scheduledAt   = new DateTime('second friday');
 $scheduledTransaction->externalId    = 'id-in-remote-system';
 
 $request = (new \StackPay\Payments\Requests\v1\ScheduledTransactionRequest($scheduledTransaction))
@@ -353,7 +474,7 @@ $scheduledTransaction->merchant      = $merchant;
 $scheduledTransaction->paymentMethod = $paymentMethod;
 $scheduledTransaction->amount        = 5000;
 $scheduledTransaction->currencyCode  = 'USD';
-$scheduledTransaction->scheduledAt   = new DateTime('first day of next week');
+$scheduledTransaction->scheduledAt   = new DateTime('second friday');
 $scheduledTransaction->externalId    = 'id-in-remote-system';
 
 $request = (new \StackPay\Payments\Requests\v1\ScheduledTransactionRequest($scheduledTransaction))
@@ -385,7 +506,7 @@ $scheduledTransaction->merchant      = $merchant;
 $scheduledTransaction->paymentMethod = $paymentMethod;
 $scheduledTransaction->amount        = 5000;
 $scheduledTransaction->currencyCode  = 'USD';
-$scheduledTransaction->scheduledAt   = new DateTime('first day of next week');
+$scheduledTransaction->scheduledAt   = new DateTime('second friday');
 $scheduledTransaction->externalId    = 'id-in-remote-system';
 
 $request = (new \StackPay\Payments\Requests\v1\ScheduledTransactionRequest($scheduledTransaction))
@@ -485,4 +606,4 @@ If you plan to use these tests, it is highly recommended that you familiarize yo
 
 ## Contributing Guidelines
 
-Please refer to [CONTRIBUTING.md](CONTRIBUTING.md)
+Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) (coming soon)
