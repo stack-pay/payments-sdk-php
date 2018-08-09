@@ -10,11 +10,20 @@
          stopOnFailure="false"
          syntaxCheck="false">
     <testsuites>
-        <testsuite name="Functional Tests">
-            <directory>./tests/functionals</directory>
+        <testsuite name="current">
+            <directory>./tests</directory>
+            <exclude>./tests/legacy</exclude>
         </testsuite>
-        <testsuite name="Unit Tests">
-            <directory>./tests/Unit</directory>
+        <testsuite name="legacy">
+            <directory>./tests/legacy</directory>
+        </testsuite>
+        <testsuite name="functional">
+            <directory>./tests/functional</directory>
+            <directory>./tests/legacy/functional</directory>
+        </testsuite>
+        <testsuite name="unit">
+            <directory>./tests/unit</directory>
+            <directory>./tests/legacy/unit</directory>
         </testsuite>
     </testsuites>
     <filter>
@@ -23,9 +32,4 @@
             <directory>lib</directory>
         </whitelist>
     </filter>
-    <php>
-        <env name="APP_ENV" value="testing"/>
-        <env name="CACHE_DRIVER" value="array"/>
-        <env name="QUEUE_DRIVER" value="sync"/>
-    </php>
 </phpunit>

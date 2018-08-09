@@ -8,10 +8,13 @@ trait MerchantRatesTransform
     {
         foreach ($transaction->response()->body()['Rates'] as $key => $value) {
             $transaction->object()->appendRate()
-                ->setFeeRate($value['fee_rate'])
-                ->setFeeTransaction($value['fee_transaction'])
-                ->setFeeNotes($value['fee_notes'])
-                ->setName($key);
+                ->setBankFeeRate($value['bank_account']['fee_rate'])
+                ->setBankFeeTransaction($value['bank_account']['fee_transaction'])
+                ->setBankFeeNotes($value['bank_account']['fee_notes'])
+                ->setCardFeeRate($value['credit_card']['fee_rate'])
+                ->setCardFeeTransaction($value['credit_card']['fee_transaction'])
+                ->setCardFeeNotes($value['credit_card']['fee_notes'])
+                ->setName($value['rate_name']);
         }
     }
 }

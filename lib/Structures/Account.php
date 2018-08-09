@@ -138,4 +138,24 @@ class Account implements Interfaces\Account
 
         return $this;
     }
+
+    // ---------
+
+    public function isBankAccount()
+    {
+        return in_array($this->type, [
+            AccountTypes::CHECKING,
+            AccountTypes::SAVINGS,
+        ]);
+    }
+
+    public function isCardAccount()
+    {
+        return in_array($this->type, [
+            AccountTypes::AMEX,
+            AccountTypes::DISCOVER,
+            AccountTypes::MASTERCARD,
+            AccountTypes::VISA,
+        ]);
+    }
 }

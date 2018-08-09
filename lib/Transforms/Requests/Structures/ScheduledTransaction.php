@@ -9,6 +9,7 @@ trait ScheduledTransaction
     public function requestScheduledTransaction($transaction)
     {
         $body = [
+            'external_id'   => $transaction->object()->externalId(),
             'merchant_id'   => $transaction->object()->merchant()->id(),
             'scheduled_at'  => $transaction->object()->scheduledAt()->format('Y-m-d'),
             'timezone'      => $transaction->object()->scheduledAt()->getTimezone()->getName(),
