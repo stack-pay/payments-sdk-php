@@ -474,18 +474,6 @@ class StackPay
         return self::$gateway->getScheduledTransaction($transaction);
     }
 
-    public function retryScheduledTransaction(
-        Interfaces\ScheduledTransaction $scheduledTransaction,
-        Interfaces\PaymentMethod $paymentMethod = null,
-        $idempotencyKey = null
-    ) {
-        $transaction = new Transactions\IdempotentTransaction($scheduledTransaction);
-
-        $transaction->idempotencyKey($idempotencyKey);
-
-        return self::$gateway->retryScheduledTransaction($transaction, $paymentMethod);
-    }
-
     public function deleteScheduledTransaction(
         Interfaces\ScheduledTransaction $scheduledTransaction,
         $idempotencyKey = null

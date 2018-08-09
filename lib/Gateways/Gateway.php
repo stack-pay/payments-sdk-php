@@ -155,6 +155,5 @@ abstract class Gateway
 
     abstract public function createScheduledTransaction($transaction);
     abstract public function getScheduledTransaction($transaction);
-    abstract public function retryScheduledTransaction($transaction, $paymentMethod);
     abstract public function deleteScheduledTransaction($transaction);
 }
