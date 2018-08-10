@@ -13,8 +13,7 @@ class Auth
         $amount,
         Interfaces\Split         $split = null,
         $currency = null
-    )
-    {
+    ) {
         $auth = (new Structures\Auth())
             ->setPaymentMethod($paymentMethod)
             ->setMerchant($merchant)
@@ -42,6 +41,7 @@ class Auth
             ->setAccountHolder($accountHolder)
             ->setMerchant($merchant)
             ->setAmount($amount)
+            ->setCustomer($customer)
             ->setSplit($split);
 
         if ($currency) {

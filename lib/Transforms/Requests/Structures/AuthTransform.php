@@ -11,6 +11,7 @@ trait AuthTransform
 
         $this->requestAuth_fillBase( $body, $auth );
         $this->requestAuth_fillToken( $body, $auth );
+        $this->requestAuth_fillMasterPass( $body, $auth );
         $this->requestAuth_fillPaymentMethod( $body, $auth );
         $this->requestAuth_fillAccount( $body, $auth );
         $this->requestAuth_fillSplit( $body, $auth );
@@ -39,6 +40,15 @@ trait AuthTransform
     ) {
         if ($auth->token()) {
             $body['Order']['Token'] = $auth->token()->token();
+        }
+    }
+
+    public function requestAuth_fillMasterPass(
+        &$body,
+        $auth
+    ) {
+        if ($auth->masterPassTransactionId()) {
+            $body['Order']['MasterPass']['TransactionId'] = $auth->masterPassTransactionId();
         }
     }
 

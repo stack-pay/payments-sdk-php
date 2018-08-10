@@ -13,8 +13,7 @@ class Sale
         $amount,
         Interfaces\Split         $split = null,
         $currency = null
-    )
-    {
+    ) {
         $sale = (new Structures\Sale())
             ->setPaymentMethod($paymentMethod)
             ->setMerchant($merchant)
@@ -36,13 +35,13 @@ class Sale
         Interfaces\Customer      $customer = null,
         Interfaces\Split         $split = null,
         $currency = null
-    )
-    {
+    ) {
         $sale = (new Structures\Sale())
             ->setAccount($account)
             ->setAccountHolder($accountHolder)
             ->setMerchant($merchant)
             ->setAmount($amount)
+            ->setCustomer($customer)
             ->setSplit($split);
 
         if ($currency) {

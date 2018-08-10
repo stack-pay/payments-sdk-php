@@ -30,14 +30,14 @@ class StackPay
         self::$gateway = new Gateways\Version1\Gateway($publicKey, $privateKey);
     }
 
-    public function enableTestMode($alternate_url = null)
+    public function enableTestMode($alternateUrl = null)
     {
         self::$mode = 'development';
 
-        self::$baseUrl = $alternate_url;
+        self::$baseUrl = $alternateUrl;
 
         self::$gateway->enableTestMode();
-        self::$gateway->baseURL($alternate_url);
+        self::$gateway->baseURL($alternateUrl);
 
         return $this;
     }
@@ -118,7 +118,6 @@ class StackPay
 
     public function createPaymentMethodWithToken(
         Interfaces\Token $token,
-        Interfaces\Customer $customer = null,
         $idempotencyKey = null
     ) {
         return $this->createPaymentMethod(
@@ -183,6 +182,27 @@ class StackPay
                ->setPaymentMethod($paymentMethod)
                ->setMerchant($merchant)
                ->setAmount($amount)
+               ->setCurrency($currency ?: self::$gateway->currency())
+               ->setSplit($split),
+            $idempotencyKey
+        );
+    }
+
+    public function authWithMasterPass(
+        $masterPassTransactionId,
+        Interfaces\Merchant $merchant,
+        $amount,
+        Interfaces\Customer $customer = null,
+        Interfaces\Split $split = null,
+        $idempotencyKey = null,
+        $currency = null
+    ) {
+        return $this->auth(
+            (new Structures\Auth())
+               ->setMasterPassTransactionId($masterPassTransactionId)
+               ->setMerchant($merchant)
+               ->setAmount($amount)
+               ->setCustomer($customer)
                ->setCurrency($currency ?: self::$gateway->currency())
                ->setSplit($split),
             $idempotencyKey
@@ -327,7 +347,6 @@ class StackPay
         Interfaces\PaymentMethod $paymentMethod,
         Interfaces\Merchant $merchant,
         $amount,
-        Interfaces\Customer $customer = null,
         Interfaces\Split $split = null,
         $idempotencyKey = null,
         $currency = null
@@ -335,6 +354,26 @@ class StackPay
         return $this->sale(
             (new Structures\Sale())
                 ->setPaymentMethod($paymentMethod)
+                ->setMerchant($merchant)
+                ->setAmount($amount)
+                ->setCurrency($currency ?: self::$gateway->currency())
+                ->setSplit($split),
+            $idempotencyKey
+        );
+    }
+
+    public function saleWithMasterPass(
+        $masterPassTransactionId,
+        Interfaces\Merchant $merchant,
+        $amount,
+        Interfaces\Customer $customer = null,
+        Interfaces\Split $split = null,
+        $idempotencyKey = null,
+        $currency = null
+    ) {
+        return $this->sale(
+            (new Structures\Sale())
+                ->setMasterPassTransactionId($masterPassTransactionId)
                 ->setMerchant($merchant)
                 ->setAmount($amount)
                 ->setCustomer($customer)
@@ -348,7 +387,6 @@ class StackPay
         Interfaces\Token $token,
         Interfaces\Merchant $merchant,
         $amount,
-        Interfaces\Customer $customer = null,
         Interfaces\Split $split = null,
         $idempotencyKey = null,
         $currency = null
@@ -359,7 +397,6 @@ class StackPay
                 ->setMerchant($merchant)
                 ->setAmount($amount)
                 ->setCurrency($currency ?: self::$gateway->currency())
-                ->setCustomer($customer)
                 ->setSplit($split),
             $idempotencyKey
         );

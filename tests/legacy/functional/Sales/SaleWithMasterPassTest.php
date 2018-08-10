@@ -11,7 +11,7 @@ use StackPay\Payments\Structures;
 
 use Test\Mocks\Providers\MockCurlProvider;
 
-final class SaleWithTokenTest extends TestCase
+final class SaleWithMasterPassTest extends TestCase
 {
     public function testSucessfulCase()
     {
@@ -32,9 +32,6 @@ final class SaleWithTokenTest extends TestCase
 
         $sdk->setCurlProvider($curlProvider);
 
-        $token = (new Structures\Token())
-            ->setToken('PUgRqrhFIKH0BYX');
-
         $merchant =(new Structures\Merchant())
             ->setID(4)
             ->setHashKey('f72d6a9fab75e16a7219430f2a60d9cbd7f60b304b4c1a8d98d4e54d695b61e8');
@@ -46,10 +43,11 @@ final class SaleWithTokenTest extends TestCase
             ->setAmount(1000)
             ->setMerchant($splitMerchant);
 
-        $sale = $sdk->saleWithToken(
-            $token,
+        $sale = $sdk->saleWithMasterPass(
+            'master-pass-transaction-id-12345',
             $merchant,
             10000,        // Amount
+            null,
             $split,
             null,         // Idempotency Key
             Currency::USD
@@ -161,8 +159,10 @@ final class SaleWithTokenTest extends TestCase
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
-                                'Token' => 'PUgRqrhFIKH0BYX'
-                            ]
+                                'MasterPass' => [
+                                    'TransactionId' => 'master-pass-transaction-id-12345',
+                                ],
+                            ],
                         ],
                         'Header' => [
                             'Application' => 'PaymentSystem',
@@ -170,7 +170,7 @@ final class SaleWithTokenTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '232fb918e6c971bbb53a2d68a66533e2681fec048353019966a37301e0c49420'
+                                'Hash'       => 'c7707cf3a9392af5e0f7ada6a48b005d8e2a60d247797dea17db16568571f7b6'
                             ]
                         ]
                     ],
@@ -179,7 +179,7 @@ final class SaleWithTokenTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '232fb918e6c971bbb53a2d68a66533e2681fec048353019966a37301e0c49420'],
+                        4 => ['Key' => 'Hash',          'Value' => 'c7707cf3a9392af5e0f7ada6a48b005d8e2a60d247797dea17db16568571f7b6'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -189,13 +189,13 @@ final class SaleWithTokenTest extends TestCase
         );
     }
 
-    public function testInvalidToken()
+    public function testInvalidMasterPassTransactionId()
     {
         $curlProvider = new MockCurlProvider([
             [
-                'StatusCode' => 200,
+                'StatusCode' => 502,
                 'Body'       =>
-                    '{"error_code":404,"error_message":"Token is invalid or expired."}'
+                    '{"error_code":800,"error_message":"Unable to retrieve payment data from the MasterPass server."}'
                 ,
                 'Headers' => []
             ]
@@ -223,17 +223,18 @@ final class SaleWithTokenTest extends TestCase
                 ->setAmount(1000)
                 ->setMerchant($splitMerchant);
 
-            $sale = $sdk->saleWithToken(
-                $token,
+            $sale = $sdk->saleWithMasterPass(
+                'master-pass-transaction-id-12345',
                 $merchant,
                 10000,        // Amount
+                null,
                 $split,
                 null,         // Idempotency Key
                 Currency::USD
             );
         } catch (Exceptions\RequestErrorException $e) {
-            $this->assertEquals('Token is invalid or expired.', $e->getMessage());
-            $this->assertEquals(404, $e->getCode());
+            $this->assertEquals('Unable to retrieve payment data from the MasterPass server.', $e->getMessage());
+            $this->assertEquals(800, $e->getCode());
         } catch (\Exception $e) {
             $this->fail('Unexpected exception thrown: '. $e->getMessage());
         }
@@ -255,7 +256,9 @@ final class SaleWithTokenTest extends TestCase
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
-                                'Token' => 'PUgRqrhFIKH0BYX'
+                                'MasterPass' => [
+                                    'TransactionId' => 'master-pass-transaction-id-12345',
+                                ],
                             ]
                         ],
                         'Header' => [
@@ -264,7 +267,7 @@ final class SaleWithTokenTest extends TestCase
                             'Mode'          => 'production',
                             'Security'      => [
                                 'HashMethod'    => 'SHA-256',
-                                'Hash'          => '232fb918e6c971bbb53a2d68a66533e2681fec048353019966a37301e0c49420'
+                                'Hash'          => 'c7707cf3a9392af5e0f7ada6a48b005d8e2a60d247797dea17db16568571f7b6'
                             ]
                         ]
                     ],
@@ -273,7 +276,7 @@ final class SaleWithTokenTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '232fb918e6c971bbb53a2d68a66533e2681fec048353019966a37301e0c49420'],
+                        4 => ['Key' => 'Hash',          'Value' => 'c7707cf3a9392af5e0f7ada6a48b005d8e2a60d247797dea17db16568571f7b6'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
