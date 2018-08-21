@@ -132,8 +132,9 @@ abstract class Gateway
         $transaction->response()->httpCode($this->curlProvider->httpStatusCode());
     }
 
-    public function getIfExists($array, $key) {
-        if(array_key_exists($key,$array)) {
+    public function getIfExists($array, $key)
+    {
+        if (array_key_exists($key, $array)) {
             return $array[$key];
         }
     }

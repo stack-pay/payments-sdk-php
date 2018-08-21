@@ -2,15 +2,35 @@
 
 namespace StackPay\Payments\Structures;
 
+use StackPay\Payments\AccountTypes;
 use StackPay\Payments\Interfaces;
 
 class PaymentMethod implements Interfaces\PaymentMethod
 {
-    public $account;
-    public $accountHolder;
+    // standard
     public $id;
     public $customer;
     public $status;
+
+    // V1Translator
+    public $account;
+    public $accountHolder;
+
+    // V1RESTTranslator
+    public $token;
+    public $type;
+    public $accountNumber;
+    public $routingNumber;
+    public $cvv2;
+    public $expirationMonth;
+    public $expirationYear;
+    public $billingName;
+    public $billingAddress1;
+    public $billingAddress2;
+    public $billingCity;
+    public $billingState;
+    public $billingZip;
+    public $billingCountry;
 
     public function account()
     {
@@ -101,5 +121,25 @@ class PaymentMethod implements Interfaces\PaymentMethod
         }
 
         return $this->customer;
+    }
+
+    //----
+
+    public function isBankAccount()
+    {
+        return in_array($this->type, [
+            AccountTypes::CHECKING,
+            AccountTypes::SAVINGS,
+        ]);
+    }
+
+    public function isCardAccount()
+    {
+        return in_array($this->type, [
+            AccountTypes::AMEX,
+            AccountTypes::DISCOVER,
+            AccountTypes::MASTERCARD,
+            AccountTypes::VISA,
+        ]);
     }
 }

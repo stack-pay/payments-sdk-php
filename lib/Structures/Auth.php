@@ -10,6 +10,7 @@ class Auth extends Transaction implements Interfaces\Auth
     public $account;
     public $accountHolder;
     public $token;
+    public $masterPassTransactionId;
 
     public function type()
     {
@@ -31,6 +32,11 @@ class Auth extends Transaction implements Interfaces\Auth
         return $this->token;
     }
 
+    public function masterPassTransactionId()
+    {
+        return $this->masterPassTransactionId;
+    }
+
     // ----
 
     public function setAccount(Interfaces\Account $account = null)
@@ -50,6 +56,13 @@ class Auth extends Transaction implements Interfaces\Auth
     public function setToken(Interfaces\Token $token = null)
     {
         $this->token = $token;
+
+        return $this;
+    }
+
+    public function setMasterPassTransactionId($masterPassTransactionId = null)
+    {
+        $this->masterPassTransactionId = $masterPassTransactionId;
 
         return $this;
     }

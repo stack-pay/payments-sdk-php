@@ -11,9 +11,10 @@ trait ErrorTransform
         if (! is_array($response->body())) {
             throw new \Exception('Response did not contain any information');
         } elseif (array_key_exists('error_code', $response->body())) {
-            $exception = (new Exceptions\RequestErrorException())
-                ->setCode($response->body()['error_code'])
-                ->setMessage($response->body()['error_message']);
+            $exception = (new Exceptions\RequestErrorException(
+                $response->body()['error_message'],
+                $response->body()['error_code']
+            ));
 
             if (array_key_exists('errors', $response->body())) {
                 $exception->setErrors($response->body()['errors']);

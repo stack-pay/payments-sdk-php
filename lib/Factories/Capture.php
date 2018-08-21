@@ -10,14 +10,11 @@ class Capture
     public static function previousTransaction(
         Interfaces\Transaction $originalTransaction,
         $amount,
-        Interfaces\Merchant $merchant = null,
-        Interfaces\Split $split = null,
-        $idempotencyKey = null
-    )
-    {
+        Interfaces\Split $split = null
+    ) {
         return (new Structures\Capture())
             ->setOriginalTransaction($originalTransaction)
-            ->setMerchant($merchant ? $merchant : $originalTransaction->merchant())
+            ->setMerchant($originalTransaction->merchant())
             ->setAmount($amount)
             ->setSplit($split);
     }

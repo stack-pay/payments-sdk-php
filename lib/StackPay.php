@@ -3,6 +3,7 @@
 namespace StackPay\Payments;
 
 use Curl\Curl;
+use GuzzleHttp\Client;
 
 use StackPay\Payments\Structures\Transactions;
 
@@ -11,33 +12,55 @@ use StackPay\Payments\Structures\Transactions;
  */
 class StackPay
 {
-    protected $currency;
-    protected $gateway;
+    public static $publicKey;
+    public static $privateKey;
+    public static $mode = 'production';
+    public static $currency = 'USD';
+    public static $httpClient;
+    public static $baseUrl;
 
-    public function __construct($publicKey, $privateKey)
+    public static $gateway;
+
+    public function __construct($publicKey, $privateKey, $httpClient = null)
     {
-        $this->gateway = new Gateways\Version1\Gateway($publicKey, $privateKey);
+        self::$publicKey    = $publicKey;
+        self::$privateKey   = $privateKey;
+        self::$httpClient   = $httpClient ?: new Client();
+
+        self::$gateway = new Gateways\Version1\Gateway($publicKey, $privateKey);
     }
 
-    public function enableTestMode($alternate_url = null)
+    public function enableTestMode($alternateUrl = null)
     {
-        $this->gateway->enableTestMode();
+        self::$mode = 'development';
 
-        $this->gateway->baseURL($alternate_url);
+        self::$baseUrl = $alternateUrl;
+
+        self::$gateway->enableTestMode();
+        self::$gateway->baseURL($alternateUrl);
 
         return $this;
     }
 
     public function setCurlProvider(Providers\CurlProviderInterface $curlProvider)
     {
-        $this->gateway->curlProvider($curlProvider);
+        self::$gateway->curlProvider($curlProvider);
 
         return $this;
     }
 
     public function setCurrency($currency)
     {
-        $this->gateway->currency($currency);
+        self::$currency = $currency;
+
+        self::$gateway->currency($currency);
+
+        return $this;
+    }
+
+    public function setHttpClient(Client $httpClient)
+    {
+        self::$httpClient = $httpClient;
 
         return $this;
     }
@@ -50,7 +73,7 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->createToken($transaction);
+        return self::$gateway->createToken($transaction);
     }
 
     public function createTokenWithAccountDetails(
@@ -75,7 +98,7 @@ class StackPay
         $transaction = new Transactions\IdempotentTransaction($paymentMethod);
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->createPaymentMethod($transaction);
+        return self::$gateway->createPaymentMethod($transaction);
     }
 
     public function createPaymentMethodWithAccountDetails(
@@ -95,7 +118,6 @@ class StackPay
 
     public function createPaymentMethodWithToken(
         Interfaces\Token $token,
-        Interfaces\Customer $customer = null,
         $idempotencyKey = null
     ) {
         return $this->createPaymentMethod(
@@ -112,7 +134,7 @@ class StackPay
             method_exists($transaction, 'setCurrency') &&
             ! $transaction->currency()
         ) {
-            $transaction->setCurrency($this->gateway->currency());
+            $transaction->setCurrency(self::$gateway->currency());
         }
 
         switch ($transaction->type()) {
@@ -144,7 +166,7 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->auth($transaction);
+        return self::$gateway->auth($transaction);
     }
 
     public function authWithPaymentMethod(
@@ -160,7 +182,28 @@ class StackPay
                ->setPaymentMethod($paymentMethod)
                ->setMerchant($merchant)
                ->setAmount($amount)
-               ->setCurrency($currency ?: $this->gateway->currency())
+               ->setCurrency($currency ?: self::$gateway->currency())
+               ->setSplit($split),
+            $idempotencyKey
+        );
+    }
+
+    public function authWithMasterPass(
+        $masterPassTransactionId,
+        Interfaces\Merchant $merchant,
+        $amount,
+        Interfaces\Customer $customer = null,
+        Interfaces\Split $split = null,
+        $idempotencyKey = null,
+        $currency = null
+    ) {
+        return $this->auth(
+            (new Structures\Auth())
+               ->setMasterPassTransactionId($masterPassTransactionId)
+               ->setMerchant($merchant)
+               ->setAmount($amount)
+               ->setCustomer($customer)
+               ->setCurrency($currency ?: self::$gateway->currency())
                ->setSplit($split),
             $idempotencyKey
         );
@@ -183,7 +226,7 @@ class StackPay
                 ->setMerchant($merchant)
                 ->setAmount($amount)
                 ->setCustomer($customer)
-                ->setCurrency($currency ?: $this->gateway->currency())
+                ->setCurrency($currency ?: self::$gateway->currency())
                 ->setSplit($split),
             $idempotencyKey
         );
@@ -204,7 +247,7 @@ class StackPay
                 ->setMerchant($merchant)
                 ->setAmount($amount)
                 ->setCustomer($customer)
-                ->setCurrency($currency ?: $this->gateway->currency())
+                ->setCurrency($currency ?: self::$gateway->currency())
                 ->setSplit($split),
             $idempotencyKey
         );
@@ -218,7 +261,7 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->capture($transaction);
+        return self::$gateway->capture($transaction);
     }
 
     public function captureWithOriginalTransaction(
@@ -246,7 +289,7 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->refund($transaction);
+        return self::$gateway->refund($transaction);
     }
 
     public function refundWithOriginalTransaction(
@@ -274,7 +317,7 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->sale($transaction);
+        return self::$gateway->sale($transaction);
     }
 
     public function saleWithAccountDetails(
@@ -293,7 +336,7 @@ class StackPay
                 ->setAccountHolder($accountHolder)
                 ->setMerchant($merchant)
                 ->setAmount($amount)
-                ->setCurrency($currency ?: $this->gateway->currency())
+                ->setCurrency($currency ?: self::$gateway->currency())
                 ->setCustomer($customer)
                 ->setSplit($split),
             $idempotencyKey
@@ -304,7 +347,6 @@ class StackPay
         Interfaces\PaymentMethod $paymentMethod,
         Interfaces\Merchant $merchant,
         $amount,
-        Interfaces\Customer $customer = null,
         Interfaces\Split $split = null,
         $idempotencyKey = null,
         $currency = null
@@ -314,15 +356,14 @@ class StackPay
                 ->setPaymentMethod($paymentMethod)
                 ->setMerchant($merchant)
                 ->setAmount($amount)
-                ->setCustomer($customer)
-                ->setCurrency($currency ?: $this->gateway->currency())
+                ->setCurrency($currency ?: self::$gateway->currency())
                 ->setSplit($split),
             $idempotencyKey
         );
     }
 
-    public function saleWithToken(
-        Interfaces\Token $token,
+    public function saleWithMasterPass(
+        $masterPassTransactionId,
         Interfaces\Merchant $merchant,
         $amount,
         Interfaces\Customer $customer = null,
@@ -332,11 +373,30 @@ class StackPay
     ) {
         return $this->sale(
             (new Structures\Sale())
+                ->setMasterPassTransactionId($masterPassTransactionId)
+                ->setMerchant($merchant)
+                ->setAmount($amount)
+                ->setCustomer($customer)
+                ->setCurrency($currency ?: self::$gateway->currency())
+                ->setSplit($split),
+            $idempotencyKey
+        );
+    }
+
+    public function saleWithToken(
+        Interfaces\Token $token,
+        Interfaces\Merchant $merchant,
+        $amount,
+        Interfaces\Split $split = null,
+        $idempotencyKey = null,
+        $currency = null
+    ) {
+        return $this->sale(
+            (new Structures\Sale())
                 ->setToken($token)
                 ->setMerchant($merchant)
                 ->setAmount($amount)
-                ->setCurrency($currency ?: $this->gateway->currency())
-                ->setCustomer($customer)
+                ->setCurrency($currency ?: self::$gateway->currency())
                 ->setSplit($split),
             $idempotencyKey
         );
@@ -350,7 +410,7 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->voidTransaction($transaction);
+        return self::$gateway->voidTransaction($transaction);
     }
 
     public function voidWithOriginalTransaction(
@@ -374,7 +434,7 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->credit($transaction);
+        return self::$gateway->credit($transaction);
     }
 
     public function creditWithPaymentMethod(
@@ -389,7 +449,7 @@ class StackPay
                 ->setMerchant($merchant)
                 ->setPaymentMethod($paymentMethod)
                 ->setAmount($amount)
-                ->setCurrency($currency ?: $this->gateway->currency()),
+                ->setCurrency($currency ?: self::$gateway->currency()),
             $idempotencyKey
         );
     }
@@ -404,7 +464,7 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->merchantRates($transaction);
+        return self::$gateway->merchantRates($transaction);
     }
 
     public function merchantLimits(
@@ -415,7 +475,7 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->merchantLimits($transaction);
+        return self::$gateway->merchantLimits($transaction);
     }
 
     public function generateMerchantLink(
@@ -426,8 +486,9 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->generateMerchantLink($transaction);
+        return self::$gateway->generateMerchantLink($transaction);
     }
+
     public function createScheduledTransaction(
         Interfaces\ScheduledTransaction $scheduledTransaction,
         $idempotencyKey = null
@@ -436,7 +497,7 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->createScheduledTransaction($transaction);
+        return self::$gateway->createScheduledTransaction($transaction);
     }
 
     public function getScheduledTransaction(
@@ -447,7 +508,7 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->getScheduledTransaction($transaction);
+        return self::$gateway->getScheduledTransaction($transaction);
     }
 
     public function deleteScheduledTransaction(
@@ -458,6 +519,6 @@ class StackPay
 
         $transaction->idempotencyKey($idempotencyKey);
 
-        return $this->gateway->deleteScheduledTransaction($transaction);
+        return self::$gateway->deleteScheduledTransaction($transaction);
     }
 }
