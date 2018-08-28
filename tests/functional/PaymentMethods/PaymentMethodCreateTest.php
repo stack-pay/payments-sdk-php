@@ -34,7 +34,7 @@ class PaymentMethodCreateTest extends PaymentMethodTestCase
         $this->paymentMethod->accountHolder = $accountHolder;
     }
 
-    public function testWithAccountDetails()
+    public function testCreate()
     {
         // mock API success response
         $this->mockApiResponse(200, $this->resourceResponse());
@@ -47,7 +47,7 @@ class PaymentMethodCreateTest extends PaymentMethodTestCase
         $this->assertResourceResponse();
     }
 
-    public function testCreateAccountDetailsInvalid()
+    public function testCreateWithValidationResponse()
     {
         // mock API success response
         $this->mockApiResponse(422, $this->invalidInputResponse());

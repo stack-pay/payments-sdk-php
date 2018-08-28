@@ -28,7 +28,7 @@ class PaymentMethodTokenTest extends PaymentMethodTestCase
         $this->assertResourceResponse();
     }
 
-    public function testTokenInvalidInput()
+    public function testTokenWithValidationResponse()
     {
         // mock API success response
         $this->mockApiResponse(422, $this->invalidInputResponse());
