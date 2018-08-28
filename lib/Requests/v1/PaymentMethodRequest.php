@@ -8,7 +8,7 @@ use StackPay\Payments\Structures;
 
 class PaymentMethodRequest extends Request
 {
-    protected $paymentMethod;
+    public $paymentMethod;
 
     public function __construct(Structures\PaymentMethod $paymentMethod)
     {

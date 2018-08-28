@@ -14,7 +14,7 @@ class ScheduledTransactionCreateTest extends ScheduledTransactionTestCase
 
     protected function buildScheduledTransaction($paymentMethod)
     {
-        $scheduledTransaction = new Structures\ScheduledTransaction();
+        $scheduledTransaction                   = new Structures\ScheduledTransaction();
         $scheduledTransaction->merchant         = $this->merchant;
         $scheduledTransaction->paymentMethod    = $paymentMethod;
         $scheduledTransaction->amount           = 5000;
@@ -77,7 +77,7 @@ class ScheduledTransactionCreateTest extends ScheduledTransactionTestCase
         $paymentMethod->expirationMonth = '12';
         $paymentMethod->expirationYear  = '25';
         $paymentMethod->cvv2            = '999';
-        $paymentMethod->billingName     = 'Trip Somers';
+        $paymentMethod->billingName     = 'Stack Testerman';
         $paymentMethod->billingAddress1 = '5360 Legacy Drive #150';
         $paymentMethod->billingCity     = 'Plano';
         $paymentMethod->billingState    = 'TX';
@@ -176,7 +176,7 @@ class ScheduledTransactionCreateTest extends ScheduledTransactionTestCase
         $paymentMethod->expirationMonth     = '12';
         $paymentMethod->expirationYear      = '25';
         $paymentMethod->cvv2                = '999';
-        $paymentMethod->billingName         = 'Trip Somers';
+        $paymentMethod->billingName         = 'Stack Testerman';
         $paymentMethod->billingAddress1     = '5360 Legacy Drive #150';
         $paymentMethod->billingCity         = 'Plano';
         $paymentMethod->billingState        = 'TX';

@@ -2,6 +2,7 @@
 
 namespace StackPay\Payments\Structures;
 
+use StackPay\Payments\AccountTypes;
 use StackPay\Payments\Interfaces;
 
 class Account implements Interfaces\Account

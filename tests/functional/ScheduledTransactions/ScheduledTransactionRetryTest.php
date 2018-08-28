@@ -61,7 +61,7 @@ class ScheduledTransactionRetryTest extends ScheduledTransactionTestCase
         $paymentMethod->expirationMonth = '12';
         $paymentMethod->expirationYear  = '25';
         $paymentMethod->cvv2            = '999';
-        $paymentMethod->billingName     = 'Trip Somers';
+        $paymentMethod->billingName     = 'Stack Testerman';
         $paymentMethod->billingAddress1 = '5360 Legacy Drive #150';
         $paymentMethod->billingCity     = 'Plano';
         $paymentMethod->billingState    = 'TX';
@@ -160,7 +160,7 @@ class ScheduledTransactionRetryTest extends ScheduledTransactionTestCase
         $paymentMethod->expirationMonth     = '12';
         $paymentMethod->expirationYear      = '25';
         $paymentMethod->cvv2                = '999';
-        $paymentMethod->billingName         = 'Trip Somers';
+        $paymentMethod->billingName         = 'Stack Testerman';
         $paymentMethod->billingAddress1     = '5360 Legacy Drive #150';
         $paymentMethod->billingCity         = 'Plano';
         $paymentMethod->billingState        = 'TX';
