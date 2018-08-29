@@ -158,6 +158,8 @@ final class SaleWithTokenTest extends TestCase
                                     'Type'          => 'Sale',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
@@ -170,7 +172,7 @@ final class SaleWithTokenTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '232fb918e6c971bbb53a2d68a66533e2681fec048353019966a37301e0c49420'
+                                'Hash'       => '76b165775e01209f5c56371405c2fef175d8d9f23ea4a8bbb293eca4bac452e7'
                             ]
                         ]
                     ],
@@ -179,7 +181,7 @@ final class SaleWithTokenTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '232fb918e6c971bbb53a2d68a66533e2681fec048353019966a37301e0c49420'],
+                        4 => ['Key' => 'Hash',          'Value' => '76b165775e01209f5c56371405c2fef175d8d9f23ea4a8bbb293eca4bac452e7'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -252,6 +254,8 @@ final class SaleWithTokenTest extends TestCase
                                     'Type'          => 'Sale',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
@@ -264,7 +268,7 @@ final class SaleWithTokenTest extends TestCase
                             'Mode'          => 'production',
                             'Security'      => [
                                 'HashMethod'    => 'SHA-256',
-                                'Hash'          => '232fb918e6c971bbb53a2d68a66533e2681fec048353019966a37301e0c49420'
+                                'Hash'          => '76b165775e01209f5c56371405c2fef175d8d9f23ea4a8bbb293eca4bac452e7'
                             ]
                         ]
                     ],
@@ -273,7 +277,7 @@ final class SaleWithTokenTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '232fb918e6c971bbb53a2d68a66533e2681fec048353019966a37301e0c49420'],
+                        4 => ['Key' => 'Hash',          'Value' => '76b165775e01209f5c56371405c2fef175d8d9f23ea4a8bbb293eca4bac452e7'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]

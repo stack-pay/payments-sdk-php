@@ -20,6 +20,8 @@ class Transaction implements Interfaces\Transaction
     public $split;
     public $amount;
     public $externalID;
+    public $comment1;
+    public $comment2;
 
     public function __construct($id = null)
     {
@@ -94,6 +96,16 @@ class Transaction implements Interfaces\Transaction
     public function externalID()
     {
         return $this->externalID;
+    }
+
+    public function comment1()
+    {
+        return $this->comment1;
+    }
+
+    public function comment2()
+    {
+        return $this->comment2;
     }
 
     // ----
@@ -185,6 +197,20 @@ class Transaction implements Interfaces\Transaction
     public function setExternalID($externalID = null)
     {
         $this->externalID = $externalID;
+
+        return $this;
+    }
+
+    public function setComment1($comment1 = null)
+    {
+        $this->comment1 = $comment1;
+
+        return $this;
+    }
+
+    public function setComment2($comment2 = null)
+    {
+        $this->comment2 = $comment2;
 
         return $this;
     }

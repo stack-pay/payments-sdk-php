@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
 
 use StackPay\Payments\StackPay;
@@ -53,137 +51,145 @@ final class AuthWithPaymentMethodTest extends TestCase
             $merchant,
             10000,        // Amount
             $split,
-            Null,         // Idempotency Key
+            null,         // Idempotency Key
             Currency::USD
         );
 
-        $this->assertEquals([
-            "ID"                 => 722,
-            "Status"             => 1,
-            "Amount"             => 10000,
-            "Currency"           => Currency::USD,
-            "Authorization Code" => "A11111",
-            "AVS Code"           => "T",
-            "CVV Response Code"  => "NotPresent",
-            "Merchant" => [
-                "ID" => 4,
-            ],
-            "Order" => [
-                "ID" => 553,
-            ],
-            "Customer" => [
-                "ID" => 3,
-            ],
-            "Split" => [
+        $this->assertEquals(
+            [
+                "ID"                 => 722,
+                "Status"             => 1,
+                "Amount"             => 10000,
+                "Currency"           => Currency::USD,
+                "Authorization Code" => "A11111",
+                "AVS Code"           => "T",
+                "CVV Response Code"  => "NotPresent",
                 "Merchant" => [
-                    "ID" => 2,
+                    "ID" => 4,
                 ],
-                "Amount" => 1000,
-            ],
-            "Payment Method"     => [
-                "ID" => 3,
-                "Account" => [
-                    "Type"             => AccountTypes::AMEX,
-                    "Last 4"           => "4121",
-                    "Expiration Month" => "7",
-                    "Expiration Year"  => "2027",
+                "Order" => [
+                    "ID" => 553,
                 ],
-                "Account Holder" => [
-                    "Billing Address" => [
-                        "Address 1" => "69976 Mills Cliffs",
-                        "Address 2" => "Suite 479",
-                        "City"      => "Feestfort",
-                        "State"     => "VT",
-                        "Postal Code" => "04059-2412",
-                        "Country"     => "USA",
+                "Customer" => [
+                    "ID" => 3,
+                ],
+                "Split" => [
+                    "Merchant" => [
+                        "ID" => 2,
+                    ],
+                    "Amount" => 1000,
+                ],
+                "Payment Method"     => [
+                    "ID" => 3,
+                    "Account" => [
+                        "Type"             => AccountTypes::AMEX,
+                        "Last 4"           => "4121",
+                        "Expiration Month" => "7",
+                        "Expiration Year"  => "2027",
+                    ],
+                    "Account Holder" => [
+                        "Billing Address" => [
+                            "Address 1" => "69976 Mills Cliffs",
+                            "Address 2" => "Suite 479",
+                            "City"      => "Feestfort",
+                            "State"     => "VT",
+                            "Postal Code" => "04059-2412",
+                            "Country"     => "USA",
+                        ],
                     ],
                 ],
             ],
-        ],[
-            "ID"                 => $auth->id(),
-            "Status"             => $auth->status(),
-            "Amount"             => $auth->amount(),
-            "Currency"           => $auth->currency(),
-            "Authorization Code" => $auth->authCode(),
-            "AVS Code"           => $auth->avsCode(),
-            "CVV Response Code"  => $auth->cvvResponseCode(),
-            "Merchant" => [
-                "ID" => $auth->merchant()->id(),
-            ],
-            "Order" => [
-                "ID" => $auth->order()->id(),
-            ],
-            "Customer" => [
-                "ID" => $auth->customer()->id(),
-            ],
-            "Split" => [
+            [
+                "ID"                 => $auth->id(),
+                "Status"             => $auth->status(),
+                "Amount"             => $auth->amount(),
+                "Currency"           => $auth->currency(),
+                "Authorization Code" => $auth->authCode(),
+                "AVS Code"           => $auth->avsCode(),
+                "CVV Response Code"  => $auth->cvvResponseCode(),
                 "Merchant" => [
-                    "ID" => $auth->split()->merchant()->id(),
+                    "ID" => $auth->merchant()->id(),
                 ],
-                "Amount" => $auth->split()->amount(),
-            ],
-            "Payment Method"     => [
-                "ID" => $auth->paymentMethod()->id(),
-                "Account" => [
-                    "Type"             => $auth->paymentMethod()->account()->type(),
-                    "Last 4"           => $auth->paymentMethod()->account()->last4(),
-                    "Expiration Month" => $auth->paymentMethod()->account()->expireMonth(),
-                    "Expiration Year"  => $auth->paymentMethod()->account()->expireYear(),
+                "Order" => [
+                    "ID" => $auth->order()->id(),
                 ],
-                "Account Holder" => [
-                    "Billing Address" => [
-                        "Address 1" => $auth->paymentMethod()->accountHolder()->billingAddress()->address1(),
-                        "Address 2" => $auth->paymentMethod()->accountHolder()->billingAddress()->address2(),
-                        "City"      => $auth->paymentMethod()->accountHolder()->billingAddress()->city(),
-                        "State"     => $auth->paymentMethod()->accountHolder()->billingAddress()->state(),
-                        "Postal Code" => $auth->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
-                        "Country"     => $auth->paymentMethod()->accountHolder()->billingAddress()->country(),
+                "Customer" => [
+                    "ID" => $auth->customer()->id(),
+                ],
+                "Split" => [
+                    "Merchant" => [
+                        "ID" => $auth->split()->merchant()->id(),
+                    ],
+                    "Amount" => $auth->split()->amount(),
+                ],
+                "Payment Method"     => [
+                    "ID" => $auth->paymentMethod()->id(),
+                    "Account" => [
+                        "Type"             => $auth->paymentMethod()->account()->type(),
+                        "Last 4"           => $auth->paymentMethod()->account()->last4(),
+                        "Expiration Month" => $auth->paymentMethod()->account()->expireMonth(),
+                        "Expiration Year"  => $auth->paymentMethod()->account()->expireYear(),
+                    ],
+                    "Account Holder" => [
+                        "Billing Address" => [
+                            "Address 1" => $auth->paymentMethod()->accountHolder()->billingAddress()->address1(),
+                            "Address 2" => $auth->paymentMethod()->accountHolder()->billingAddress()->address2(),
+                            "City"      => $auth->paymentMethod()->accountHolder()->billingAddress()->city(),
+                            "State"     => $auth->paymentMethod()->accountHolder()->billingAddress()->state(),
+                            "Postal Code" => $auth->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
+                            "Country"     => $auth->paymentMethod()->accountHolder()->billingAddress()->country(),
+                        ],
                     ],
                 ],
-            ],
-        ]);
-
-
-        $this->assertCount( 1, $curlProvider->calls );
-
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/payments',
-                'Body' => [
-                    'Body' => [
-                        'Merchant' => 4,
-                        'Order' => [
-                            'Transaction' => [
-                                'Type'          => 'Auth',
-                                'Currency'      => 'USD',
-                                'Amount'        => 10000,
-                                'SplitAmount'   => 1000,
-                                'SplitMerchant' => 2,
-                            ],
-                            'PaymentMethod' => '3'
-                        ]
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '2bd993d3adfed01b0e5cd7c3a2b6c00c27c8aaf829e814866ccc6e4137405fc5'
-                        ]
-                    ]
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '2bd993d3adfed01b0e5cd7c3a2b6c00c27c8aaf829e814866ccc6e4137405fc5'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
-                ]
             ]
-            ], $curlProvider->calls );
+        );
+
+
+        $this->assertCount(1, $curlProvider->calls);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/payments',
+                    'Body' => [
+                        'Body' => [
+                            'Merchant' => 4,
+                            'Order' => [
+                                'Transaction' => [
+                                    'Type'          => 'Auth',
+                                    'Currency'      => 'USD',
+                                    'Amount'        => 10000,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
+                                    'SplitAmount'   => 1000,
+                                    'SplitMerchant' => 2,
+                                ],
+                                'PaymentMethod' => '3'
+                            ]
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '411978521c101e14a2ade34ebffe0b08430432657f5ee148fe1d9968313ba606'
+                            ]
+                        ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '411978521c101e14a2ade34ebffe0b08430432657f5ee148fe1d9968313ba606'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
+                ]
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testWithFactory()
@@ -229,132 +235,139 @@ final class AuthWithPaymentMethodTest extends TestCase
 
         $auth = $sdk->processTransaction($transaction);
 
-        $this->assertEquals([
-            "ID"                 => 722,
-            "Status"             => 1,
-            "Amount"             => 10000,
-            "Currency"           => Currency::USD,
-            "Authorization Code" => "A11111",
-            "AVS Code"           => "T",
-            "CVV Response Code"  => "NotPresent",
-            "Merchant" => [
-                "ID" => 4,
-            ],
-            "Order" => [
-                "ID" => 553,
-            ],
-            "Customer" => [
-                "ID" => 3,
-            ],
-            "Split" => [
+        $this->assertEquals(
+            [
+                "ID"                 => 722,
+                "Status"             => 1,
+                "Amount"             => 10000,
+                "Currency"           => Currency::USD,
+                "Authorization Code" => "A11111",
+                "AVS Code"           => "T",
+                "CVV Response Code"  => "NotPresent",
                 "Merchant" => [
-                    "ID" => 2,
+                    "ID" => 4,
                 ],
-                "Amount" => 1000,
-            ],
-            "Payment Method"     => [
-                "ID" => 3,
-                "Account" => [
-                    "Type"             => AccountTypes::AMEX,
-                    "Last 4"           => "4121",
-                    "Expiration Month" => "7",
-                    "Expiration Year"  => "2027",
+                "Order" => [
+                    "ID" => 553,
                 ],
-                "Account Holder" => [
-                    "Billing Address" => [
-                        "Address 1" => "69976 Mills Cliffs",
-                        "Address 2" => "Suite 479",
-                        "City"      => "Feestfort",
-                        "State"     => "VT",
-                        "Postal Code" => "04059-2412",
-                        "Country"     => "USA",
+                "Customer" => [
+                    "ID" => 3,
+                ],
+                "Split" => [
+                    "Merchant" => [
+                        "ID" => 2,
+                    ],
+                    "Amount" => 1000,
+                ],
+                "Payment Method"     => [
+                    "ID" => 3,
+                    "Account" => [
+                        "Type"             => AccountTypes::AMEX,
+                        "Last 4"           => "4121",
+                        "Expiration Month" => "7",
+                        "Expiration Year"  => "2027",
+                    ],
+                    "Account Holder" => [
+                        "Billing Address" => [
+                            "Address 1" => "69976 Mills Cliffs",
+                            "Address 2" => "Suite 479",
+                            "City"      => "Feestfort",
+                            "State"     => "VT",
+                            "Postal Code" => "04059-2412",
+                            "Country"     => "USA",
+                        ],
                     ],
                 ],
             ],
-        ],[
-            "ID"                 => $auth->id(),
-            "Status"             => $auth->status(),
-            "Amount"             => $auth->amount(),
-            "Currency"           => $auth->currency(),
-            "Authorization Code" => $auth->authCode(),
-            "AVS Code"           => $auth->avsCode(),
-            "CVV Response Code"  => $auth->cvvResponseCode(),
-            "Merchant" => [
-                "ID" => $auth->merchant()->id(),
-            ],
-            "Order" => [
-                "ID" => $auth->order()->id(),
-            ],
-            "Customer" => [
-                "ID" => $auth->customer()->id(),
-            ],
-            "Split" => [
+            [
+                "ID"                 => $auth->id(),
+                "Status"             => $auth->status(),
+                "Amount"             => $auth->amount(),
+                "Currency"           => $auth->currency(),
+                "Authorization Code" => $auth->authCode(),
+                "AVS Code"           => $auth->avsCode(),
+                "CVV Response Code"  => $auth->cvvResponseCode(),
                 "Merchant" => [
-                    "ID" => $auth->split()->merchant()->id(),
+                    "ID" => $auth->merchant()->id(),
                 ],
-                "Amount" => $auth->split()->amount(),
-            ],
-            "Payment Method"     => [
-                "ID" => $auth->paymentMethod()->id(),
-                "Account" => [
-                    "Type"             => $auth->paymentMethod()->account()->type(),
-                    "Last 4"           => $auth->paymentMethod()->account()->last4(),
-                    "Expiration Month" => $auth->paymentMethod()->account()->expireMonth(),
-                    "Expiration Year"  => $auth->paymentMethod()->account()->expireYear(),
+                "Order" => [
+                    "ID" => $auth->order()->id(),
                 ],
-                "Account Holder" => [
-                    "Billing Address" => [
-                        "Address 1" => $auth->paymentMethod()->accountHolder()->billingAddress()->address1(),
-                        "Address 2" => $auth->paymentMethod()->accountHolder()->billingAddress()->address2(),
-                        "City"      => $auth->paymentMethod()->accountHolder()->billingAddress()->city(),
-                        "State"     => $auth->paymentMethod()->accountHolder()->billingAddress()->state(),
-                        "Postal Code" => $auth->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
-                        "Country"     => $auth->paymentMethod()->accountHolder()->billingAddress()->country(),
+                "Customer" => [
+                    "ID" => $auth->customer()->id(),
+                ],
+                "Split" => [
+                    "Merchant" => [
+                        "ID" => $auth->split()->merchant()->id(),
+                    ],
+                    "Amount" => $auth->split()->amount(),
+                ],
+                "Payment Method"     => [
+                    "ID" => $auth->paymentMethod()->id(),
+                    "Account" => [
+                        "Type"             => $auth->paymentMethod()->account()->type(),
+                        "Last 4"           => $auth->paymentMethod()->account()->last4(),
+                        "Expiration Month" => $auth->paymentMethod()->account()->expireMonth(),
+                        "Expiration Year"  => $auth->paymentMethod()->account()->expireYear(),
+                    ],
+                    "Account Holder" => [
+                        "Billing Address" => [
+                            "Address 1" => $auth->paymentMethod()->accountHolder()->billingAddress()->address1(),
+                            "Address 2" => $auth->paymentMethod()->accountHolder()->billingAddress()->address2(),
+                            "City"      => $auth->paymentMethod()->accountHolder()->billingAddress()->city(),
+                            "State"     => $auth->paymentMethod()->accountHolder()->billingAddress()->state(),
+                            "Postal Code" => $auth->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
+                            "Country"     => $auth->paymentMethod()->accountHolder()->billingAddress()->country(),
+                        ],
                     ],
                 ],
-            ],
-        ]);
-
-
-        $this->assertCount( 1, $curlProvider->calls );
-
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/payments',
-                'Body' => [
-                    'Body' => [
-                        'Merchant' => 4,
-                        'Order' => [
-                            'Transaction' => [
-                                'Type'          => 'Auth',
-                                'Currency'      => 'USD',
-                                'Amount'        => 10000,
-                                'SplitAmount'   => 1000,
-                                'SplitMerchant' => 2,
-                            ],
-                            'PaymentMethod' => '3'
-                        ]
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '2bd993d3adfed01b0e5cd7c3a2b6c00c27c8aaf829e814866ccc6e4137405fc5'
-                        ]
-                    ]
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '2bd993d3adfed01b0e5cd7c3a2b6c00c27c8aaf829e814866ccc6e4137405fc5'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
-                ]
             ]
-        ], $curlProvider->calls );
+        );
+
+        $this->assertCount(1, $curlProvider->calls);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/payments',
+                    'Body' => [
+                        'Body' => [
+                            'Merchant' => 4,
+                            'Order' => [
+                                'Transaction' => [
+                                    'Type'          => 'Auth',
+                                    'Currency'      => 'USD',
+                                    'Amount'        => 10000,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
+                                    'SplitAmount'   => 1000,
+                                    'SplitMerchant' => 2,
+                                ],
+                                'PaymentMethod' => '3'
+                            ]
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '411978521c101e14a2ade34ebffe0b08430432657f5ee148fe1d9968313ba606'
+                            ]
+                        ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '411978521c101e14a2ade34ebffe0b08430432657f5ee148fe1d9968313ba606'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
+                ]
+            ],
+            $curlProvider->calls
+        );
     }
 }

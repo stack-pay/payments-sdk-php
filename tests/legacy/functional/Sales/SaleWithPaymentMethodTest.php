@@ -159,10 +159,12 @@ final class SaleWithPaymentMethodTest extends TestCase
                                     'Type'          => 'Sale',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
-                                'PaymentMethod' => '3'
+                                'PaymentMethod' => 3
                             ]
                         ],
                         'Header' => [
@@ -171,7 +173,7 @@ final class SaleWithPaymentMethodTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '79adffc23cd0e66f73210b0f2c5fee9648085d21219e7e032afb57c8c0ebe39c'
+                                'Hash'       => '2e5af4260319ae60fb200b421993042056a45689e5798c983be8830329c7568f'
                             ]
                         ]
                     ],
@@ -180,7 +182,7 @@ final class SaleWithPaymentMethodTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '79adffc23cd0e66f73210b0f2c5fee9648085d21219e7e032afb57c8c0ebe39c'],
+                        4 => ['Key' => 'Hash',          'Value' => '2e5af4260319ae60fb200b421993042056a45689e5798c983be8830329c7568f'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -336,10 +338,12 @@ final class SaleWithPaymentMethodTest extends TestCase
                                     'Type'          => 'Sale',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
-                                'PaymentMethod' => '3'
+                                'PaymentMethod' => 3
                             ]
                         ],
                         'Header' => [
@@ -348,7 +352,7 @@ final class SaleWithPaymentMethodTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '79adffc23cd0e66f73210b0f2c5fee9648085d21219e7e032afb57c8c0ebe39c'
+                                'Hash'       => '2e5af4260319ae60fb200b421993042056a45689e5798c983be8830329c7568f'
                             ]
                         ]
                     ],
@@ -357,7 +361,7 @@ final class SaleWithPaymentMethodTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '79adffc23cd0e66f73210b0f2c5fee9648085d21219e7e032afb57c8c0ebe39c'],
+                        4 => ['Key' => 'Hash',          'Value' => '2e5af4260319ae60fb200b421993042056a45689e5798c983be8830329c7568f'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]

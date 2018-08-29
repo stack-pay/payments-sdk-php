@@ -157,6 +157,8 @@ final class CaptureWithOriginalTransactionTest extends TestCase
                                 'Transaction' => [
                                     'Type'          => 'Capture',
                                     'Amount'        => 90,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                     'SplitAmount'   => 20,
                                 ],
                                 'OriginalTransaction' => 734
@@ -168,7 +170,7 @@ final class CaptureWithOriginalTransactionTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '332d0ff02a99154d28aee411903dbd083168230b76ca018d7f828cc571c6009a'
+                                'Hash'       => '549dc921661fd0eef6e0b712a737cd24386ff4f0e092bc2e00e8779a9e16852a'
                             ]
                         ]
                     ],
@@ -177,7 +179,7 @@ final class CaptureWithOriginalTransactionTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '332d0ff02a99154d28aee411903dbd083168230b76ca018d7f828cc571c6009a'],
+                        4 => ['Key' => 'Hash',          'Value' => '549dc921661fd0eef6e0b712a737cd24386ff4f0e092bc2e00e8779a9e16852a'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -335,6 +337,8 @@ final class CaptureWithOriginalTransactionTest extends TestCase
                                 'Transaction' => [
                                     'Type'          => 'Capture',
                                     'Amount'        => 90,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                     'SplitAmount'   => 20,
                                 ],
                                 'OriginalTransaction' => 734
@@ -346,7 +350,7 @@ final class CaptureWithOriginalTransactionTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '332d0ff02a99154d28aee411903dbd083168230b76ca018d7f828cc571c6009a'
+                                'Hash'       => '549dc921661fd0eef6e0b712a737cd24386ff4f0e092bc2e00e8779a9e16852a'
                             ]
                         ]
                     ],
@@ -355,7 +359,7 @@ final class CaptureWithOriginalTransactionTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '332d0ff02a99154d28aee411903dbd083168230b76ca018d7f828cc571c6009a'],
+                        4 => ['Key' => 'Hash',          'Value' => '549dc921661fd0eef6e0b712a737cd24386ff4f0e092bc2e00e8779a9e16852a'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]

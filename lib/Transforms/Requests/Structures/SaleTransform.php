@@ -12,7 +12,9 @@ trait SaleTransform
                 'Transaction'   => [
                     'Type'      => 'Sale',
                     'Currency'  => $transaction->object()->currency(),
-                    'Amount'    => $transaction->object()->amount()
+                    'Amount'    => $transaction->object()->amount(),
+                    'Comment1'  => $transaction->object()->comment1(),
+                    'Comment2'  => $transaction->object()->comment2(),
                 ]
             ]
         ];
