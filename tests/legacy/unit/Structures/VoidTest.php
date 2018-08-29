@@ -23,6 +23,16 @@ final class VoidTest extends StructureTestCase
         $this->full('id', 'int', false);
     }
 
+    public function test_comment1()
+    {
+        $this->full('comment1', 'string', false);
+    }
+
+    public function test_comment2()
+    {
+        $this->full('comment2', 'string', false);
+    }
+
     public function test_externalID()
     {
         $this->full('externalID', 'string', false);
