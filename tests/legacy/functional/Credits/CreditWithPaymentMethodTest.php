@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
 
 use StackPay\Payments\StackPay;
@@ -54,79 +52,87 @@ final class CreditWithPaymentMethodTest extends TestCase
             $input_amount
         );
 
-        $this->assertEquals([
-            "ID"                 => 11412,
-            "Status"             => 1,
-            "Amount"             => $input_amount,
-            "Currency"           => Currency::USD,
-            "Merchant" => [
-                "ID" => $input_merchant_id,
+        $this->assertEquals(
+            [
+                "ID"                 => 11412,
+                "Status"             => 1,
+                "Amount"             => $input_amount,
+                "Currency"           => Currency::USD,
+                "Merchant" => [
+                    "ID" => $input_merchant_id,
+                ],
+                "Order" => [
+                    "ID" => 7908,
+                ],
+                "Customer" => [
+                    "ID" => 58,
+                ],
+                "Payment Method"     => [
+                    "ID" => $input_paymentMethod_id,
+                ],
             ],
-            "Order" => [
-                "ID" => 7908,
-            ],
-            "Customer" => [
-                "ID" => 58,
-            ],
-            "Payment Method"     => [
-                "ID" => $input_paymentMethod_id,
-            ],
-        ],[
-            "ID"                 => $credit->id(),
-            "Status"             => $credit->status(),
-            "Amount"             => $credit->amount(),
-            "Currency"           => $credit->currency(),
-            "Merchant" => [
-                "ID" => $credit->merchant()->id(),
-            ],
-            "Order" => [
-                "ID" => $credit->order()->id(),
-            ],
-            "Customer" => [
-                "ID" => $credit->customer()->id(),
-            ],
-            "Payment Method"     => [
-                "ID" => $credit->paymentMethod()->id(),
-            ],
-        ]);
+            [
+                "ID"                 => $credit->id(),
+                "Status"             => $credit->status(),
+                "Amount"             => $credit->amount(),
+                "Currency"           => $credit->currency(),
+                "Merchant" => [
+                    "ID" => $credit->merchant()->id(),
+                ],
+                "Order" => [
+                    "ID" => $credit->order()->id(),
+                ],
+                "Customer" => [
+                    "ID" => $credit->customer()->id(),
+                ],
+                "Payment Method"     => [
+                    "ID" => $credit->paymentMethod()->id(),
+                ],
+            ]
+        );
 
-        $this->assertCount( 1, $curlProvider->calls );
+        $this->assertCount(1, $curlProvider->calls);
 
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/payments',
-                'Body' => [
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/payments',
                     'Body' => [
-                        'Merchant' => $input_merchant_id,
-                        'Order' => [
-                            'PaymentMethod' => $input_paymentMethod_id,
-                            'Transaction' => [
-                                'Type'          => 'Credit',
-                                'Amount'        => $input_amount,
-                                'Currency'      => Currency::USD,
-                            ],
+                        'Body' => [
+                            'Merchant' => $input_merchant_id,
+                            'Order' => [
+                                'PaymentMethod' => $input_paymentMethod_id,
+                                'Transaction' => [
+                                    'Type'          => 'Credit',
+                                    'Amount'        => $input_amount,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
+                                    'Currency'      => Currency::USD,
+                                ],
+                            ]
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '92bb95fda8fe98afadcc17de804d5c14564775c36527fd14b020a054597a76a5'
+                            ]
                         ]
                     ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '4a0ed6cc1a4522537f3592c2bf566b47188c127491a11d5b4ffe085eb159d000'
-                        ]
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '92bb95fda8fe98afadcc17de804d5c14564775c36527fd14b020a054597a76a5'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '4a0ed6cc1a4522537f3592c2bf566b47188c127491a11d5b4ffe085eb159d000'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                 ]
-            ]
-            ], $curlProvider->calls );
+            ],
+            $curlProvider->calls
+        );
     }
 }

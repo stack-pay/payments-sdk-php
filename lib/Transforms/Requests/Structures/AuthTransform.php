@@ -30,6 +30,8 @@ trait AuthTransform
                 'Type'      => 'Auth',
                 'Currency'  => $auth->currency(),
                 'Amount'    => $auth->amount(),
+                'Comment1'  => $auth->comment1(),
+                'Comment2'  => $auth->comment2(),
             ]
         ];
     }

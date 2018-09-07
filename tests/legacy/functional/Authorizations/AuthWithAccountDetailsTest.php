@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
 
 use StackPay\Payments\StackPay;
@@ -74,91 +72,94 @@ final class AuthWithAccountDetailsTest extends TestCase
             Currency::USD
         );
 
-        $this->assertEquals([
-            "ID"                 => 726,
-            "Status"             => 1,
-            "Amount"             => 10000,
-            "Currency"           => Currency::USD,
-            "Authorization Code" => "A11111",
-            "AVS Code"           => "T",
-            "CVV Response Code"  => "NotPresent",
-            "Merchant" => [
-                "ID" => 4,
-            ],
-            "Order" => [
-                "ID" => 557,
-            ],
-            "Customer" => [
-                "ID" => 534,
-            ],
-            "Split" => [
+        $this->assertEquals(
+            [
+                "ID"                 => 726,
+                "Status"             => 1,
+                "Amount"             => 10000,
+                "Currency"           => Currency::USD,
+                "Authorization Code" => "A11111",
+                "AVS Code"           => "T",
+                "CVV Response Code"  => "NotPresent",
                 "Merchant" => [
-                    "ID" => 2,
+                    "ID" => 4,
                 ],
-                "Amount" => 1000,
-            ],
-            "Payment Method"     => [
-                "ID" => null,
-                "Account" => [
-                    "Type"             => AccountTypes::VISA,
-                    "Last 4"           => "1111",
-                    "Expiration Month" => "1",
-                    "Expiration Year"  => "2021",
+                "Order" => [
+                    "ID" => 557,
                 ],
-                "Account Holder" => [
-                    "Billing Address" => [
-                        "Address 1" => "1234 Windall Lane",
-                        "Address 2" => "",
-                        "City"      => "Nowhere",
-                        "State"     => "HI",
-                        "Postal Code" => "89765",
-                        "Country"     => "USA",
+                "Customer" => [
+                    "ID" => 534,
+                ],
+                "Split" => [
+                    "Merchant" => [
+                        "ID" => 2,
+                    ],
+                    "Amount" => 1000,
+                ],
+                "Payment Method"     => [
+                    "ID" => null,
+                    "Account" => [
+                        "Type"             => AccountTypes::VISA,
+                        "Last 4"           => "1111",
+                        "Expiration Month" => "1",
+                        "Expiration Year"  => "2021",
+                    ],
+                    "Account Holder" => [
+                        "Billing Address" => [
+                            "Address 1" => "1234 Windall Lane",
+                            "Address 2" => "",
+                            "City"      => "Nowhere",
+                            "State"     => "HI",
+                            "Postal Code" => "89765",
+                            "Country"     => "USA",
+                        ],
                     ],
                 ],
             ],
-        ], [
-            "ID"                 => $auth->id(),
-            "Status"             => $auth->status(),
-            "Amount"             => $auth->amount(),
-            "Currency"           => $auth->currency(),
-            "Authorization Code" => $auth->authCode(),
-            "AVS Code"           => $auth->avsCode(),
-            "CVV Response Code"  => $auth->cvvResponseCode(),
-            "Merchant" => [
-                "ID" => $auth->merchant()->id(),
-            ],
-            "Order" => [
-                "ID" => $auth->order()->id(),
-            ],
-            "Customer" => [
-                "ID" => $auth->customer()->id(),
-            ],
-            "Split" => [
+            [
+                "ID"                 => $auth->id(),
+                "Status"             => $auth->status(),
+                "Amount"             => $auth->amount(),
+                "Currency"           => $auth->currency(),
+                "Authorization Code" => $auth->authCode(),
+                "AVS Code"           => $auth->avsCode(),
+                "CVV Response Code"  => $auth->cvvResponseCode(),
                 "Merchant" => [
-                    "ID" => $auth->split()->merchant()->id(),
+                    "ID" => $auth->merchant()->id(),
                 ],
-                "Amount" => $auth->split()->amount(),
-            ],
-            "Payment Method"     => [
-                "ID" => $auth->paymentMethod()->id(),
-                "Account" => [
-                    "Type"             => $auth->paymentMethod()->account()->type(),
-                    "Last 4"           => $auth->paymentMethod()->account()->last4(),
-                    "Expiration Month" => $auth->paymentMethod()->account()->expireMonth(),
-                    "Expiration Year"  => $auth->paymentMethod()->account()->expireYear(),
+                "Order" => [
+                    "ID" => $auth->order()->id(),
                 ],
-                "Account Holder" => [
-                    "Billing Address" => [
-                        "Address 1" => $auth->paymentMethod()->accountHolder()->billingAddress()->address1(),
-                        "Address 2" => $auth->paymentMethod()->accountHolder()->billingAddress()->address2(),
-                        "City"      => $auth->paymentMethod()->accountHolder()->billingAddress()->city(),
-                        "State"     => $auth->paymentMethod()->accountHolder()->billingAddress()->state(),
-                        "Postal Code" => $auth->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
-                        "Country"     => $auth->paymentMethod()->accountHolder()->billingAddress()->country(),
+                "Customer" => [
+                    "ID" => $auth->customer()->id(),
+                ],
+                "Split" => [
+                    "Merchant" => [
+                        "ID" => $auth->split()->merchant()->id(),
+                    ],
+                    "Amount" => $auth->split()->amount(),
+                ],
+                "Payment Method"     => [
+                    "ID" => $auth->paymentMethod()->id(),
+                    "Account" => [
+                        "Type"             => $auth->paymentMethod()->account()->type(),
+                        "Last 4"           => $auth->paymentMethod()->account()->last4(),
+                        "Expiration Month" => $auth->paymentMethod()->account()->expireMonth(),
+                        "Expiration Year"  => $auth->paymentMethod()->account()->expireYear(),
+                    ],
+                    "Account Holder" => [
+                        "Billing Address" => [
+                            "Address 1" => $auth->paymentMethod()->accountHolder()->billingAddress()->address1(),
+                            "Address 2" => $auth->paymentMethod()->accountHolder()->billingAddress()->address2(),
+                            "City"      => $auth->paymentMethod()->accountHolder()->billingAddress()->city(),
+                            "State"     => $auth->paymentMethod()->accountHolder()->billingAddress()->state(),
+                            "Postal Code" => $auth->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
+                            "Country"     => $auth->paymentMethod()->accountHolder()->billingAddress()->country(),
+                        ],
                     ],
                 ],
-            ],
-        ]);
+            ]
+        );
 
         $this->assertCount(1, $curlProvider->calls);
 
@@ -174,6 +175,8 @@ final class AuthWithAccountDetailsTest extends TestCase
                                     'Type'          => 'Auth',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
@@ -203,7 +206,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'cfe3bbf7a3883b200ddd88b3a1c0b75f17e0d73e3fda824f70ed21e73db8a28c'
+                                'Hash'       => 'bc21f1a3fd778b647e63859536593086c041ed6711ea1cebe6174fa04b54f9dc'
                             ]
                         ]
                     ],
@@ -212,7 +215,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'cfe3bbf7a3883b200ddd88b3a1c0b75f17e0d73e3fda824f70ed21e73db8a28c'],
+                        4 => ['Key' => 'Hash',          'Value' => 'bc21f1a3fd778b647e63859536593086c041ed6711ea1cebe6174fa04b54f9dc'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -280,91 +283,94 @@ final class AuthWithAccountDetailsTest extends TestCase
         );
 
         // Response Values
-        $this->assertEquals([
-            "ID"                 => 726,
-            "Status"             => 1,
-            "Amount"             => 10000,
-            "Currency"           => Currency::USD,
-            "Authorization Code" => "A11111",
-            "AVS Code"           => "T",
-            "CVV Response Code"  => "NotPresent",
-            "Merchant" => [
-                "ID" => 4,
-            ],
-            "Order" => [
-                "ID" => 557,
-            ],
-            "Customer" => [
-                "ID" => 534,
-            ],
-            "Split" => [
+        $this->assertEquals(
+            [
+                "ID"                 => 726,
+                "Status"             => 1,
+                "Amount"             => 10000,
+                "Currency"           => Currency::USD,
+                "Authorization Code" => "A11111",
+                "AVS Code"           => "T",
+                "CVV Response Code"  => "NotPresent",
                 "Merchant" => [
-                    "ID" => 2,
+                    "ID" => 4,
                 ],
-                "Amount" => 1000,
-            ],
-            "Payment Method"     => [
-                "ID" => null,
-                "Account" => [
-                    "Type"             => AccountTypes::VISA,
-                    "Last 4"           => "1111",
-                    "Expiration Month" => 1,
-                    "Expiration Year"  => "2021",
+                "Order" => [
+                    "ID" => 557,
                 ],
-                "Account Holder" => [
-                    "Billing Address" => [
-                        "Address 1" => "1234 Windall Lane",
-                        "Address 2" => "",
-                        "City"      => "Nowhere",
-                        "State"     => "HI",
-                        "Postal Code" => "89765",
-                        "Country"     => "USA",
+                "Customer" => [
+                    "ID" => 534,
+                ],
+                "Split" => [
+                    "Merchant" => [
+                        "ID" => 2,
+                    ],
+                    "Amount" => 1000,
+                ],
+                "Payment Method"     => [
+                    "ID" => null,
+                    "Account" => [
+                        "Type"             => AccountTypes::VISA,
+                        "Last 4"           => "1111",
+                        "Expiration Month" => 1,
+                        "Expiration Year"  => "2021",
+                    ],
+                    "Account Holder" => [
+                        "Billing Address" => [
+                            "Address 1" => "1234 Windall Lane",
+                            "Address 2" => "",
+                            "City"      => "Nowhere",
+                            "State"     => "HI",
+                            "Postal Code" => "89765",
+                            "Country"     => "USA",
+                        ],
                     ],
                 ],
             ],
-        ], [
-            "ID"                 => $auth->id(),
-            "Status"             => $auth->status(),
-            "Amount"             => $auth->amount(),
-            "Currency"           => $auth->currency(),
-            "Authorization Code" => $auth->authCode(),
-            "AVS Code"           => $auth->avsCode(),
-            "CVV Response Code"  => $auth->cvvResponseCode(),
-            "Merchant" => [
-                "ID" => $auth->merchant()->id(),
-            ],
-            "Order" => [
-                "ID" => $auth->order()->id(),
-            ],
-            "Customer" => [
-                "ID" => $auth->customer()->id(),
-            ],
-            "Split" => [
+            [
+                "ID"                 => $auth->id(),
+                "Status"             => $auth->status(),
+                "Amount"             => $auth->amount(),
+                "Currency"           => $auth->currency(),
+                "Authorization Code" => $auth->authCode(),
+                "AVS Code"           => $auth->avsCode(),
+                "CVV Response Code"  => $auth->cvvResponseCode(),
                 "Merchant" => [
-                    "ID" => $auth->split()->merchant()->id(),
+                    "ID" => $auth->merchant()->id(),
                 ],
-                "Amount" => $auth->split()->amount(),
-            ],
-            "Payment Method"     => [
-                "ID" => $auth->paymentMethod()->id(),
-                "Account" => [
-                    "Type"             => $auth->paymentMethod()->account()->type(),
-                    "Last 4"           => $auth->paymentMethod()->account()->last4(),
-                    "Expiration Month" => $auth->paymentMethod()->account()->expireMonth(),
-                    "Expiration Year"  => $auth->paymentMethod()->account()->expireYear(),
+                "Order" => [
+                    "ID" => $auth->order()->id(),
                 ],
-                "Account Holder" => [
-                    "Billing Address" => [
-                        "Address 1" => $auth->paymentMethod()->accountHolder()->billingAddress()->address1(),
-                        "Address 2" => $auth->paymentMethod()->accountHolder()->billingAddress()->address2(),
-                        "City"      => $auth->paymentMethod()->accountHolder()->billingAddress()->city(),
-                        "State"     => $auth->paymentMethod()->accountHolder()->billingAddress()->state(),
-                        "Postal Code" => $auth->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
-                        "Country"     => $auth->paymentMethod()->accountHolder()->billingAddress()->country(),
+                "Customer" => [
+                    "ID" => $auth->customer()->id(),
+                ],
+                "Split" => [
+                    "Merchant" => [
+                        "ID" => $auth->split()->merchant()->id(),
+                    ],
+                    "Amount" => $auth->split()->amount(),
+                ],
+                "Payment Method"     => [
+                    "ID" => $auth->paymentMethod()->id(),
+                    "Account" => [
+                        "Type"             => $auth->paymentMethod()->account()->type(),
+                        "Last 4"           => $auth->paymentMethod()->account()->last4(),
+                        "Expiration Month" => $auth->paymentMethod()->account()->expireMonth(),
+                        "Expiration Year"  => $auth->paymentMethod()->account()->expireYear(),
+                    ],
+                    "Account Holder" => [
+                        "Billing Address" => [
+                            "Address 1" => $auth->paymentMethod()->accountHolder()->billingAddress()->address1(),
+                            "Address 2" => $auth->paymentMethod()->accountHolder()->billingAddress()->address2(),
+                            "City"      => $auth->paymentMethod()->accountHolder()->billingAddress()->city(),
+                            "State"     => $auth->paymentMethod()->accountHolder()->billingAddress()->state(),
+                            "Postal Code" => $auth->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
+                            "Country"     => $auth->paymentMethod()->accountHolder()->billingAddress()->country(),
+                        ],
                     ],
                 ],
-            ],
-        ]);
+            ]
+        );
 
         $this->assertEquals(
             [
@@ -378,6 +384,8 @@ final class AuthWithAccountDetailsTest extends TestCase
                                     'Type'          => 'Auth',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
@@ -406,7 +414,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '6d384096b263f3cc2314a9fb97f979bd41c56e9ea53c3fe1994c9b8d7b8af102'
+                                'Hash'       => 'd55b6caa0d1a51840f371763dfc105b255fa09e519c4f8f554e2692130ad144f'
                             ]
                         ]
                     ],
@@ -415,7 +423,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '6d384096b263f3cc2314a9fb97f979bd41c56e9ea53c3fe1994c9b8d7b8af102'],
+                        4 => ['Key' => 'Hash',          'Value' => 'd55b6caa0d1a51840f371763dfc105b255fa09e519c4f8f554e2692130ad144f'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -554,91 +562,94 @@ final class AuthWithAccountDetailsTest extends TestCase
 
         $auth = $sdk->processTransaction($transaction);
 
-        $this->assertEquals([
-            "ID"                 => 726,
-            "Status"             => 1,
-            "Amount"             => 10000,
-            "Currency"           => Currency::USD,
-            "Authorization Code" => "A11111",
-            "AVS Code"           => "T",
-            "CVV Response Code"  => "NotPresent",
-            "Merchant" => [
-                "ID" => 4,
-            ],
-            "Order" => [
-                "ID" => 557,
-            ],
-            "Customer" => [
-                "ID" => 534,
-            ],
-            "Split" => [
+        $this->assertEquals(
+            [
+                "ID"                 => 726,
+                "Status"             => 1,
+                "Amount"             => 10000,
+                "Currency"           => Currency::USD,
+                "Authorization Code" => "A11111",
+                "AVS Code"           => "T",
+                "CVV Response Code"  => "NotPresent",
                 "Merchant" => [
-                    "ID" => 2,
+                    "ID" => 4,
                 ],
-                "Amount" => 1000,
-            ],
-            "Payment Method"     => [
-                "ID" => null,
-                "Account" => [
-                    "Type"             => AccountTypes::VISA,
-                    "Last 4"           => "1111",
-                    "Expiration Month" => "1",
-                    "Expiration Year"  => "2021",
+                "Order" => [
+                    "ID" => 557,
                 ],
-                "Account Holder" => [
-                    "Billing Address" => [
-                        "Address 1" => "1234 Windall Lane",
-                        "Address 2" => "",
-                        "City"      => "Nowhere",
-                        "State"     => "HI",
-                        "Postal Code" => "89765",
-                        "Country"     => "USA",
+                "Customer" => [
+                    "ID" => 534,
+                ],
+                "Split" => [
+                    "Merchant" => [
+                        "ID" => 2,
+                    ],
+                    "Amount" => 1000,
+                ],
+                "Payment Method"     => [
+                    "ID" => null,
+                    "Account" => [
+                        "Type"             => AccountTypes::VISA,
+                        "Last 4"           => "1111",
+                        "Expiration Month" => "1",
+                        "Expiration Year"  => "2021",
+                    ],
+                    "Account Holder" => [
+                        "Billing Address" => [
+                            "Address 1" => "1234 Windall Lane",
+                            "Address 2" => "",
+                            "City"      => "Nowhere",
+                            "State"     => "HI",
+                            "Postal Code" => "89765",
+                            "Country"     => "USA",
+                        ],
                     ],
                 ],
             ],
-        ], [
-            "ID"                 => $auth->id(),
-            "Status"             => $auth->status(),
-            "Amount"             => $auth->amount(),
-            "Currency"           => $auth->currency(),
-            "Authorization Code" => $auth->authCode(),
-            "AVS Code"           => $auth->avsCode(),
-            "CVV Response Code"  => $auth->cvvResponseCode(),
-            "Merchant" => [
-                "ID" => $auth->merchant()->id(),
-            ],
-            "Order" => [
-                "ID" => $auth->order()->id(),
-            ],
-            "Customer" => [
-                "ID" => $auth->customer()->id(),
-            ],
-            "Split" => [
+            [
+                "ID"                 => $auth->id(),
+                "Status"             => $auth->status(),
+                "Amount"             => $auth->amount(),
+                "Currency"           => $auth->currency(),
+                "Authorization Code" => $auth->authCode(),
+                "AVS Code"           => $auth->avsCode(),
+                "CVV Response Code"  => $auth->cvvResponseCode(),
                 "Merchant" => [
-                    "ID" => $auth->split()->merchant()->id(),
+                    "ID" => $auth->merchant()->id(),
                 ],
-                "Amount" => $auth->split()->amount(),
-            ],
-            "Payment Method"     => [
-                "ID" => $auth->paymentMethod()->id(),
-                "Account" => [
-                    "Type"             => $auth->paymentMethod()->account()->type(),
-                    "Last 4"           => $auth->paymentMethod()->account()->last4(),
-                    "Expiration Month" => $auth->paymentMethod()->account()->expireMonth(),
-                    "Expiration Year"  => $auth->paymentMethod()->account()->expireYear(),
+                "Order" => [
+                    "ID" => $auth->order()->id(),
                 ],
-                "Account Holder" => [
-                    "Billing Address" => [
-                        "Address 1" => $auth->paymentMethod()->accountHolder()->billingAddress()->address1(),
-                        "Address 2" => $auth->paymentMethod()->accountHolder()->billingAddress()->address2(),
-                        "City"      => $auth->paymentMethod()->accountHolder()->billingAddress()->city(),
-                        "State"     => $auth->paymentMethod()->accountHolder()->billingAddress()->state(),
-                        "Postal Code" => $auth->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
-                        "Country"     => $auth->paymentMethod()->accountHolder()->billingAddress()->country(),
+                "Customer" => [
+                    "ID" => $auth->customer()->id(),
+                ],
+                "Split" => [
+                    "Merchant" => [
+                        "ID" => $auth->split()->merchant()->id(),
+                    ],
+                    "Amount" => $auth->split()->amount(),
+                ],
+                "Payment Method"     => [
+                    "ID" => $auth->paymentMethod()->id(),
+                    "Account" => [
+                        "Type"             => $auth->paymentMethod()->account()->type(),
+                        "Last 4"           => $auth->paymentMethod()->account()->last4(),
+                        "Expiration Month" => $auth->paymentMethod()->account()->expireMonth(),
+                        "Expiration Year"  => $auth->paymentMethod()->account()->expireYear(),
+                    ],
+                    "Account Holder" => [
+                        "Billing Address" => [
+                            "Address 1" => $auth->paymentMethod()->accountHolder()->billingAddress()->address1(),
+                            "Address 2" => $auth->paymentMethod()->accountHolder()->billingAddress()->address2(),
+                            "City"      => $auth->paymentMethod()->accountHolder()->billingAddress()->city(),
+                            "State"     => $auth->paymentMethod()->accountHolder()->billingAddress()->state(),
+                            "Postal Code" => $auth->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
+                            "Country"     => $auth->paymentMethod()->accountHolder()->billingAddress()->country(),
+                        ],
                     ],
                 ],
-            ],
-        ]);
+            ]
+        );
 
         $this->assertCount(1, $curlProvider->calls);
 
@@ -654,6 +665,8 @@ final class AuthWithAccountDetailsTest extends TestCase
                                     'Type'          => 'Auth',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
@@ -683,7 +696,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'cfe3bbf7a3883b200ddd88b3a1c0b75f17e0d73e3fda824f70ed21e73db8a28c'
+                                'Hash'       => 'bc21f1a3fd778b647e63859536593086c041ed6711ea1cebe6174fa04b54f9dc'
                             ]
                         ]
                     ],
@@ -692,7 +705,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'cfe3bbf7a3883b200ddd88b3a1c0b75f17e0d73e3fda824f70ed21e73db8a28c'],
+                        4 => ['Key' => 'Hash',          'Value' => 'bc21f1a3fd778b647e63859536593086c041ed6711ea1cebe6174fa04b54f9dc'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]

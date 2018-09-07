@@ -3,15 +3,13 @@
 use StackPay\Payments\Requests;
 use StackPay\Payments\Structures;
 
-class ScheduledTransactionDeleteTest extends ScheduledTransactionTestCase
+class PaymentMethodDeleteTest extends PaymentMethodTestCase
 {
     public function setUp()
     {
         parent::setUp();
 
-        // set scheduledTransaction details
-        $this->scheduledTransaction     = new Structures\ScheduledTransaction;
-        $this->scheduledTransaction->id = 123;
+        $this->paymentMethod = new Structures\PaymentMethod(123);
     }
 
     public function testFound()
@@ -19,7 +17,7 @@ class ScheduledTransactionDeleteTest extends ScheduledTransactionTestCase
         // mock API success response
         $this->mockApiResponse(200, $this->emptyResponse());
 
-        $request = (new Requests\v1\ScheduledTransactionRequest($this->scheduledTransaction))
+        $request = (new Requests\v1\PaymentMethodRequest($this->paymentMethod))
             ->delete();
 
         $this->response = $request->send();
@@ -32,7 +30,7 @@ class ScheduledTransactionDeleteTest extends ScheduledTransactionTestCase
         // mock API success response
         $this->mockApiResponse(404, $this->notFoundResponse());
 
-        $request = (new Requests\v1\ScheduledTransactionRequest($this->scheduledTransaction))
+        $request = (new Requests\v1\PaymentMethodRequest($this->paymentMethod))
             ->delete();
 
         $this->response = $request->send();

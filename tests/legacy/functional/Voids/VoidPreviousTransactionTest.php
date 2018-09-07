@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 use PHPUnit\Framework\TestCase;
 
 use StackPay\Payments\StackPay;
@@ -56,80 +54,88 @@ final class VoidPreviousTransactionTest extends TestCase
             $merchant
         );
 
-        $this->assertEquals([
-            "ID"       => 112,
-            "Status"   => 1,
-            "Merchant" => [
-                "ID" => 50,
-            ],
-            "Order" => [
-                "ID" => 67,
-            ],
-            "Customer" => [
-                "ID" => 64,
-            ],
-            "Payment Method" => [
-                "ID" => 63,
-            ],
-            "Refunded Transaction" => [
-                "ID" => 111,
-            ]
-        ],[
-            "ID"     => $void->id(),
-            "Status" => $void->status(),
-            "Merchant" => [
-                "ID" => $void->merchant()->id(),
-            ],
-            "Order" => [
-                "ID" => $void->order()->id(),
-            ],
-            "Customer" => [
-                "ID" => $void->customer()->id(),
-            ],
-            "Payment Method"     => [
-                "ID" => $void->paymentMethod()->id(),
-            ],
-            "Refunded Transaction" => [
-                "ID" => $void->refundedTransaction()->id(),
-            ]
-        ]);
-
-        $this->assertCount(1,       $curlProvider->calls );
-
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/payments',
-                'Body' => [
-                    'Body' => [
-                        'Merchant' => 50,
-                        'Order' => [
-                            'Transaction' => [
-                                'Type'          => 'Void'
-                            ],
-                            'OriginalTransaction' => 111
-                        ]
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '10f03a4a76e077d697f7b2789c2991d07f884a5d6111cac3197ddceae7be4fc3'
-                        ]
-                    ]
+        $this->assertEquals(
+            [
+                "ID"       => 112,
+                "Status"   => 1,
+                "Merchant" => [
+                    "ID" => 50,
                 ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '10f03a4a76e077d697f7b2789c2991d07f884a5d6111cac3197ddceae7be4fc3'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                "Order" => [
+                    "ID" => 67,
+                ],
+                "Customer" => [
+                    "ID" => 64,
+                ],
+                "Payment Method" => [
+                    "ID" => 63,
+                ],
+                "Refunded Transaction" => [
+                    "ID" => 111,
+                ]
+            ],
+            [
+                "ID"     => $void->id(),
+                "Status" => $void->status(),
+                "Merchant" => [
+                    "ID" => $void->merchant()->id(),
+                ],
+                "Order" => [
+                    "ID" => $void->order()->id(),
+                ],
+                "Customer" => [
+                    "ID" => $void->customer()->id(),
+                ],
+                "Payment Method"     => [
+                    "ID" => $void->paymentMethod()->id(),
+                ],
+                "Refunded Transaction" => [
+                    "ID" => $void->refundedTransaction()->id(),
                 ]
             ]
-        ], $curlProvider->calls );
+        );
+
+        $this->assertCount(1, $curlProvider->calls);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/payments',
+                    'Body' => [
+                        'Body' => [
+                            'Merchant' => 50,
+                            'Order' => [
+                                'Transaction' => [
+                                    'Type'      => 'Void',
+                                    'Comment1'  => null,
+                                    'Comment2'  => null,
+                                ],
+                                'OriginalTransaction' => 111
+                            ]
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => 'fadb80260b75db1efd32f4b321a269a51bd5cfe2c6abb37562f736ff1e5c6ab7'
+                            ]
+                        ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => 'fadb80260b75db1efd32f4b321a269a51bd5cfe2c6abb37562f736ff1e5c6ab7'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
+                ]
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testVoidAsRefundWithFactory()
@@ -174,80 +180,88 @@ final class VoidPreviousTransactionTest extends TestCase
 
         $void = $sdk->processTransaction($transaction);
 
-        $this->assertEquals([
-            "ID"       => 112,
-            "Status"   => 1,
-            "Merchant" => [
-                "ID" => 50,
-            ],
-            "Order" => [
-                "ID" => 67,
-            ],
-            "Customer" => [
-                "ID" => 64,
-            ],
-            "Payment Method" => [
-                "ID" => 63,
-            ],
-            "Refunded Transaction" => [
-                "ID" => 111,
-            ]
-        ],[
-            "ID"     => $void->id(),
-            "Status" => $void->status(),
-            "Merchant" => [
-                "ID" => $void->merchant()->id(),
-            ],
-            "Order" => [
-                "ID" => $void->order()->id(),
-            ],
-            "Customer" => [
-                "ID" => $void->customer()->id(),
-            ],
-            "Payment Method"     => [
-                "ID" => $void->paymentMethod()->id(),
-            ],
-            "Refunded Transaction" => [
-                "ID" => $void->refundedTransaction()->id(),
-            ]
-        ]);
-
-        $this->assertCount(1,       $curlProvider->calls );
-
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/payments',
-                'Body' => [
-                    'Body' => [
-                        'Merchant' => 50,
-                        'Order' => [
-                            'Transaction' => [
-                                'Type'          => 'Void'
-                            ],
-                            'OriginalTransaction' => 111
-                        ]
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '10f03a4a76e077d697f7b2789c2991d07f884a5d6111cac3197ddceae7be4fc3'
-                        ]
-                    ]
+        $this->assertEquals(
+            [
+                "ID"       => 112,
+                "Status"   => 1,
+                "Merchant" => [
+                    "ID" => 50,
                 ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '10f03a4a76e077d697f7b2789c2991d07f884a5d6111cac3197ddceae7be4fc3'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                "Order" => [
+                    "ID" => 67,
+                ],
+                "Customer" => [
+                    "ID" => 64,
+                ],
+                "Payment Method" => [
+                    "ID" => 63,
+                ],
+                "Refunded Transaction" => [
+                    "ID" => 111,
+                ]
+            ],
+            [
+                "ID"     => $void->id(),
+                "Status" => $void->status(),
+                "Merchant" => [
+                    "ID" => $void->merchant()->id(),
+                ],
+                "Order" => [
+                    "ID" => $void->order()->id(),
+                ],
+                "Customer" => [
+                    "ID" => $void->customer()->id(),
+                ],
+                "Payment Method"     => [
+                    "ID" => $void->paymentMethod()->id(),
+                ],
+                "Refunded Transaction" => [
+                    "ID" => $void->refundedTransaction()->id(),
                 ]
             ]
-        ], $curlProvider->calls );
+        );
+
+        $this->assertCount(1, $curlProvider->calls);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/payments',
+                    'Body' => [
+                        'Body' => [
+                            'Merchant' => 50,
+                            'Order' => [
+                                'Transaction' => [
+                                    'Type'      => 'Void',
+                                    'Comment1'  => null,
+                                    'Comment2'  => null,
+                                ],
+                                'OriginalTransaction' => 111
+                            ]
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => 'fadb80260b75db1efd32f4b321a269a51bd5cfe2c6abb37562f736ff1e5c6ab7'
+                            ]
+                        ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => 'fadb80260b75db1efd32f4b321a269a51bd5cfe2c6abb37562f736ff1e5c6ab7'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
+                ]
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testVoidAuth()
@@ -281,80 +295,88 @@ final class VoidPreviousTransactionTest extends TestCase
             $merchant
         );
 
-        $this->assertEquals([
-            "ID"       => 109,
-            "Status"   => 1,
-            "Merchant" => [
-                "ID" => 50,
-            ],
-            "Order" => [
-                "ID" => 66,
-            ],
-            "Customer" => [
-                "ID" => 63,
-            ],
-            "Payment Method" => [
-                "ID" => 62,
-            ],
-            "Voided Transaction" => [
-                "ID" => 108,
-            ]
-        ],[
-            "ID"     => $void->id(),
-            "Status" => $void->status(),
-            "Merchant" => [
-                "ID" => $void->merchant()->id(),
-            ],
-            "Order" => [
-                "ID" => $void->order()->id(),
-            ],
-            "Customer" => [
-                "ID" => $void->customer()->id(),
-            ],
-            "Payment Method"     => [
-                "ID" => $void->paymentMethod()->id(),
-            ],
-            "Voided Transaction" => [
-                "ID" => $void->voidedTransaction()->id(),
-            ]
-        ]);
-
-        $this->assertCount(1,       $curlProvider->calls );
-
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/payments',
-                'Body' => [
-                    'Body' => [
-                        'Merchant' => 50,
-                        'Order' => [
-                            'Transaction' => [
-                                'Type'          => 'Void'
-                            ],
-                            'OriginalTransaction' => 108
-                        ]
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '4be917d786f0d172a04096528fc1bf496d5d20791358d9322426fa59af5ea6f2'
-                        ]
-                    ]
+        $this->assertEquals(
+            [
+                "ID"       => 109,
+                "Status"   => 1,
+                "Merchant" => [
+                    "ID" => 50,
                 ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '4be917d786f0d172a04096528fc1bf496d5d20791358d9322426fa59af5ea6f2'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                "Order" => [
+                    "ID" => 66,
+                ],
+                "Customer" => [
+                    "ID" => 63,
+                ],
+                "Payment Method" => [
+                    "ID" => 62,
+                ],
+                "Voided Transaction" => [
+                    "ID" => 108,
+                ]
+            ],
+            [
+                "ID"     => $void->id(),
+                "Status" => $void->status(),
+                "Merchant" => [
+                    "ID" => $void->merchant()->id(),
+                ],
+                "Order" => [
+                    "ID" => $void->order()->id(),
+                ],
+                "Customer" => [
+                    "ID" => $void->customer()->id(),
+                ],
+                "Payment Method"     => [
+                    "ID" => $void->paymentMethod()->id(),
+                ],
+                "Voided Transaction" => [
+                    "ID" => $void->voidedTransaction()->id(),
                 ]
             ]
-        ], $curlProvider->calls );
+        );
+
+        $this->assertCount(1, $curlProvider->calls);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/payments',
+                    'Body' => [
+                        'Body' => [
+                            'Merchant' => 50,
+                            'Order' => [
+                                'Transaction' => [
+                                    'Type'      => 'Void',
+                                    'Comment1'  => null,
+                                    'Comment2'  => null,
+                                ],
+                                'OriginalTransaction' => 108
+                            ]
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => 'c5f88d7472fc17f8761962525d2c4910ca667d84ed1ab78859cb30115c777855'
+                            ]
+                        ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => 'c5f88d7472fc17f8761962525d2c4910ca667d84ed1ab78859cb30115c777855'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
+                ]
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testVoidCapture()
@@ -388,80 +410,88 @@ final class VoidPreviousTransactionTest extends TestCase
             $merchant
         );
 
-        $this->assertEquals([
-            "ID"       => 112,
-            "Status"   => 1,
-            "Merchant" => [
-                "ID" => 50,
-            ],
-            "Order" => [
-                "ID" => 67,
-            ],
-            "Customer" => [
-                "ID" => 64,
-            ],
-            "Payment Method" => [
-                "ID" => 63,
-            ],
-            "Voided Transaction" => [
-                "ID" => 111,
-            ]
-        ],[
-            "ID"     => $void->id(),
-            "Status" => $void->status(),
-            "Merchant" => [
-                "ID" => $void->merchant()->id(),
-            ],
-            "Order" => [
-                "ID" => $void->order()->id(),
-            ],
-            "Customer" => [
-                "ID" => $void->customer()->id(),
-            ],
-            "Payment Method"     => [
-                "ID" => $void->paymentMethod()->id(),
-            ],
-            "Voided Transaction" => [
-                "ID" => $void->voidedTransaction()->id(),
-            ]
-        ]);
-
-        $this->assertCount(1,       $curlProvider->calls );
-
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/payments',
-                'Body' => [
-                    'Body' => [
-                        'Merchant' => 50,
-                        'Order' => [
-                            'Transaction' => [
-                                'Type'          => 'Void'
-                            ],
-                            'OriginalTransaction' => 111
-                        ]
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '10f03a4a76e077d697f7b2789c2991d07f884a5d6111cac3197ddceae7be4fc3'
-                        ]
-                    ]
+        $this->assertEquals(
+            [
+                "ID"       => 112,
+                "Status"   => 1,
+                "Merchant" => [
+                    "ID" => 50,
                 ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '10f03a4a76e077d697f7b2789c2991d07f884a5d6111cac3197ddceae7be4fc3'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                "Order" => [
+                    "ID" => 67,
+                ],
+                "Customer" => [
+                    "ID" => 64,
+                ],
+                "Payment Method" => [
+                    "ID" => 63,
+                ],
+                "Voided Transaction" => [
+                    "ID" => 111,
+                ]
+            ],
+            [
+                "ID"     => $void->id(),
+                "Status" => $void->status(),
+                "Merchant" => [
+                    "ID" => $void->merchant()->id(),
+                ],
+                "Order" => [
+                    "ID" => $void->order()->id(),
+                ],
+                "Customer" => [
+                    "ID" => $void->customer()->id(),
+                ],
+                "Payment Method"     => [
+                    "ID" => $void->paymentMethod()->id(),
+                ],
+                "Voided Transaction" => [
+                    "ID" => $void->voidedTransaction()->id(),
                 ]
             ]
-        ], $curlProvider->calls );
+        );
+
+        $this->assertCount(1, $curlProvider->calls);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/payments',
+                    'Body' => [
+                        'Body' => [
+                            'Merchant' => 50,
+                            'Order' => [
+                                'Transaction' => [
+                                    'Type'      => 'Void',
+                                    'Comment1'  => null,
+                                    'Comment2'  => null,
+                                ],
+                                'OriginalTransaction' => 111
+                            ]
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => 'fadb80260b75db1efd32f4b321a269a51bd5cfe2c6abb37562f736ff1e5c6ab7'
+                            ]
+                        ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => 'fadb80260b75db1efd32f4b321a269a51bd5cfe2c6abb37562f736ff1e5c6ab7'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
+                ]
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testVoidRefund()
@@ -495,80 +525,88 @@ final class VoidPreviousTransactionTest extends TestCase
             $merchant
         );
 
-        $this->assertEquals([
-            "ID"       => 147,
-            "Status"   => 1,
-            "Merchant" => [
-                "ID" => 50,
-            ],
-            "Order" => [
-                "ID" => 79,
-            ],
-            "Customer" => [
-                "ID" => 76,
-            ],
-            "Payment Method" => [
-                "ID" => 75,
-            ],
-            "Voided Transaction" => [
-                "ID" => 146,
-            ]
-        ],[
-            "ID"     => $void->id(),
-            "Status" => $void->status(),
-            "Merchant" => [
-                "ID" => $void->merchant()->id(),
-            ],
-            "Order" => [
-                "ID" => $void->order()->id(),
-            ],
-            "Customer" => [
-                "ID" => $void->customer()->id(),
-            ],
-            "Payment Method"     => [
-                "ID" => $void->paymentMethod()->id(),
-            ],
-            "Voided Transaction" => [
-                "ID" => $void->voidedTransaction()->id(),
-            ]
-        ]);
-
-        $this->assertCount(1,       $curlProvider->calls );
-
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/payments',
-                'Body' => [
-                    'Body' => [
-                        'Merchant' => 50,
-                        'Order' => [
-                            'Transaction' => [
-                                'Type'          => 'Void'
-                            ],
-                            'OriginalTransaction' => 146
-                        ]
-                    ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => 'd744934c8120b8f56aa2b5cd763762c8af7a48aeeeeb0cfd756276c436295405'
-                        ]
-                    ]
+        $this->assertEquals(
+            [
+                "ID"       => 147,
+                "Status"   => 1,
+                "Merchant" => [
+                    "ID" => 50,
                 ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => 'd744934c8120b8f56aa2b5cd763762c8af7a48aeeeeb0cfd756276c436295405'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                "Order" => [
+                    "ID" => 79,
+                ],
+                "Customer" => [
+                    "ID" => 76,
+                ],
+                "Payment Method" => [
+                    "ID" => 75,
+                ],
+                "Voided Transaction" => [
+                    "ID" => 146,
+                ]
+            ],
+            [
+                "ID"     => $void->id(),
+                "Status" => $void->status(),
+                "Merchant" => [
+                    "ID" => $void->merchant()->id(),
+                ],
+                "Order" => [
+                    "ID" => $void->order()->id(),
+                ],
+                "Customer" => [
+                    "ID" => $void->customer()->id(),
+                ],
+                "Payment Method"     => [
+                    "ID" => $void->paymentMethod()->id(),
+                ],
+                "Voided Transaction" => [
+                    "ID" => $void->voidedTransaction()->id(),
                 ]
             ]
-        ], $curlProvider->calls );
+        );
+
+        $this->assertCount(1, $curlProvider->calls);
+
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/payments',
+                    'Body' => [
+                        'Body' => [
+                            'Merchant' => 50,
+                            'Order' => [
+                                'Transaction' => [
+                                    'Type'      => 'Void',
+                                    'Comment1'  => null,
+                                    'Comment2'  => null,
+                                ],
+                                'OriginalTransaction' => 146
+                            ]
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => '8e6de64bc52853493e450f4b55f5936b384563c3c8ac1277a43e9750fd36414e'
+                            ]
+                        ]
+                    ],
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => '8e6de64bc52853493e450f4b55f5936b384563c3c8ac1277a43e9750fd36414e'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                    ]
+                ]
+            ],
+            $curlProvider->calls
+        );
     }
 
     public function testVoidSale()
@@ -602,48 +640,53 @@ final class VoidPreviousTransactionTest extends TestCase
             $merchant
         );
 
-        $this->assertEquals(5,      $void->merchant()->id);
-        $this->assertEquals(529,    $void->paymentMethod()->id);
-        $this->assertEquals(570,    $void->order()->id);
-        $this->assertEquals(749,    $void->id);
-        $this->assertEquals(537,    $void->customer()->id);
-        $this->assertEquals(748,    $void->voidedTransaction()->id);
+        $this->assertEquals(5, $void->merchant()->id);
+        $this->assertEquals(529, $void->paymentMethod()->id);
+        $this->assertEquals(570, $void->order()->id);
+        $this->assertEquals(749, $void->id);
+        $this->assertEquals(537, $void->customer()->id);
+        $this->assertEquals(748, $void->voidedTransaction()->id);
 
-        $this->assertCount(1,       $curlProvider->calls );
+        $this->assertCount(1, $curlProvider->calls );
 
-        $this->assertEquals([
-            0 => [
-                'URL'  => 'https://api.mystackpay.com/api/payments',
-                'Body' => [
+        $this->assertEquals(
+            [
+                0 => [
+                    'URL'  => 'https://api.mystackpay.com/api/payments',
                     'Body' => [
-                        'Merchant' => 5,
-                        'Order' => [
-                            'Transaction' => [
-                                'Type'          => 'Void'
-                            ],
-                            'OriginalTransaction' => 748
+                        'Body' => [
+                            'Merchant' => 5,
+                            'Order' => [
+                                'Transaction' => [
+                                    'Type'      => 'Void',
+                                    'Comment1'  => null,
+                                    'Comment2'  => null,
+                                ],
+                                'OriginalTransaction' => 748
+                            ]
+                        ],
+                        'Header' => [
+                            'Application' => 'PaymentSystem',
+                            'ApiVersion'  => 'v1',
+                            'Mode'        => 'production',
+                            'Security'    => [
+                                'HashMethod' => 'SHA-256',
+                                'Hash'       => 'ed159acbf9422684a1f2808a6b7517a459fc5492d76cb53686505d1cf6f3255d'
+                            ]
                         ]
                     ],
-                    'Header' => [
-                        'Application' => 'PaymentSystem',
-                        'ApiVersion'  => 'v1',
-                        'Mode'        => 'production',
-                        'Security'    => [
-                            'HashMethod' => 'SHA-256',
-                            'Hash'       => '25915ea0ae1d0cf5fb373d5654e708c3054767d0336fd07cf807ff4d59e8169c'
-                        ]
+                    'Headers' => [
+                        0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
+                        1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
+                        2 => ['Key' => 'Mode',          'Value' => 'production'],
+                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
+                        4 => ['Key' => 'Hash',          'Value' => 'ed159acbf9422684a1f2808a6b7517a459fc5492d76cb53686505d1cf6f3255d'],
+                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
+                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
-                ],
-                'Headers' => [
-                    0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
-                    1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
-                    2 => ['Key' => 'Mode',          'Value' => 'production'],
-                    3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                    4 => ['Key' => 'Hash',          'Value' => '25915ea0ae1d0cf5fb373d5654e708c3054767d0336fd07cf807ff4d59e8169c'],
-                    5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
-                    6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                 ]
-            ]
-        ], $curlProvider->calls );
+            ],
+            $curlProvider->calls
+        );
     }
 }

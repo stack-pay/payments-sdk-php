@@ -174,6 +174,8 @@ final class SaleWithAccountDetailsTest extends TestCase
                                     'Type'          => 'Sale',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
@@ -203,7 +205,7 @@ final class SaleWithAccountDetailsTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '654a9e88daf805830e2ae028ab7c9fcafb309471c439307c2ca5e47fa76ad441'
+                                'Hash'       => 'c897bfa71089ce26aa46144e6cd583ec9e938c3d26dc4211a53ae1c96f3904c4'
                             ]
                         ]
                     ],
@@ -212,7 +214,7 @@ final class SaleWithAccountDetailsTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '654a9e88daf805830e2ae028ab7c9fcafb309471c439307c2ca5e47fa76ad441'],
+                        4 => ['Key' => 'Hash',          'Value' => 'c897bfa71089ce26aa46144e6cd583ec9e938c3d26dc4211a53ae1c96f3904c4'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json'],
                     ]
@@ -379,6 +381,8 @@ final class SaleWithAccountDetailsTest extends TestCase
                                     'Type'          => 'Sale',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
@@ -407,7 +411,7 @@ final class SaleWithAccountDetailsTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '9a80d88b7af0dcc8a4fa69a6bf2f91f06625531a1e7ba4586a646c7750cb443f'
+                                'Hash'       => '38258c09b8a4bdeeb99b60dae9eb7662e36f5ba949c35b8dd409c3c9a4ebe696'
                             ]
                         ]
                     ],
@@ -416,7 +420,7 @@ final class SaleWithAccountDetailsTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '9a80d88b7af0dcc8a4fa69a6bf2f91f06625531a1e7ba4586a646c7750cb443f'],
+                        4 => ['Key' => 'Hash',          'Value' => '38258c09b8a4bdeeb99b60dae9eb7662e36f5ba949c35b8dd409c3c9a4ebe696'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json'],
                     ]
@@ -654,6 +658,8 @@ final class SaleWithAccountDetailsTest extends TestCase
                                     'Type'          => 'Sale',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
@@ -683,7 +689,7 @@ final class SaleWithAccountDetailsTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '654a9e88daf805830e2ae028ab7c9fcafb309471c439307c2ca5e47fa76ad441'
+                                'Hash'       => 'c897bfa71089ce26aa46144e6cd583ec9e938c3d26dc4211a53ae1c96f3904c4'
                             ]
                         ]
                     ],
@@ -692,7 +698,7 @@ final class SaleWithAccountDetailsTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '654a9e88daf805830e2ae028ab7c9fcafb309471c439307c2ca5e47fa76ad441'],
+                        4 => ['Key' => 'Hash',          'Value' => 'c897bfa71089ce26aa46144e6cd583ec9e938c3d26dc4211a53ae1c96f3904c4'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json'],
                     ]

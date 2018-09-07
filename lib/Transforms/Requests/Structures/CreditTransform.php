@@ -14,6 +14,8 @@ trait CreditTransform
                     'Type'     => 'Credit',
                     'Amount'   => $transaction->object()->amount(),
                     'Currency' => $transaction->object()->currency(),
+                    'Comment1'  => $transaction->object()->comment1(),
+                    'Comment2'  => $transaction->object()->comment2(),
                 ]
             ]
         ];

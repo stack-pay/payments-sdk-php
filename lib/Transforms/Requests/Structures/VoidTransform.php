@@ -11,7 +11,9 @@ trait VoidTransform
             'Order'     => [
                 'OriginalTransaction'   => $transaction->object()->originalTransaction()->id(),
                 'Transaction'           => [
-                    'Type' => 'Void',
+                    'Type'      => 'Void',
+                    'Comment1'  => $transaction->object()->comment1(),
+                    'Comment2'  => $transaction->object()->comment2(),
                 ]
             ]
         ];

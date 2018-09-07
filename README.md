@@ -418,9 +418,88 @@ $refund = $stackpay->processTransaction(
 );
 ```
 
-## Scheduled Transactions
+## Request-Focused Implementation
 
 The following examples are recommended when the SDK is installed via Composer. These methods use `GuzzleHttp` which is very difficult to use without a good autoloader.
+
+You can directly interact with the response returned by these methods using the `->body()` method, which is the JSON-decoded `Body` element of the response payload as a `stdClass` PHP object.
+
+```php
+$response = $request->send();
+
+echo $response->body()->ID;
+```
+
+You can check the response for success using method `success()`. If `success()` returns `false`, then you can use `error()` to access `code`, `messages`, and `errors` attributes.
+
+```php
+$response = $request->send();
+
+if (! $response->success()) {
+    echo $response->error()->code."\n"; // the API response error code
+    echo $response->error()->message."\n"; // the API response error message
+    print_r($response->error()->errors); // populated when the request body does not pass validation
+}
+```
+
+### Payment Methods
+
+#### Create a stored Payment Method
+
+```php
+$account                        = new \StackPay\Payments\Structures\Account;
+$account->type                  = \StackPay\Payments\AccountTypes::VISA;
+$account->accountNumber         = '4111111111111111';
+$account->expirationMonth       = '12';
+$account->expirationYear        = '25';
+$account->cvv2                  = '999';
+
+$billingAddress                 = new \StackPay\Payments\Structures\Address;
+$billingAddress->address1       = '5360 Legacy Drive #150';
+$billingAddress->city           = 'Plano';
+$billingAddress->state          = 'TX';
+$billingAddress->postalCode     = '75024';
+$billingAddress->country        = Structures\Country::usa();
+
+$accountHolder                  = new \StackPay\Payments\Structures\AccountHolder;
+$accountHolder->name            = 'Stack Testerman';
+$accountHolder->billingAddress  = $billingAddress;
+
+$paymentMethod                  = new Structures\PaymentMethod;
+$paymentMethod->account         = $account;
+$paymentMethod->accountHolder   = $accountHolder;
+
+$request = (new \StackPay\Payments\Requests\v1\PaymentMethodRequest($paymentMethod))
+    ->create();
+
+$response = $request->send();
+```
+
+#### Store a tokenized Payment Method
+
+```php
+$paymentMethod        = new \StackPay\Payments\Structures\PaymentMethod;
+$paymentMethod->token = new \StackPay\Payments\Structures\Token('this-is-a-payment-token');
+
+$request = (new \StackPay\Payments\Requests\v1\PaymentMethodRequest($this->paymentMethod))
+    ->token();
+
+$response = $request->send();
+```
+
+#### Delete a stored Payment Method
+
+```php
+$paymentMethod     = new \StackPay\Payments\Structures\PaymentMethod;
+$paymentMethod->id = 12345;
+
+$request = (new \StackPay\Payments\Requests\v1\PaymentMethodRequest($paymentMethod))
+            ->delete();
+
+$response = $request->send();
+```
+
+### Scheduled Transactions
 
 Scheduled transactions run in a batch once per day on the given date at `12:00:00 UTC`.
 

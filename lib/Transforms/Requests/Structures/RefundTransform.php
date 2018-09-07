@@ -12,7 +12,9 @@ trait RefundTransform
                 'OriginalTransaction'   => $transaction->object()->originalTransaction()->id(),
                 'Transaction'           => [
                     'Type'      => 'Refund',
-                    'Amount'    => $transaction->object()->amount()
+                    'Amount'    => $transaction->object()->amount(),
+                    'Comment1'  => $transaction->object()->comment1(),
+                    'Comment2'  => $transaction->object()->comment2(),
                 ]
             ]
         ];
