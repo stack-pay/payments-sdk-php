@@ -123,6 +123,8 @@ final class RefundWithOriginalTransactionTest extends TestCase
                                 'Transaction' => [
                                     'Type'          => 'Refund',
                                     'Amount'        => 50,
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
                                     'SplitAmount'   => 10,
@@ -137,7 +139,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '78cb9e6e18bcdca028a52d88a2616e5929e77dd4aae97505daf008a1e5ac3930'
+                                'Hash'       => 'a8c94081f67c63110d9a9544ea5b5718e3de3533d9a977c2de9e739008aae3c8'
                             ]
                         ]
                     ],
@@ -146,7 +148,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '78cb9e6e18bcdca028a52d88a2616e5929e77dd4aae97505daf008a1e5ac3930'],
+                        4 => ['Key' => 'Hash',          'Value' => 'a8c94081f67c63110d9a9544ea5b5718e3de3533d9a977c2de9e739008aae3c8'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -266,6 +268,8 @@ final class RefundWithOriginalTransactionTest extends TestCase
                                 'Transaction' => [
                                     'Type'          => 'Refund',
                                     'Amount'        => 50,
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
                                     'SplitAmount'   => 10,
@@ -280,7 +284,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '78cb9e6e18bcdca028a52d88a2616e5929e77dd4aae97505daf008a1e5ac3930'
+                                'Hash'       => 'a8c94081f67c63110d9a9544ea5b5718e3de3533d9a977c2de9e739008aae3c8'
                             ]
                         ]
                     ],
@@ -289,7 +293,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '78cb9e6e18bcdca028a52d88a2616e5929e77dd4aae97505daf008a1e5ac3930'],
+                        4 => ['Key' => 'Hash',          'Value' => 'a8c94081f67c63110d9a9544ea5b5718e3de3533d9a977c2de9e739008aae3c8'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -359,6 +363,8 @@ final class RefundWithOriginalTransactionTest extends TestCase
                                 'Transaction' => [
                                     'Type'          => 'Refund',
                                     'Amount'        => 90,
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
                                     'SplitAmount'   => 20,
@@ -373,7 +379,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'cfdfd6479a6884d8d106448185fc30e527e1f6465ce486eddcf4e33d9fa4c660'
+                                'Hash'       => 'bccd6fb36e94c93afdd4b89b4470f2ae96ed8f87dd2bc41a22cef3d879b774d9'
                             ]
                         ]
                     ],
@@ -382,7 +388,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'cfdfd6479a6884d8d106448185fc30e527e1f6465ce486eddcf4e33d9fa4c660'],
+                        4 => ['Key' => 'Hash',          'Value' => 'bccd6fb36e94c93afdd4b89b4470f2ae96ed8f87dd2bc41a22cef3d879b774d9'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -504,6 +510,8 @@ final class RefundWithOriginalTransactionTest extends TestCase
                                 'Transaction' => [
                                     'Type'          => 'Refund',
                                     'Amount'        => 50,
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
                                     'SplitAmount'   => 10,
@@ -518,7 +526,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '78cb9e6e18bcdca028a52d88a2616e5929e77dd4aae97505daf008a1e5ac3930'
+                                'Hash'       => 'a8c94081f67c63110d9a9544ea5b5718e3de3533d9a977c2de9e739008aae3c8'
                             ]
                         ]
                     ],
@@ -527,7 +535,7 @@ final class RefundWithOriginalTransactionTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '78cb9e6e18bcdca028a52d88a2616e5929e77dd4aae97505daf008a1e5ac3930'],
+                        4 => ['Key' => 'Hash',          'Value' => 'a8c94081f67c63110d9a9544ea5b5718e3de3533d9a977c2de9e739008aae3c8'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]

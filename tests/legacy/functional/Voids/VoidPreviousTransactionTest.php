@@ -106,9 +106,11 @@ final class VoidPreviousTransactionTest extends TestCase
                             'Merchant' => 50,
                             'Order' => [
                                 'Transaction' => [
-                                    'Type'      => 'Void',
-                                    'Comment1'  => null,
-                                    'Comment2'  => null,
+                                    'Type'          => 'Void',
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                 ],
                                 'OriginalTransaction' => 111
                             ]
@@ -119,7 +121,7 @@ final class VoidPreviousTransactionTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'fadb80260b75db1efd32f4b321a269a51bd5cfe2c6abb37562f736ff1e5c6ab7'
+                                'Hash'       => '3824178ead0fe729a73f4d938c3c7e57aef4ab6204681aabc2f4e2437e5ee783'
                             ]
                         ]
                     ],
@@ -128,7 +130,7 @@ final class VoidPreviousTransactionTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'fadb80260b75db1efd32f4b321a269a51bd5cfe2c6abb37562f736ff1e5c6ab7'],
+                        4 => ['Key' => 'Hash',          'Value' => '3824178ead0fe729a73f4d938c3c7e57aef4ab6204681aabc2f4e2437e5ee783'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -232,9 +234,11 @@ final class VoidPreviousTransactionTest extends TestCase
                             'Merchant' => 50,
                             'Order' => [
                                 'Transaction' => [
-                                    'Type'      => 'Void',
-                                    'Comment1'  => null,
-                                    'Comment2'  => null,
+                                    'Type'          => 'Void',
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                 ],
                                 'OriginalTransaction' => 111
                             ]
@@ -245,7 +249,7 @@ final class VoidPreviousTransactionTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'fadb80260b75db1efd32f4b321a269a51bd5cfe2c6abb37562f736ff1e5c6ab7'
+                                'Hash'       => '3824178ead0fe729a73f4d938c3c7e57aef4ab6204681aabc2f4e2437e5ee783'
                             ]
                         ]
                     ],
@@ -254,7 +258,7 @@ final class VoidPreviousTransactionTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'fadb80260b75db1efd32f4b321a269a51bd5cfe2c6abb37562f736ff1e5c6ab7'],
+                        4 => ['Key' => 'Hash',          'Value' => '3824178ead0fe729a73f4d938c3c7e57aef4ab6204681aabc2f4e2437e5ee783'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -347,9 +351,11 @@ final class VoidPreviousTransactionTest extends TestCase
                             'Merchant' => 50,
                             'Order' => [
                                 'Transaction' => [
-                                    'Type'      => 'Void',
-                                    'Comment1'  => null,
-                                    'Comment2'  => null,
+                                    'Type'          => 'Void',
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                 ],
                                 'OriginalTransaction' => 108
                             ]
@@ -360,7 +366,7 @@ final class VoidPreviousTransactionTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'c5f88d7472fc17f8761962525d2c4910ca667d84ed1ab78859cb30115c777855'
+                                'Hash'       => 'b52331f43852abf278bad0d04dd111cf93cbc295c83a99618b947780c089062d'
                             ]
                         ]
                     ],
@@ -369,7 +375,7 @@ final class VoidPreviousTransactionTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'c5f88d7472fc17f8761962525d2c4910ca667d84ed1ab78859cb30115c777855'],
+                        4 => ['Key' => 'Hash',          'Value' => 'b52331f43852abf278bad0d04dd111cf93cbc295c83a99618b947780c089062d'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -462,9 +468,11 @@ final class VoidPreviousTransactionTest extends TestCase
                             'Merchant' => 50,
                             'Order' => [
                                 'Transaction' => [
-                                    'Type'      => 'Void',
-                                    'Comment1'  => null,
-                                    'Comment2'  => null,
+                                    'Type'          => 'Void',
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                 ],
                                 'OriginalTransaction' => 111
                             ]
@@ -475,7 +483,7 @@ final class VoidPreviousTransactionTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'fadb80260b75db1efd32f4b321a269a51bd5cfe2c6abb37562f736ff1e5c6ab7'
+                                'Hash'       => '3824178ead0fe729a73f4d938c3c7e57aef4ab6204681aabc2f4e2437e5ee783'
                             ]
                         ]
                     ],
@@ -484,7 +492,7 @@ final class VoidPreviousTransactionTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'fadb80260b75db1efd32f4b321a269a51bd5cfe2c6abb37562f736ff1e5c6ab7'],
+                        4 => ['Key' => 'Hash',          'Value' => '3824178ead0fe729a73f4d938c3c7e57aef4ab6204681aabc2f4e2437e5ee783'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -577,9 +585,11 @@ final class VoidPreviousTransactionTest extends TestCase
                             'Merchant' => 50,
                             'Order' => [
                                 'Transaction' => [
-                                    'Type'      => 'Void',
-                                    'Comment1'  => null,
-                                    'Comment2'  => null,
+                                    'Type'          => 'Void',
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                 ],
                                 'OriginalTransaction' => 146
                             ]
@@ -590,7 +600,7 @@ final class VoidPreviousTransactionTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '8e6de64bc52853493e450f4b55f5936b384563c3c8ac1277a43e9750fd36414e'
+                                'Hash'       => 'ff9d93debb367c7c716ca1b10a0d0c449eeaa0fde48ec39a891ed91f290f1169'
                             ]
                         ]
                     ],
@@ -599,7 +609,7 @@ final class VoidPreviousTransactionTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '8e6de64bc52853493e450f4b55f5936b384563c3c8ac1277a43e9750fd36414e'],
+                        4 => ['Key' => 'Hash',          'Value' => 'ff9d93debb367c7c716ca1b10a0d0c449eeaa0fde48ec39a891ed91f290f1169'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -658,9 +668,11 @@ final class VoidPreviousTransactionTest extends TestCase
                             'Merchant' => 5,
                             'Order' => [
                                 'Transaction' => [
-                                    'Type'      => 'Void',
-                                    'Comment1'  => null,
-                                    'Comment2'  => null,
+                                    'Type'          => 'Void',
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
+                                    'Comment1'      => null,
+                                    'Comment2'      => null,
                                 ],
                                 'OriginalTransaction' => 748
                             ]
@@ -671,7 +683,7 @@ final class VoidPreviousTransactionTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'ed159acbf9422684a1f2808a6b7517a459fc5492d76cb53686505d1cf6f3255d'
+                                'Hash'       => '364b436f1ee51b02aedce3ab67bd738bca85120565ad2c76684273826232020c'
                             ]
                         ]
                     ],
@@ -680,7 +692,7 @@ final class VoidPreviousTransactionTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'ed159acbf9422684a1f2808a6b7517a459fc5492d76cb53686505d1cf6f3255d'],
+                        4 => ['Key' => 'Hash',          'Value' => '364b436f1ee51b02aedce3ab67bd738bca85120565ad2c76684273826232020c'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]

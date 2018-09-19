@@ -300,6 +300,17 @@ Generate request objects using factory classes and process them.
 
 This method of SDK usage is scheduled for deprecation. It will eventually be replaced with a process similar to what is shown in the Scheduled Transactions section below.
 
+Prior to calling `processTransaction()`, you are able to add optional fields to your request objects:
+
+```php
+$saleRequest
+    ->setInvoiceNumber('invoice_874196')
+    ->setExternalId('transaction_174968')
+    ->setComment1('Final payment on Invoice #874196')
+    ->setComment2('Collected by Joe Salesman')
+;
+```
+
 ### Sale
 
 #### with Account Details

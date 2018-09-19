@@ -43,6 +43,11 @@ final class CreditTest extends StructureTestCase
         $this->full('amount', 'int');
     }
 
+    public function test_invoiceNumber()
+    {
+        $this->full('invoiceNumber', 'string', false);
+    }
+
     public function test_externalID()
     {
         $this->full('externalID', 'string', false);

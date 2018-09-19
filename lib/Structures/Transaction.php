@@ -19,6 +19,7 @@ class Transaction implements Interfaces\Transaction
     public $currency;
     public $split;
     public $amount;
+    public $invoiceNumber;
     public $externalID;
     public $comment1;
     public $comment2;
@@ -91,6 +92,11 @@ class Transaction implements Interfaces\Transaction
     public function amount()
     {
         return $this->amount;
+    }
+
+    public function invoiceNumber()
+    {
+        return $this->invoiceNumber;
     }
 
     public function externalID()
@@ -190,6 +196,13 @@ class Transaction implements Interfaces\Transaction
     public function setAmount($amount = null)
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function setInvoiceNumber($invoiceNumber = null)
+    {
+        $this->invoiceNumber = $invoiceNumber;
 
         return $this;
     }

@@ -105,6 +105,8 @@ final class CreditWithPaymentMethodTest extends TestCase
                                 'Transaction' => [
                                     'Type'          => 'Credit',
                                     'Amount'        => $input_amount,
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
                                     'Currency'      => Currency::USD,
@@ -117,7 +119,7 @@ final class CreditWithPaymentMethodTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '92bb95fda8fe98afadcc17de804d5c14564775c36527fd14b020a054597a76a5'
+                                'Hash'       => '867a5fd139bdc63b42460cd449e8069d14d9598c5a4739fd70eaaf8fa882dfb6'
                             ]
                         ]
                     ],
@@ -126,7 +128,7 @@ final class CreditWithPaymentMethodTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '92bb95fda8fe98afadcc17de804d5c14564775c36527fd14b020a054597a76a5'],
+                        4 => ['Key' => 'Hash',          'Value' => '867a5fd139bdc63b42460cd449e8069d14d9598c5a4739fd70eaaf8fa882dfb6'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]

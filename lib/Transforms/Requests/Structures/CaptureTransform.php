@@ -11,10 +11,12 @@ trait CaptureTransform
             'Order'     => [
                 'OriginalTransaction'   => $transaction->object()->originalTransaction()->id(),
                 'Transaction'           => [
-                    'Type'      => 'Capture',
-                    'Amount'    => $transaction->object()->amount(),
-                    'Comment1'  => $transaction->object()->comment1(),
-                    'Comment2'  => $transaction->object()->comment2(),
+                    'Type'          => 'Capture',
+                    'Amount'        => $transaction->object()->amount(),
+                    'InvoiceNumber' => $transaction->object()->invoiceNumber() ?: null,
+                    'ExternalId'    => $transaction->object()->externalID() ?: null,
+                    'Comment1'      => $transaction->object()->comment1() ?: null,
+                    'Comment2'      => $transaction->object()->comment2() ?: null,
                 ]
             ]
         ];

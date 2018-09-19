@@ -159,6 +159,8 @@ final class AuthWithTokenTest extends TestCase
                                     'Type'          => 'Auth',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
                                     'SplitAmount'   => 1000,
@@ -173,7 +175,7 @@ final class AuthWithTokenTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'b1e74eb06a9ef9d71a5f797779076b5fbc6ccdc837321bc149317c97f957d404'
+                                'Hash'       => 'f10db484c5a3cfc07684263f0bcc97382464c4bfb7de49b708b976e7b3edf744'
                             ]
                         ]
                     ],
@@ -182,7 +184,7 @@ final class AuthWithTokenTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'b1e74eb06a9ef9d71a5f797779076b5fbc6ccdc837321bc149317c97f957d404'],
+                        4 => ['Key' => 'Hash',          'Value' => 'f10db484c5a3cfc07684263f0bcc97382464c4bfb7de49b708b976e7b3edf744'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -256,6 +258,8 @@ final class AuthWithTokenTest extends TestCase
                                     'Type'          => 'Auth',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
                                     'SplitAmount'   => 1000,
@@ -270,7 +274,7 @@ final class AuthWithTokenTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'b1e74eb06a9ef9d71a5f797779076b5fbc6ccdc837321bc149317c97f957d404'
+                                'Hash'       => 'f10db484c5a3cfc07684263f0bcc97382464c4bfb7de49b708b976e7b3edf744'
                             ]
                         ]
                     ],
@@ -279,7 +283,7 @@ final class AuthWithTokenTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'b1e74eb06a9ef9d71a5f797779076b5fbc6ccdc837321bc149317c97f957d404'],
+                        4 => ['Key' => 'Hash',          'Value' => 'f10db484c5a3cfc07684263f0bcc97382464c4bfb7de49b708b976e7b3edf744'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
