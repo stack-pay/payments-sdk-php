@@ -10,12 +10,14 @@ trait CreditTransform
             'Merchant'  => $transaction->object()->merchant()->id(),
             'Order'     => [
                 'PaymentMethod' => $transaction->object()->paymentMethod()->id(),
-                'Transaction'           => [
-                    'Type'     => 'Credit',
-                    'Amount'   => $transaction->object()->amount(),
-                    'Currency' => $transaction->object()->currency(),
-                    'Comment1'  => $transaction->object()->comment1(),
-                    'Comment2'  => $transaction->object()->comment2(),
+                'Transaction'   => [
+                    'Type'          => 'Credit',
+                    'Amount'        => $transaction->object()->amount(),
+                    'Currency'      => $transaction->object()->currency(),
+                    'InvoiceNumber' => $transaction->object()->invoiceNumber() ?: null,
+                    'ExternalId'    => $transaction->object()->externalID() ?: null,
+                    'Comment1'      => $transaction->object()->comment1() ?: null,
+                    'Comment2'      => $transaction->object()->comment2() ?: null,
                 ]
             ]
         ];

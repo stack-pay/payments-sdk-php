@@ -27,11 +27,13 @@ trait AuthTransform
         $body[ 'Merchant' ] = $auth->merchant()->id();
         $body[ 'Order']    = [
             'Transaction'   => [
-                'Type'      => 'Auth',
-                'Currency'  => $auth->currency(),
-                'Amount'    => $auth->amount(),
-                'Comment1'  => $auth->comment1(),
-                'Comment2'  => $auth->comment2(),
+                'Type'          => 'Auth',
+                'Currency'      => $auth->currency(),
+                'Amount'        => $auth->amount(),
+                'InvoiceNumber' => $auth->invoiceNumber() ?: null,
+                'ExternalId'    => $auth->externalID() ?: null,
+                'Comment1'      => $auth->comment1() ?: null,
+                'Comment2'      => $auth->comment2() ?: null,
             ]
         ];
     }

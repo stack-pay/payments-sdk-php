@@ -159,6 +159,8 @@ final class AuthWithPaymentMethodTest extends TestCase
                                     'Type'          => 'Auth',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
                                     'SplitAmount'   => 1000,
@@ -173,7 +175,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '411978521c101e14a2ade34ebffe0b08430432657f5ee148fe1d9968313ba606'
+                                'Hash'       => '286f93cb4cee16eebc952aa8e589ed5e07202d57eceb5f9730cbacf658976fcd'
                             ]
                         ]
                     ],
@@ -182,7 +184,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '411978521c101e14a2ade34ebffe0b08430432657f5ee148fe1d9968313ba606'],
+                        4 => ['Key' => 'Hash',          'Value' => '286f93cb4cee16eebc952aa8e589ed5e07202d57eceb5f9730cbacf658976fcd'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -338,6 +340,8 @@ final class AuthWithPaymentMethodTest extends TestCase
                                     'Type'          => 'Auth',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
                                     'SplitAmount'   => 1000,
@@ -352,7 +356,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '411978521c101e14a2ade34ebffe0b08430432657f5ee148fe1d9968313ba606'
+                                'Hash'       => '286f93cb4cee16eebc952aa8e589ed5e07202d57eceb5f9730cbacf658976fcd'
                             ]
                         ]
                     ],
@@ -361,7 +365,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '411978521c101e14a2ade34ebffe0b08430432657f5ee148fe1d9968313ba606'],
+                        4 => ['Key' => 'Hash',          'Value' => '286f93cb4cee16eebc952aa8e589ed5e07202d57eceb5f9730cbacf658976fcd'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]

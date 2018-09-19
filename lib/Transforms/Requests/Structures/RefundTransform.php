@@ -11,10 +11,12 @@ trait RefundTransform
             'Order'     => [
                 'OriginalTransaction'   => $transaction->object()->originalTransaction()->id(),
                 'Transaction'           => [
-                    'Type'      => 'Refund',
-                    'Amount'    => $transaction->object()->amount(),
-                    'Comment1'  => $transaction->object()->comment1(),
-                    'Comment2'  => $transaction->object()->comment2(),
+                    'Type'          => 'Refund',
+                    'Amount'        => $transaction->object()->amount(),
+                    'InvoiceNumber' => $transaction->object()->invoiceNumber() ?: null,
+                    'ExternalId'    => $transaction->object()->externalID() ?: null,
+                    'Comment1'      => $transaction->object()->comment1() ?: null,
+                    'Comment2'      => $transaction->object()->comment2() ?: null,
                 ]
             ]
         ];

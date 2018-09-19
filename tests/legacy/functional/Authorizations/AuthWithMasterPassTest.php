@@ -156,6 +156,8 @@ final class AuthWithMasterPassTest extends TestCase
                                     'Type'          => 'Auth',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
                                     'SplitAmount'   => 1000,
@@ -172,7 +174,7 @@ final class AuthWithMasterPassTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'c90b876210af8342e02659531cd50521d7d01eb268ff00e3e191c8983cdf972f'
+                                'Hash'       => 'ee346f595927ec62365e91ed6f7b0003809edeab237509ad6ca1f7b553063b5f'
                             ]
                         ]
                     ],
@@ -181,7 +183,7 @@ final class AuthWithMasterPassTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'c90b876210af8342e02659531cd50521d7d01eb268ff00e3e191c8983cdf972f'],
+                        4 => ['Key' => 'Hash',          'Value' => 'ee346f595927ec62365e91ed6f7b0003809edeab237509ad6ca1f7b553063b5f'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -252,6 +254,8 @@ final class AuthWithMasterPassTest extends TestCase
                                     'Type'          => 'Auth',
                                     'Currency'      => 'USD',
                                     'Amount'        => 10000,
+                                    'InvoiceNumber' => null,
+                                    'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
                                     'SplitAmount'   => 1000,
@@ -268,7 +272,7 @@ final class AuthWithMasterPassTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'c90b876210af8342e02659531cd50521d7d01eb268ff00e3e191c8983cdf972f'
+                                'Hash'       => 'ee346f595927ec62365e91ed6f7b0003809edeab237509ad6ca1f7b553063b5f'
                             ]
                         ]
                     ],
@@ -277,7 +281,7 @@ final class AuthWithMasterPassTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'c90b876210af8342e02659531cd50521d7d01eb268ff00e3e191c8983cdf972f'],
+                        4 => ['Key' => 'Hash',          'Value' => 'ee346f595927ec62365e91ed6f7b0003809edeab237509ad6ca1f7b553063b5f'],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]

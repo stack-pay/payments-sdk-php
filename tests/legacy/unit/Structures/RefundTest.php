@@ -23,6 +23,11 @@ final class RefundTest extends StructureTestCase
         $this->full('id', 'int', false);
     }
 
+    public function test_invoiceNumber()
+    {
+        $this->full('invoiceNumber', 'string', false);
+    }
+
     public function test_externalID()
     {
         $this->full('externalID', 'string', false);
