@@ -41,5 +41,11 @@
         "lint:fix": "@php vendor/bin/phpcbf --standard=ruleset.xml --ignore=vendor/ --colors ./src",
         "lint:syntax": "find . -name '*.php' ! -path './vendor/*' -print0 | xargs -0 -n 1 -P 4 php -l | grep -v 'No syntax errors' || true",
         "lint:cs": "@php vendor/bin/phpcs --standard=ruleset.xml --ignore=vendor/ --colors ./src"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.org"
+        }
     }
 }
