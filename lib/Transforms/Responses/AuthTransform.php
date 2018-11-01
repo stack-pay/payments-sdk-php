@@ -25,9 +25,9 @@ trait AuthTransform
                 ->createAccount()
                     ->setType($body['PaymentMethod']['AccountType'])
                     ->setLast4($body['PaymentMethod']['AccountLast4'])
-                    ->setRoutingLast4($this->getIfExists($body['PaymentMethod'],'RoutingLast4'))
-                    ->setExpireMonth($this->getIfExists($body['PaymentMethod'],'ExpirationMonth'))
-                    ->setExpireYear($this->getIfExists($body['PaymentMethod'],'ExpirationYear'));
+                    ->setRoutingLast4($this->getIfExists($body['PaymentMethod'], 'RoutingLast4'))
+                    ->setExpireMonth($this->getIfExists($body['PaymentMethod'], 'ExpirationMonth'))
+                    ->setExpireYear($this->getIfExists($body['PaymentMethod'], 'ExpirationYear'));
         $transaction->object()
             ->createPaymentMethod()
                 ->createAccountHolder()
@@ -40,8 +40,7 @@ trait AuthTransform
                         ->setCountry($body['PaymentMethod']['BillingAddress']['Country']);
 
 
-        if( array_key_exists('SplitMerchant', $body['Payment']) )
-        {
+        if (array_key_exists('SplitMerchant', $body['Payment'])) {
             $transaction->object()
                 ->createSplit()
                     ->setAmount($body['Payment']['SplitAmount'])

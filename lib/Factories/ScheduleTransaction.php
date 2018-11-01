@@ -14,8 +14,7 @@ class ScheduleTransaction
         \DateTime                $scheduledAt,
         $currency_code,
         Interfaces\Split         $split = null
-    )
-    {
+    ) {
         $scheduledTransaction = (new Structures\ScheduledTransaction())
             ->setPaymentMethod($paymentMethod)
             ->setMerchant($merchant)
@@ -35,8 +34,7 @@ class ScheduleTransaction
         \DateTime                $scheduledAt,
         $currency_code,
         Interfaces\Split         $split = null
-    )
-    {
+    ) {
         $scheduledTransaction = (new Structures\ScheduledTransaction())
             ->setAccount($account)
             ->setAccountHolder($accountHolder)
@@ -56,8 +54,7 @@ class ScheduleTransaction
         \DateTime                $scheduledAt,
         $currency_code,
         Interfaces\Split         $split = null
-    )
-    {
+    ) {
         $scheduledTransaction = (new Structures\ScheduledTransaction())
             ->setToken($token)
             ->setMerchant($merchant)
