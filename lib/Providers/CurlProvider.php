@@ -4,15 +4,6 @@ namespace StackPay\Payments\Providers;
 
 use Curl\Curl;
 
-interface CurlProviderInterface
-{
-    public function newCurl();
-    public function post($url, array $body);
-    public function setHeader($key, $value);
-    public function responseHeaders();
-    public function httpStatusCode();
-}
-
 class CurlProvider implements CurlProviderInterface
 {
     private $curl;
