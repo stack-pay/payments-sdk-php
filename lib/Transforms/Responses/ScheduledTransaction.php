@@ -26,7 +26,8 @@ trait ScheduledTransaction
 
         $transaction->object()->paymentMethod()->createAccountHolder()->createBillingAddress()
             ->setAddress1($body['data']['payment_method']['billing_address_1'])
-            ->setAddress2(isset($body['data']['payment_method']['billing_address_2']) ? $body['data']['payment_method']['billing_address_2'] : '')
+            ->setAddress2(isset($body['data']['payment_method']['billing_address_2'])
+                ? $body['data']['payment_method']['billing_address_2'] : '')
             ->setCity($body['data']['payment_method']['billing_city'])
             ->setState($body['data']['payment_method']['billing_state'])
             ->setPostalCode($body['data']['payment_method']['billing_zip'])

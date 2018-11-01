@@ -58,7 +58,9 @@ class Gateway extends Gateways\Gateway
 
     protected function execute(&$transaction, $method = 'post')
     {
-        $transaction->request()->rawBody(json_encode($transaction->request()->body(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $transaction->request()->rawBody(
+            json_encode($transaction->request()->body(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+        );
 
         $this->requestHeaders($transaction->request());
         $this->requestHash($transaction->request());
@@ -89,7 +91,9 @@ class Gateway extends Gateways\Gateway
         $this->requestCreatePaymentMethod($transaction);
 
         $transaction->request()->endpoint($this->createTokenURL);
-        $transaction->request()->rawBody(json_encode($transaction->request()->body(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
+        $transaction->request()->rawBody(
+            json_encode($transaction->request()->body(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
+        );
 
         $this->requestPublicAuth($transaction->request());
         $this->requestJSON($transaction->request());
