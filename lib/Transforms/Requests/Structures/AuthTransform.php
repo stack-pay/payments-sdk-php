@@ -9,13 +9,13 @@ trait AuthTransform
         $body = [];
         $auth = $transaction->object();
 
-        $this->requestAuth_fillBase( $body, $auth );
-        $this->requestAuth_fillToken( $body, $auth );
-        $this->requestAuth_fillMasterPass( $body, $auth );
-        $this->requestAuth_fillPaymentMethod( $body, $auth );
-        $this->requestAuth_fillAccount( $body, $auth );
-        $this->requestAuth_fillSplit( $body, $auth );
-        $this->requestAuth_fillCustomer( $body, $auth );
+        $this->requestAuth_fillBase($body, $auth);
+        $this->requestAuth_fillToken($body, $auth);
+        $this->requestAuth_fillMasterPass($body, $auth);
+        $this->requestAuth_fillPaymentMethod($body, $auth);
+        $this->requestAuth_fillAccount($body, $auth);
+        $this->requestAuth_fillSplit($body, $auth);
+        $this->requestAuth_fillCustomer($body, $auth);
 
         $transaction->request()->body($body);
     }

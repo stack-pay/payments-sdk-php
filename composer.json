@@ -34,12 +34,23 @@
         ]
     },
     "scripts": {
+        "check": [
+            "@lint",
+            "@test"
+        ],
+        "test": "vendor/bin/phpunit",
         "lint": [
           "@lint:syntax",
           "@lint:cs"
         ],
-        "lint:fix": "@php vendor/bin/phpcbf --standard=ruleset.xml --ignore=vendor/ --colors ./src",
+        "lint:fix": "@php vendor/bin/phpcbf --standard=ruleset.xml --ignore=vendor/ --colors ./lib",
         "lint:syntax": "find . -name '*.php' ! -path './vendor/*' -print0 | xargs -0 -n 1 -P 4 php -l | grep -v 'No syntax errors' || true",
-        "lint:cs": "@php vendor/bin/phpcs --standard=ruleset.xml --ignore=vendor/ --colors ./src"
+        "lint:cs": "@php vendor/bin/phpcs --standard=ruleset.xml --ignore=vendor/ --colors ./lib"
+    },
+    "repositories": {
+        "packagist": {
+            "type": "composer",
+            "url": "https://packagist.org"
+        }
     }
 }

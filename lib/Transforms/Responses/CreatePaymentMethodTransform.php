@@ -15,9 +15,9 @@ trait CreatePaymentMethodTransform
         $transaction->object()->createAccount()
             ->setLast4($body['PaymentMethod']['AccountLast4'])
             ->setType($body['PaymentMethod']['AccountType'])
-            ->setExpireMonth($this->getIfExists($body['PaymentMethod'],'ExpirationMonth'))
-            ->setExpireYear($this->getIfExists($body['PaymentMethod'],'ExpirationYear'))
-            ->setRoutingLast4($this->getIfExists($body['PaymentMethod'],'RoutingLast4'));
+            ->setExpireMonth($this->getIfExists($body['PaymentMethod'], 'ExpirationMonth'))
+            ->setExpireYear($this->getIfExists($body['PaymentMethod'], 'ExpirationYear'))
+            ->setRoutingLast4($this->getIfExists($body['PaymentMethod'], 'RoutingLast4'));
         $transaction->object()->createAccountHolder()->createBillingAddress()
             ->setAddress1($body['PaymentMethod']['BillingAddress']['AddressLine1'])
             ->setAddress2($body['PaymentMethod']['BillingAddress']['AddressLine2'])

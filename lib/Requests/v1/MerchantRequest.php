@@ -26,7 +26,7 @@ class MerchantRequest extends Request
         $this->endpoint = '/api/merchants/limits';
         $this->hashKey  = StackPay::$privateKey;
         $this->body     = [
-            'Merchant' => $merchant ? $merchant->id ? $this->merchant->id,
+            'Merchant' => $merchant ? $merchant->id : $this->merchant->id,
         ];
 
         return $this;

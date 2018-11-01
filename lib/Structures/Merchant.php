@@ -185,8 +185,8 @@ class Merchant implements Interfaces\Merchant
 
     // ----
 
-     public function appendRate()
-     {
+    public function appendRate()
+    {
         if (! $this->rates) {
             $this->rates = [];
         }

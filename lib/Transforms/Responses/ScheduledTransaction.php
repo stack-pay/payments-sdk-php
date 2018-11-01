@@ -26,7 +26,8 @@ trait ScheduledTransaction
 
         $transaction->object()->paymentMethod()->createAccountHolder()->createBillingAddress()
             ->setAddress1($body['data']['payment_method']['billing_address_1'])
-            ->setAddress2(isset($body['data']['payment_method']['billing_address_2']) ? $body['data']['payment_method']['billing_address_2'] : '')
+            ->setAddress2(isset($body['data']['payment_method']['billing_address_2'])
+                ? $body['data']['payment_method']['billing_address_2'] : '')
             ->setCity($body['data']['payment_method']['billing_city'])
             ->setState($body['data']['payment_method']['billing_state'])
             ->setPostalCode($body['data']['payment_method']['billing_zip'])
@@ -45,7 +46,7 @@ trait ScheduledTransaction
                 ->setRoutingLast4($body['data']['payment_method']['routing_last_four']);
         }
 
-        if (array_key_exists('split_merchant_id', $body['data'] )) {
+        if (array_key_exists('split_merchant_id', $body['data'])) {
             $transaction->object()
                 ->createSplit()
                 ->setAmount($body['data']['split_amount'])

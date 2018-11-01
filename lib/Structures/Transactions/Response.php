@@ -95,7 +95,7 @@ class Response
     public function hashKey($hashKey = null)
     {
         if (! $this->locked && $hashKey) {
-           $this->hashKey = $hashKey;
+            $this->hashKey = $hashKey;
         }
 
         return $this->hashKey;

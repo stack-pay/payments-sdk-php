@@ -13,8 +13,7 @@ class Refund
         Interfaces\Merchant $merchant = null,
         Interfaces\Split $split = null,
         $idempotencyKey = null
-    )
-    {
+    ) {
         return (new Structures\Refund())
             ->setOriginalTransaction($originalTransaction)
             ->setMerchant($merchant ? $merchant : $originalTransaction->merchant())

@@ -51,19 +51,32 @@ trait ScheduledTransaction
                     $body['payment_method']['expiration_month'] = $transaction->object()->account()->expireMonth();
                     $body['payment_method']['expiration_year']  = $transaction->object()->account()->expireYear();
                 } elseif ($transaction->object()->account()->expireDate()) {
-                    $body['payment_method']['expiration_month'] = substr($transaction->object()->account()->expireDate(), 0, 2);
-                    $body['payment_method']['expiration_year']  = substr($transaction->object()->account()->expireDate(), 2, 2);
+                    $body['payment_method']['expiration_month'] = substr(
+                        $transaction->object()->account()->expireDate(),
+                        0,
+                        2
+                    );
+                    $body['payment_method']['expiration_year']  = substr(
+                        $transaction->object()->account()->expireDate(),
+                        2,
+                        2
+                    );
                 }
             }
 
-            $body['payment_method']['billing_address_1'] = $transaction->object()->accountHolder()->billingAddress()->address1();
+            $body['payment_method']['billing_address_1'] = $transaction
+                ->object()->accountHolder()->billingAddress()->address1();
 
             if ($transaction->object()->accountHolder()->billingAddress()->address2()) {
-                $body['payment_method']['billing_address_2'] = $transaction->object()->accountHolder()->billingAddress()->address2();
+                $body['payment_method']['billing_address_2'] = $transaction
+                    ->object()->accountHolder()->billingAddress()->address2();
             }
-            $body['payment_method']['billing_city']     = $transaction->object()->accountHolder()->billingAddress()->city();
-            $body['payment_method']['billing_state']    = $transaction->object()->accountHolder()->billingAddress()->state();
-            $body['payment_method']['billing_zip']      = $transaction->object()->accountHolder()->billingAddress()->postalCode();
+            $body['payment_method']['billing_city']     = $transaction
+                ->object()->accountHolder()->billingAddress()->city();
+            $body['payment_method']['billing_state']    = $transaction
+                ->object()->accountHolder()->billingAddress()->state();
+            $body['payment_method']['billing_zip']      = $transaction
+                ->object()->accountHolder()->billingAddress()->postalCode();
         }
 
         if ($transaction->object()->token()) {

@@ -17,7 +17,7 @@ trait RefundTransform
         $transaction->object()->setAmount($body['Refund']['Amount']);
         $transaction->object()->setCurrency($body['Refund']['Currency']);
 
-        if (array_key_exists('SplitMerchant', $body['Refund'] )) {
+        if (array_key_exists('SplitMerchant', $body['Refund'])) {
             $transaction->object()->createSplit()->createMerchant()->setID(
                 $body['Refund']['SplitMerchant']
             );

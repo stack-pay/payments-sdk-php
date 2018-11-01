@@ -4,7 +4,7 @@ namespace StackPay\Payments\Structures;
 
 use StackPay\Payments\Interfaces;
 
-class Credit extends Transaction Implements Interfaces\Credit
+class Credit extends Transaction implements Interfaces\Credit
 {
     public $type = 'Credit';
 
