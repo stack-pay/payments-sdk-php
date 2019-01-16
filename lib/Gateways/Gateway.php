@@ -152,6 +152,7 @@ abstract class Gateway
     abstract public function merchantRates($transaction);
     abstract public function merchantLimits($transaction);
     abstract public function generateMerchantLink($transaction);
+    abstract public function copyPaymentPlan($transaction);
 
     abstract public function createScheduledTransaction($transaction);
     abstract public function getScheduledTransaction($transaction);

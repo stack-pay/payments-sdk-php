@@ -28,6 +28,7 @@ class Gateway extends Gateways\Gateway
     use Transforms\Requests\Structures\CreditTransform;
     use Transforms\Requests\Structures\MerchantLimitsTransform;
     use Transforms\Requests\Structures\MerchantLinkTransform;
+    use Transforms\Requests\Structures\CopyPaymentPlanTransform;
     use Transforms\Requests\Structures\ScheduledTransaction;
 
     use Transforms\Responses\JSONTransform;
@@ -257,6 +258,16 @@ class Gateway extends Gateways\Gateway
 
         $this->responseMerchantLink($transaction);
 
+        return $transaction->object();
+    }
+    public function copyPaymentPlan($transaction)
+    {
+        $transaction->request()->endpoint($this->paymentPlanURL);
+        $transaction->request()->hashKey($this->privateKey);
+        $transaction->response()->hashKey($this->privateKey);
+        $this->requestCopyPaymentPlan($transaction);
+        $this->execute($transaction);
+        $this->responseCopyPaymentPlan($transaction);
         return $transaction->object();
     }
 
