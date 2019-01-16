@@ -497,6 +497,16 @@ class StackPay
         $transaction->idempotencyKey($idempotencyKey);
         return self::$gateway->copyPaymentPlan($transaction);
     }
+    
+    public function getMerchantPaymentPlans(
+        Interfaces\MerchantPaymentPlans $MerchantPaymentPlans,
+        $idempotencyKey = null
+    ) {
+        $transaction = new Transactions\IdempotentTransaction($MerchantPaymentPlans);
+        $transaction->idempotencyKey($idempotencyKey);
+        return self::$gateway->getMerchantPaymentPlans($transaction);
+    }
+
     public function createScheduledTransaction(
         Interfaces\ScheduledTransaction $scheduledTransaction,
         $idempotencyKey = null

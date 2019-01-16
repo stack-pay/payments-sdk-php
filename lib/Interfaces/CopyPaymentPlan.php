@@ -2,7 +2,7 @@
 
 namespace StackPay\Payments\Interfaces;
 
-interface PaymentPlan
+interface CopyPaymentPlan
 {
     public function paymentPlan();
     public function splitMerchant();

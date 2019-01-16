@@ -260,6 +260,7 @@ class Gateway extends Gateways\Gateway
 
         return $transaction->object();
     }
+
     public function copyPaymentPlan($transaction)
     {
         $transaction->request()->endpoint($this->paymentPlanURL);
@@ -268,6 +269,17 @@ class Gateway extends Gateways\Gateway
         $this->requestCopyPaymentPlan($transaction);
         $this->execute($transaction);
         $this->responseCopyPaymentPlan($transaction);
+        return $transaction->object();
+    }
+    
+    public function getMerchantPaymentPlans($transaction)
+    {
+        $transaction->request()->endpoint($this->merchantPaymentPlansURL);
+        $transaction->request()->hashKey($this->privateKey);
+        $transaction->response()->hashKey($this->privateKey);
+        $this->requestMerchantPaymentPlans($transaction);
+        $this->execute($transaction);
+        $this->responseMerchantPaymentPlans($transaction);
         return $transaction->object();
     }
 
