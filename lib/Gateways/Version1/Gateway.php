@@ -282,6 +282,17 @@ class Gateway extends Gateways\Gateway
         $this->responseMerchantPaymentPlans($transaction);
         return $transaction->object();
     }
+    
+    public function getDefaultPaymentPlans($transaction)
+    {
+        $transaction->request()->endpoint($this->defaultPaymentPlansURL);
+        $transaction->request()->hashKey($this->privateKey);
+        $transaction->response()->hashKey($this->privateKey);
+        $this->requestDefaultPaymentPlans($transaction);
+        $this->execute($transaction);
+        $this->responseDefaultPaymentPlans($transaction);
+        return $transaction->object();
+    }
 
     public function createScheduledTransaction($transaction)
     {
