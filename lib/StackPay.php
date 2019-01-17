@@ -488,22 +488,11 @@ class StackPay
 
         return self::$gateway->generateMerchantLink($transaction);
     }
-
-    public function copyPaymentPlan(
-        Interfaces\CopyPaymentPlan $copyPaymentPlan,
-        $idempotencyKey = null
-    ) {
-        $transaction = new Transactions\IdempotentTransaction($copyPaymentPlan);
-        $transaction->idempotencyKey($idempotencyKey);
-        return self::$gateway->copyPaymentPlan($transaction);
-    }
     
     public function getMerchantPaymentPlans(
-        Interfaces\MerchantPaymentPlans $MerchantPaymentPlans,
-        $idempotencyKey = null
+        Interfaces\PaginatedPaymentPlans $paginatedPaymentPlans
     ) {
-        $transaction = new Transactions\IdempotentTransaction($MerchantPaymentPlans);
-        $transaction->idempotencyKey($idempotencyKey);
+        $transaction = new Transactions\Transaction($paginatedPaymentPlans);
         return self::$gateway->getMerchantPaymentPlans($transaction);
     }
     
@@ -556,5 +545,14 @@ class StackPay
         $transaction->idempotencyKey($idempotencyKey);
 
         return self::$gateway->deleteScheduledTransaction($transaction);
+    }
+
+    public function copyPaymentPlan(
+        Interfaces\PaymentPlan $paymentPlan,
+        $idempotencyKey = null
+    ) {
+        $transaction = new Transactions\IdempotentTransaction($paymentPlan);
+        $transaction->idempotencyKey($idempotencyKey);
+        return self::$gateway->copyPaymentPlan($transaction);
     }
 }

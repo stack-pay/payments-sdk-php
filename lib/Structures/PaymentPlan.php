@@ -85,30 +85,30 @@ class PaymentPlan implements Interfaces\PaymentPlan
         return $this;
     }
 
-    public function setSplitMerchant(Merchant $merchant = null)
+    public function setSplitMerchant(Interfaces\Merchant $splitMerchant = null)
     {
-        $this-> $merchant = $ $merchant;
+        $this->splitMerchant = $splitMerchant;
 
         return $this;
     }
 
-    public function setMerchant(Merchant $merchant = null)
+    public function setMerchant(Interfaces\Merchant $merchant = null)
     {
-        $this-> $merchant = $ $merchant;
+        $this->merchant = $merchant;
 
         return $this;
     }
 
-    public function setConfiguration(PaymentPlanConfig $config = null)
+    public function setConfiguration(Interfaces\PaymentPlanConfig $configuration = null)
     {
-        $this-> $config = $ $config;
+        $this->configuration = $configuration;
 
         return $this;
     }
 
-    public function setPaymentPriority($paymentPrioroty = null)
+    public function setPaymentPriority($paymentPriority = null)
     {
-        $this->paymentPrioroty = $paymentPrioroty;
+        $this->paymentPriority = $paymentPriority;
 
         return $this;
     }

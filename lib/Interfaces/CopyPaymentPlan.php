@@ -11,8 +11,8 @@ interface CopyPaymentPlan
 
     //-----------
 
-    public function setPaymentPlan($id = null);
-    public function setSplitMerchant(Merchant $merchant = null);
+    public function setPaymentPlan(PaymentPlan $paymentPlan = null);
+    public function setSplitMerchant(Merchant $splitMerchant = null);
     public function setMerchant(Merchant $merchant = null);
-    public function setPaymentPriority($paymentPrioroty = null);
+    public function setPaymentPriority($paymentPriority = null);
 }

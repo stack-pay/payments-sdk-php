@@ -28,8 +28,8 @@ class Gateway extends Gateways\Gateway
     use Transforms\Requests\Structures\CreditTransform;
     use Transforms\Requests\Structures\MerchantLimitsTransform;
     use Transforms\Requests\Structures\MerchantLinkTransform;
-    use Transforms\Requests\Structures\CopyPaymentPlanTransform;
     use Transforms\Requests\Structures\ScheduledTransaction;
+    use Transforms\Requests\Structures\CopyPaymentPlanTransform;
 
     use Transforms\Responses\JSONTransform;
     use Transforms\Responses\ErrorTransform;
@@ -46,12 +46,14 @@ class Gateway extends Gateways\Gateway
     use Transforms\Responses\MerchantLimitsTransform;
     use Transforms\Responses\MerchantLinkTransform;
     use Transforms\Responses\ScheduledTransaction;
+    use Transforms\Responses\MerchantPaymentPlans;
 
     protected $application              = 'PaymentSystem';
     protected $apiVersion               = 'v1';
     protected $createTokenURL           = 'api/token';
     protected $createPaymentMethodsURL  = 'api/paymethods';
     protected $paymentsURL              = 'api/payments';
+    protected $merchantBaseURL          = 'api/merchants';
     protected $merchantRatesURL         = 'api/merchants/rates';
     protected $merchantLimitsURL        = 'api/merchants/limits';
     protected $merchantLinkURL          = 'api/merchants/link';
@@ -260,26 +262,28 @@ class Gateway extends Gateways\Gateway
 
         return $transaction->object();
     }
-
-    public function copyPaymentPlan($transaction)
-    {
-        $transaction->request()->endpoint($this->paymentPlanURL);
-        $transaction->request()->hashKey($this->privateKey);
-        $transaction->response()->hashKey($this->privateKey);
-        $this->requestCopyPaymentPlan($transaction);
-        $this->execute($transaction);
-        $this->responseCopyPaymentPlan($transaction);
-        return $transaction->object();
-    }
     
     public function getMerchantPaymentPlans($transaction)
     {
-        $transaction->request()->endpoint($this->merchantPaymentPlansURL);
+        $object = $transaction->object();
+        $url = $this->merchantBaseURL . '/' . $object->merchant()->id() . '/payment-plans';
+        $params = [];
+        if (!empty($object->perPage())) {
+            $params[] = 'per_page=' . $object->perPage();
+        }
+        if (!empty($object->page())) {
+            $params[] = 'page=' . $object->page();
+        }
+        $url .= empty($params) ? '' : ('?' . implode($params, '&'));
+        $transaction->request()->endpoint($url);
         $transaction->request()->hashKey($this->privateKey);
+
         $transaction->response()->hashKey($this->privateKey);
-        $this->requestMerchantPaymentPlans($transaction);
-        $this->execute($transaction);
+
+        $this->execute($transaction, 'GET');
+
         $this->responseMerchantPaymentPlans($transaction);
+
         return $transaction->object();
     }
     
@@ -344,6 +348,17 @@ class Gateway extends Gateways\Gateway
 
         $this->execute($transaction, 'DELETE');
 
+        return $transaction->object();
+    }
+
+    public function copyPaymentPlan($transaction)
+    {
+        $transaction->request()->endpoint($this->paymentPlanURL);
+        $transaction->request()->hashKey($this->privateKey);
+        $transaction->response()->hashKey($this->privateKey);
+        $this->requestCopyPaymentPlan($transaction);
+        $this->execute($transaction);
+        $this->responseCopyPaymentPlan($transaction);
         return $transaction->object();
     }
 }

@@ -33,30 +33,30 @@ class CopyPaymentPlan implements Interfaces\CopyPaymentPlan
 
     // --------
 
-    public function setPaymentPlan(PaymentPlan $paymentPlan = null)
+    public function setPaymentPlan(Interfaces\PaymentPlan $paymentPlan = null)
     {
         $this->paymentPlan = $paymentPlan;
 
         return $this;
     }
 
-    public function setSplitMerchant(Merchant $merchant = null)
+    public function setSplitMerchant(Interfaces\Merchant $splitMerchant = null)
     {
-        $this-> $merchant = $ $merchant;
+        $this->splitMerchant = $splitMerchant;
 
         return $this;
     }
 
-    public function setMerchant(Merchant $merchant = null)
+    public function setMerchant(Interfaces\Merchant $merchant = null)
     {
-        $this-> $merchant = $ $merchant;
+        $this->merchant = $merchant;
 
         return $this;
     }
 
-    public function setPaymentPriority($paymentPrioroty = null)
+    public function setPaymentPriority($paymentPriority = null)
     {
-        $this->paymentPrioroty = $paymentPrioroty;
+        $this->paymentPriority = $paymentPriority;
 
         return $this;
     }

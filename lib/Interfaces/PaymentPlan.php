@@ -14,7 +14,7 @@ interface PaymentPlan
     public function paymentPriority();
 
     //-----------
-    
+
     public function setID($id = null);
     public function setName($name = null);
     public function setRequestIncomingId($requestIncomingId = null);

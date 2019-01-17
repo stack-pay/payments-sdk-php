@@ -1,6 +1,6 @@
 {
     "name": "stack-pay/payments-sdk-php",
-    "version": "1.1.2",
+    "version": "1.2.0",
     "description": "Stack Pay API SDK for PHP",
     "keywords": ["stacksports", "stackpay", "payments", "api", "sdk"],
     "license": "MIT",
@@ -34,12 +34,20 @@
         ]
     },
     "scripts": {
+        "test": [
+            "@test:functional",
+            "@test:unit"
+        ],
+        "test:current": "@php vendor/bin/phpunit --colors --no-coverage --testsuite current",
+        "test:legacy": "@php vendor/bin/phpunit --colors --no-coverage --testsuite legacy",
+        "test:functional": "@php vendor/bin/phpunit --colors --no-coverage --testsuite functional",
+        "test:unit": "@php vendor/bin/phpunit --colors --no-coverage --testsuite unit",
         "lint": [
           "@lint:syntax",
           "@lint:cs"
         ],
-        "lint:fix": "@php vendor/bin/phpcbf --standard=ruleset.xml --ignore=vendor/ --colors ./src",
+        "lint:fix": "@php vendor/bin/phpcbf --standard=ruleset.xml --ignore=vendor/ --colors ./lib",
         "lint:syntax": "find . -name '*.php' ! -path './vendor/*' -print0 | xargs -0 -n 1 -P 4 php -l | grep -v 'No syntax errors' || true",
-        "lint:cs": "@php vendor/bin/phpcs --standard=ruleset.xml --ignore=vendor/ --colors ./src"
+        "lint:cs": "@php vendor/bin/phpcs --standard=ruleset.xml --ignore=vendor/ --colors ./lib"
     }
 }
