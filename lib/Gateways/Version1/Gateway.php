@@ -293,6 +293,17 @@ class Gateway extends Gateways\Gateway
         $this->responseDefaultPaymentPlans($transaction);
         return $transaction->object();
     }
+    
+    public function createSubscription($transaction)
+    {
+        $transaction->request()->endpoint($this->createSubscriptionURL);
+        $transaction->request()->hashKey($this->privateKey);
+        $transaction->response()->hashKey($this->privateKey);
+        $this->requestCreateSubscription($transaction);
+        $this->execute($transaction);
+        $this->responseCreateSubscription($transaction);
+        return $transaction->object();
+    }
 
     public function createScheduledTransaction($transaction)
     {

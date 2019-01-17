@@ -155,6 +155,7 @@ abstract class Gateway
     abstract public function copyPaymentPlan($transaction);
     abstract public function getMerchantPaymentPlans($transaction);
     abstract public function getDefaultPaymentPlans($transaction);
+    abstract public function createSubscription($transaction);
 
     abstract public function createScheduledTransaction($transaction);
     abstract public function getScheduledTransaction($transaction);
