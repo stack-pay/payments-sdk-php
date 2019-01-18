@@ -22,7 +22,7 @@ class PaymentPlanRequestUnitTest extends UnitTestCase
         $this->assertEquals($this->request->paymentPlan, $this->paymentPlan);
     }
 
-    public function testCopy()
+    public function testCopyPaymentPlan()
     {
         $mockedCopyPaymentPlanElement = [
             'fakeKey1' => 'fakeValue1',
@@ -37,11 +37,31 @@ class PaymentPlanRequestUnitTest extends UnitTestCase
 
         $this->request->restTranslator = $mockedRestTranslator;
 
-        $createRequest = $this->request->copy();
+        $createRequest = $this->request->copyPaymentPlan();
 
         $this->assertEquals($createRequest->method, 'POST');
-        $this->assertEquals($createRequest->endpoint, '/api/merchants/' . $this->paymentPlan->merchant->id . '/payment-plan');
+        $this->assertEquals($createRequest->endpoint, '/api/merchants/' . $this->paymentPlan->merchant->id . '/payment-plans');
         $this->assertEquals($createRequest->hashKey, $this->merchant->hashKey);
         $this->assertEquals($createRequest->body, $mockedCopyPaymentPlanElement);
+    }
+
+    public function testGetMerchantPaymentPlans()
+    {
+        $getRequest = $this->request->getMerchantPaymentPlans();
+
+        $this->assertEquals($getRequest->method, 'GET');
+        $this->assertEquals($getRequest->endpoint, '/api/merchants/'. $this->paymentPlan->merchant->id . '/payment-plans');
+        $this->assertEquals($getRequest->hashKey, $this->merchant->hashKey);
+        $this->assertNull($getRequest->body);
+    }
+
+    public function testGetDefaultPaymentPlans()
+    {
+        $getRequest = $this->request->getDefaultPaymentPlans();
+
+        $this->assertEquals($getRequest->method, 'GET');
+        $this->assertEquals($getRequest->endpoint, '/api/payment-plans');
+        $this->assertEquals($getRequest->hashKey, $getRequest->hashKey);
+        $this->assertNull($getRequest->body);
     }
 }

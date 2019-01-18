@@ -29,7 +29,7 @@ class Gateway extends Gateways\Gateway
     use Transforms\Requests\Structures\MerchantLimitsTransform;
     use Transforms\Requests\Structures\MerchantLinkTransform;
     use Transforms\Requests\Structures\ScheduledTransaction;
-    use Transforms\Requests\Structures\CopyPaymentPlanTransform;
+    use Transforms\Requests\Structures\PaymentPlanTransform;
 
     use Transforms\Responses\JSONTransform;
     use Transforms\Responses\ErrorTransform;
@@ -46,7 +46,7 @@ class Gateway extends Gateways\Gateway
     use Transforms\Responses\MerchantLimitsTransform;
     use Transforms\Responses\MerchantLinkTransform;
     use Transforms\Responses\ScheduledTransaction;
-    use Transforms\Responses\MerchantPaymentPlans;
+    use Transforms\Responses\PaymentPlanTransform;
 
     protected $application              = 'PaymentSystem';
     protected $apiVersion               = 'v1';
@@ -58,6 +58,7 @@ class Gateway extends Gateways\Gateway
     protected $merchantLimitsURL        = 'api/merchants/limits';
     protected $merchantLinkURL          = 'api/merchants/link';
     protected $scheduledTransactionURL  = 'api/scheduled-transactions';
+    protected $defaultPaymentPlansURL   = 'api/payment-plans';
 
     protected function execute(&$transaction, $method = 'post')
     {
@@ -262,52 +263,6 @@ class Gateway extends Gateways\Gateway
 
         return $transaction->object();
     }
-    
-    public function getMerchantPaymentPlans($transaction)
-    {
-        $object = $transaction->object();
-        $url = $this->merchantBaseURL . '/' . $object->merchant()->id() . '/payment-plans';
-        $params = [];
-        if (!empty($object->perPage())) {
-            $params[] = 'per_page=' . $object->perPage();
-        }
-        if (!empty($object->page())) {
-            $params[] = 'page=' . $object->page();
-        }
-        $url .= empty($params) ? '' : ('?' . implode($params, '&'));
-        $transaction->request()->endpoint($url);
-        $transaction->request()->hashKey($this->privateKey);
-
-        $transaction->response()->hashKey($this->privateKey);
-
-        $this->execute($transaction, 'GET');
-
-        $this->responseMerchantPaymentPlans($transaction);
-
-        return $transaction->object();
-    }
-    
-    public function getDefaultPaymentPlans($transaction)
-    {
-        $transaction->request()->endpoint($this->defaultPaymentPlansURL);
-        $transaction->request()->hashKey($this->privateKey);
-        $transaction->response()->hashKey($this->privateKey);
-        $this->requestDefaultPaymentPlans($transaction);
-        $this->execute($transaction);
-        $this->responseDefaultPaymentPlans($transaction);
-        return $transaction->object();
-    }
-    
-    public function createSubscription($transaction)
-    {
-        $transaction->request()->endpoint($this->createSubscriptionURL);
-        $transaction->request()->hashKey($this->privateKey);
-        $transaction->response()->hashKey($this->privateKey);
-        $this->requestCreateSubscription($transaction);
-        $this->execute($transaction);
-        $this->responseCreateSubscription($transaction);
-        return $transaction->object();
-    }
 
     public function createScheduledTransaction($transaction)
     {
@@ -353,12 +308,62 @@ class Gateway extends Gateways\Gateway
 
     public function copyPaymentPlan($transaction)
     {
-        $transaction->request()->endpoint($this->paymentPlanURL);
-        $transaction->request()->hashKey($this->privateKey);
-        $transaction->response()->hashKey($this->privateKey);
+        $url = $this->merchantBaseURL
+            . '/' . $transaction->object()->merchant()->id()
+            . '/payment-plans';
+        $transaction->request()->endpoint($url);
+        $transaction->request()->hashKey($transaction->object()->merchant()->hashKey());
+        $transaction->response()->hashKey($transaction->object()->merchant()->hashKey());
         $this->requestCopyPaymentPlan($transaction);
         $this->execute($transaction);
         $this->responseCopyPaymentPlan($transaction);
+        return $transaction->object();
+    }
+
+    public function getMerchantPaymentPlans($transaction)
+    {
+        $object = $transaction->object();
+        $url = $this->merchantBaseURL
+            . '/' . $object->merchant()->id()
+            . '/payment-plans';
+        $params = [];
+        if (!empty($object->perPage())) {
+            $params[] = 'per_page=' . $object->perPage();
+        }
+        if (!empty($object->currentPage())) {
+            $params[] = 'page=' . $object->currentPage();
+        }
+        $url .= empty($params) ? '' : ('?' . implode($params, '&'));
+        $transaction->request()->endpoint($url);
+        $transaction->request()->hashKey($object->merchant()->hashKey());
+
+        $transaction->response()->hashKey($object->merchant()->hashKey());
+
+        $this->execute($transaction, 'GET');
+
+        $this->responseMerchantPaymentPlans($transaction);
+
+        return $transaction->object();
+    }
+
+    public function getDefaultPaymentPlans($transaction)
+    {
+        $transaction->request()->endpoint($this->defaultPaymentPlansURL);
+        $transaction->request()->hashKey($this->privateKey);
+        $transaction->response()->hashKey($this->privateKey);
+        $this->execute($transaction);
+        $this->responseDefaultPaymentPlans($transaction);
+        return $transaction->object();
+    }
+
+    public function createSubscription($transaction)
+    {
+        $transaction->request()->endpoint($this->createSubscriptionURL);
+        $transaction->request()->hashKey($transaction->object()->merchant()->hashKey());
+        $transaction->response()->hashKey($transaction->object()->merchant()->hashKey());
+        $this->requestCreateSubscription($transaction);
+        $this->execute($transaction);
+        $this->responseCreateSubscription($transaction);
         return $transaction->object();
     }
 }

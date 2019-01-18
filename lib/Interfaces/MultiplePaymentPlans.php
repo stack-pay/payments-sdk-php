@@ -2,7 +2,7 @@
 
 namespace StackPay\Payments\Interfaces;
 
-interface PaginatedPaymentPlans extends Paginated
+interface MultiplePaymentPlans
 {
     public function merchant();
     public function plans();

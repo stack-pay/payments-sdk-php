@@ -488,31 +488,6 @@ class StackPay
 
         return self::$gateway->generateMerchantLink($transaction);
     }
-    
-    public function getMerchantPaymentPlans(
-        Interfaces\PaginatedPaymentPlans $paginatedPaymentPlans
-    ) {
-        $transaction = new Transactions\Transaction($paginatedPaymentPlans);
-        return self::$gateway->getMerchantPaymentPlans($transaction);
-    }
-    
-    public function getDefaultPaymentPlans(
-        Interfaces\DefaultPaymentPlans $DefaultPaymentPlans,
-        $idempotencyKey = null
-    ) {
-        $transaction = new Transactions\IdempotentTransaction($DefaultPaymentPlans);
-        $transaction->idempotencyKey($idempotencyKey);
-        return self::$gateway->getDefaultPaymentPlans($transaction);
-    }
-    
-    public function createSubscription(
-        Interfaces\Subscription $Subscription,
-        $idempotencyKey = null
-    ) {
-        $transaction = new Transactions\IdempotentTransaction($Subscription);
-        $transaction->idempotencyKey($idempotencyKey);
-        return self::$gateway->createSubscription($transaction);
-    }
 
     public function createScheduledTransaction(
         Interfaces\ScheduledTransaction $scheduledTransaction,
@@ -554,5 +529,30 @@ class StackPay
         $transaction = new Transactions\IdempotentTransaction($paymentPlan);
         $transaction->idempotencyKey($idempotencyKey);
         return self::$gateway->copyPaymentPlan($transaction);
+    }
+    
+    public function getMerchantPaymentPlans(
+        Interfaces\PaginatedPaymentPlans $paginatedPaymentPlans
+    ) {
+        $transaction = new Transactions\Transaction($paginatedPaymentPlans);
+        return self::$gateway->getMerchantPaymentPlans($transaction);
+    }
+    
+    public function getDefaultPaymentPlans(
+        Interfaces\MultiplePaymentPlans $plans,
+        $idempotencyKey = null
+    ) {
+        $transaction = new Transactions\IdempotentTransaction($plans);
+        $transaction->idempotencyKey($idempotencyKey);
+        return self::$gateway->getDefaultPaymentPlans($transaction);
+    }
+    
+    public function createSubscription(
+        Interfaces\Subscription $Subscription,
+        $idempotencyKey = null
+    ) {
+        $transaction = new Transactions\IdempotentTransaction($Subscription);
+        $transaction->idempotencyKey($idempotencyKey);
+        return self::$gateway->createSubscription($transaction);
     }
 }

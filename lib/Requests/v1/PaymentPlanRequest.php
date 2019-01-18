@@ -16,12 +16,30 @@ class PaymentPlanRequest extends Request
         $this->paymentPlan = $paymentPlan;
     }
 
-    public function copy()
+    public function copyPaymentPlan()
     {
         $this->method   = 'POST';
-        $this->endpoint = '/api/merchants/' . $this->paymentPlan->merchant->id . '/payment-plan';
+        $this->endpoint = '/api/merchants/' . $this->paymentPlan->merchant->id . '/payment-plans';
         $this->hashKey  = $this->paymentPlan->merchant->hashKey;
         $this->body     = $this->restTranslator->buildPaymentPlanCopyElement($this->paymentPlan);
+
+        return $this;
+    }
+
+    public function getMerchantPaymentPlans()
+    {
+        $this->method   = 'GET';
+        $this->endpoint = '/api/merchants/' . $this->paymentPlan->merchant->id . '/payment-plans';
+        $this->hashKey  = $this->paymentPlan->merchant->hashKey;
+
+        return $this;
+    }
+
+    public function getDefaultPaymentPlans()
+    {
+        $this->method   = 'GET';
+        $this->endpoint = '/api/payment-plans';
+        $this->hashKey  = StackPay::$privateKey;
 
         return $this;
     }
