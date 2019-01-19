@@ -134,4 +134,20 @@ class V1RESTTranslator
 
         return $scheduledTransactionElement;
     }
+
+    public function buildPaymentPlanCopyElement(Structures\PaymentPlan $paymentPlan)
+    {
+        $paymentPlanElement = [
+            'payment_plan_id'   => $paymentPlan->id,
+        ];
+
+        if ($paymentPlan->splitMerchant) {
+            $paymentPlanElement['split_merchant_id'] = $paymentPlan->splitMerchant->id;
+        }
+        if ($paymentPlan->paymentPriority) {
+            $paymentPlanElement['payment_priority'] = $paymentPlan->paymentPriority;
+        }
+
+        return $paymentPlanElement;
+    }
 }

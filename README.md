@@ -684,7 +684,7 @@ Install dependencies as mentioned above (which will resolve
 test suite:
 
 ```bash
-./vendor/bin/phpunit
+composer test
 ```
 
 If you plan to use these tests, it is highly recommended that you familiarize yourself with PHPUnit as well as the `phpunit.xml` configuration file included with this package.

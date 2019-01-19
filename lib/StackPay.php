@@ -521,4 +521,30 @@ class StackPay
 
         return self::$gateway->deleteScheduledTransaction($transaction);
     }
+
+    public function copyPaymentPlan(
+        Interfaces\PaymentPlan $paymentPlan,
+        $idempotencyKey = null
+    ) {
+        $transaction = new Transactions\IdempotentTransaction($paymentPlan);
+        $transaction->idempotencyKey($idempotencyKey);
+        return self::$gateway->copyPaymentPlan($transaction);
+    }
+    
+    public function getMerchantPaymentPlans(
+        Interfaces\PaginatedPaymentPlans $paginatedPaymentPlans
+    ) {
+        $transaction = new Transactions\IdempotentTransaction($paginatedPaymentPlans);
+        $transaction->idempotencyKey($idempotencyKey);
+        return self::$gateway->getMerchantPaymentPlans($transaction);
+    }
+    
+    public function getDefaultPaymentPlans(
+        Interfaces\MultiplePaymentPlans $plans,
+        $idempotencyKey = null
+    ) {
+        $transaction = new Transactions\IdempotentTransaction($plans);
+        $transaction->idempotencyKey($idempotencyKey);
+        return self::$gateway->getDefaultPaymentPlans($transaction);
+    }
 }

@@ -29,6 +29,7 @@ class Gateway extends Gateways\Gateway
     use Transforms\Requests\Structures\MerchantLimitsTransform;
     use Transforms\Requests\Structures\MerchantLinkTransform;
     use Transforms\Requests\Structures\ScheduledTransaction;
+    use Transforms\Requests\Structures\PaymentPlanTransform;
 
     use Transforms\Responses\JSONTransform;
     use Transforms\Responses\ErrorTransform;
@@ -45,22 +46,26 @@ class Gateway extends Gateways\Gateway
     use Transforms\Responses\MerchantLimitsTransform;
     use Transforms\Responses\MerchantLinkTransform;
     use Transforms\Responses\ScheduledTransaction;
+    use Transforms\Responses\PaymentPlanTransform;
 
     protected $application              = 'PaymentSystem';
     protected $apiVersion               = 'v1';
     protected $createTokenURL           = 'api/token';
     protected $createPaymentMethodsURL  = 'api/paymethods';
     protected $paymentsURL              = 'api/payments';
+    protected $merchantBaseURL          = 'api/merchants';
     protected $merchantRatesURL         = 'api/merchants/rates';
     protected $merchantLimitsURL        = 'api/merchants/limits';
     protected $merchantLinkURL          = 'api/merchants/link';
     protected $scheduledTransactionURL  = 'api/scheduled-transactions';
+    protected $defaultPaymentPlansURL   = 'api/payment-plans';
 
     protected function execute(&$transaction, $method = 'post')
     {
         $transaction->request()->rawBody(json_encode($transaction->request()->body(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
         $this->requestHeaders($transaction->request());
+
         $this->requestHash($transaction->request());
         $this->requestIdempotency($transaction);
         $this->requestV1($transaction->request());
@@ -299,6 +304,57 @@ class Gateway extends Gateways\Gateway
 
         $this->execute($transaction, 'DELETE');
 
+        return $transaction->object();
+    }
+
+    public function copyPaymentPlan($transaction)
+    {
+        $url = $this->merchantBaseURL
+            . '/' . $transaction->object()->merchant()->id()
+            . '/payment-plans';
+        $transaction->request()->endpoint($url);
+        $transaction->request()->hashKey($this->privateKey . $transaction->object()->merchant()->hashKey());
+        $transaction->request()->hashBody(false);
+        $transaction->response()->shouldHash(false);
+        $this->requestCopyPaymentPlan($transaction);
+        $this->execute($transaction);
+        $this->responseCopyPaymentPlan($transaction);
+        return $transaction->object();
+    }
+
+    public function getMerchantPaymentPlans($transaction)
+    {
+        $object = $transaction->object();
+        $url = $this->merchantBaseURL
+            . '/' . $object->merchant()->id()
+            . '/payment-plans';
+        $params = [];
+        if (!empty($object->perPage())) {
+            $params[] = 'per_page=' . $object->perPage();
+        }
+        if (!empty($object->currentPage())) {
+            $params[] = 'page=' . $object->currentPage();
+        }
+        $url .= empty($params) ? '' : ('?' . implode($params, '&'));
+        $transaction->request()->endpoint($url);
+        $transaction->request()->hashBody(false);
+        $transaction->request()->hashKey($this->privateKey . $object->merchant()->hashKey());
+        $transaction->response()->shouldHash(false);
+
+        $this->execute($transaction, 'GET');
+
+        $this->responseMerchantPaymentPlans($transaction);
+
+        return $transaction->object();
+    }
+
+    public function getDefaultPaymentPlans($transaction)
+    {
+        $transaction->request()->endpoint($this->defaultPaymentPlansURL);
+        $transaction->request()->shouldHash(false);
+        $transaction->response()->shouldHash(false);
+        $this->execute($transaction, 'GET');
+        $this->responseDefaultPaymentPlans($transaction);
         return $transaction->object();
     }
 }

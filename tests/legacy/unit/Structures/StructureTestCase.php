@@ -123,6 +123,9 @@ class StructureTestCase extends TestCase
             case 'string':
                 return uniqid();
 
+            case 'array':
+                return [];
+
             default:
                 return \Mockery::mock($type);
         }

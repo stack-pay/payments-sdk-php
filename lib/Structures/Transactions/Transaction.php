@@ -14,10 +14,10 @@ class Transaction
 
     public function __construct($object)
     {
-        $this->locked   = false;
-        $this->request  = new Request();
-        $this->response = new Response();
-        $this->object   = $object;
+        $this->locked    = false;
+        $this->request   = new Request();
+        $this->response  = new Response();
+        $this->object    = $object;
     }
 
     public function lock()

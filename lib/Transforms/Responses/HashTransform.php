@@ -8,6 +8,10 @@ trait HashTransform
 {
     public function responseHash($response)
     {
+        if (!$response->shouldHash()) {
+            return true;
+        }
+
         if (! array_key_exists('HashMethod', $response->headers()) ||
             ! array_key_exists('Hash', $response->headers())
         ) {
