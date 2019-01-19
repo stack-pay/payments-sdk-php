@@ -64,4 +64,14 @@ class PaymentPlanRequestUnitTest extends UnitTestCase
         $this->assertEquals($getRequest->hashKey, $getRequest->hashKey);
         $this->assertNull($getRequest->body);
     }
+
+    public function testCreatePaymentPlanSubscription()
+    {
+        $getRequest = $this->request->getDefaultPaymentPlans();
+
+        $this->assertEquals($getRequest->method, 'GET');
+        $this->assertEquals($getRequest->endpoint, '/api/payment-plans');
+        $this->assertEquals($getRequest->hashKey, $getRequest->hashKey);
+        $this->assertNull($getRequest->body);
+    }
 }

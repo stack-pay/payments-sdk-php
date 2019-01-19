@@ -534,7 +534,8 @@ class StackPay
     public function getMerchantPaymentPlans(
         Interfaces\PaginatedPaymentPlans $paginatedPaymentPlans
     ) {
-        $transaction = new Transactions\Transaction($paginatedPaymentPlans);
+        $transaction = new Transactions\IdempotentTransaction($paginatedPaymentPlans);
+        $transaction->idempotencyKey($idempotencyKey);
         return self::$gateway->getMerchantPaymentPlans($transaction);
     }
     
@@ -545,14 +546,5 @@ class StackPay
         $transaction = new Transactions\IdempotentTransaction($plans);
         $transaction->idempotencyKey($idempotencyKey);
         return self::$gateway->getDefaultPaymentPlans($transaction);
-    }
-    
-    public function createSubscription(
-        Interfaces\Subscription $Subscription,
-        $idempotencyKey = null
-    ) {
-        $transaction = new Transactions\IdempotentTransaction($Subscription);
-        $transaction->idempotencyKey($idempotencyKey);
-        return self::$gateway->createSubscription($transaction);
     }
 }

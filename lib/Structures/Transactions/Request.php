@@ -12,6 +12,8 @@ class Request
     public $raw;
     public $hashKey;
     public $endpoint;
+    public $hashBody = true;
+    public $shouldHash = true;
 
     public function lock()
     {
@@ -62,7 +64,7 @@ class Request
 
     public function rawBody($rawBody = null)
     {
-        if (! $this->rawBody && $rawBody) {
+        if (! $this->locked && $rawBody) {
             $this->rawBody = $rawBody;
         }
 
@@ -71,7 +73,7 @@ class Request
 
     public function hashKey($hashKey = null)
     {
-        if (! $this->hashKey && $hashKey) {
+        if (! $this->locked && $hashKey) {
             $this->hashKey = $hashKey;
         }
 
@@ -80,10 +82,28 @@ class Request
 
     public function endpoint($endpoint = null)
     {
-        if (! $this->endpoint && $endpoint) {
+        if (! $this->locked && $endpoint) {
             $this->endpoint = $endpoint;
         }
 
         return $this->endpoint;
+    }
+
+    public function hashBody($hashBody = null)
+    {
+        if (! $this->locked && !is_null($hashBody)) {
+            $this->hashBody = $hashBody;
+        }
+
+        return $this->hashBody;
+    }
+
+    public function shouldHash($shouldHash = null)
+    {
+        if (! $this->locked && !is_null($shouldHash)) {
+            $this->shouldHash = $shouldHash;
+        }
+
+        return $this->shouldHash;
     }
 }

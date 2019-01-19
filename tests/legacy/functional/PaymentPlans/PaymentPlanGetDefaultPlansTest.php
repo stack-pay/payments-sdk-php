@@ -20,11 +20,12 @@ final class PaymentPlanGetDefaultPlansTest extends TestCase
             '7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'
         );
 
-        $plans = new Structures\MultiplePaymentPlans();
+        $plans = (new Structures\MultiplePaymentPlans())
+            ->setMerchant((new Structures\Merchant())
+                ->setID(1000)
+                ->setHashKey('testhashkey')
+            );
         $respArray = [
-            'Header' => [
-                'Security' => [ 'HashMethod' => 'SHA-256', 'Hash' => null ],
-            ],
             'Body' => [
                 'data' => [
                     [
@@ -43,10 +44,6 @@ final class PaymentPlanGetDefaultPlansTest extends TestCase
                 ],
             ],
         ];
-        $respArray['Header']['Security']['Hash'] = hash(
-            'sha256',
-            json_encode($respArray['Body']) . $sdk::$privateKey
-        );
 
         $curlProvider = new MockCurlProvider([[
             'StatusCode' => 200,
@@ -78,6 +75,7 @@ final class PaymentPlanGetDefaultPlansTest extends TestCase
                 ],
             ]
         );
+
         $this->assertEquals(
             [
                 0 => [
@@ -88,20 +86,14 @@ final class PaymentPlanGetDefaultPlansTest extends TestCase
                             'Application'    => 'PaymentSystem',
                             'ApiVersion'     => 'v1',
                             'Mode'           => 'production',
-                            'Security'       => [
-                                'HashMethod' => 'SHA-256',
-                                'Hash'       => hash('sha256', json_encode($curlProvider->calls[0]['Body']['Body']) . $sdk::$privateKey),
-                            ],
                         ],
                     ],
                     'Headers' => [
                         0 => ['Key' => 'Application',   'Value' => 'PaymentSystem'],
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
-                        3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => hash('sha256', json_encode($curlProvider->calls[0]['Body']['Body']) . $sdk::$privateKey)],
-                        5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
-                        6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
+                        3 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
+                        4 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
                 ]
             ],

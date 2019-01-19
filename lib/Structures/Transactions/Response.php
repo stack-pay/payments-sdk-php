@@ -14,6 +14,7 @@ class Response
     public $body;
     public $hashKey;
     public $rawBody;
+    public $shouldHash = true;
 
     public function lock()
     {
@@ -108,5 +109,14 @@ class Response
         }
 
         return $this->rawBody;
+    }
+
+    public function shouldHash($shouldHash = null)
+    {
+        if (! $this->locked && !is_null($shouldHash)) {
+            $this->shouldHash = $shouldHash;
+        }
+
+        return $this->shouldHash;
     }
 }

@@ -29,9 +29,6 @@ final class PaymentPlanGetByMerchantTest extends TestCase
             ->setPerPage(2)
             ->setCurrentPage(1);
         $respArray = [
-            'Header' => [
-                'Security' => [ 'HashMethod' => 'SHA-256', 'Hash' => null ],
-            ],
             'Body' => [
                 'data' => [
                     [
@@ -71,10 +68,6 @@ final class PaymentPlanGetByMerchantTest extends TestCase
                 ],
             ],
         ];
-        $respArray['Header']['Security']['Hash'] = hash(
-            'sha256',
-            json_encode($respArray['Body']) . $merchantHash
-        );
 
         $curlProvider = new MockCurlProvider([[
             'StatusCode' => 200,
@@ -139,7 +132,7 @@ final class PaymentPlanGetByMerchantTest extends TestCase
                             'Mode'           => 'production',
                             'Security'       => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => hash('sha256', json_encode($curlProvider->calls[0]['Body']['Body']) . $merchantHash),
+                                'Hash'       => hash('sha256', $sdk::$privateKey . $merchantHash),
                             ],
                         ],],
                     'Headers' => [
@@ -147,7 +140,7 @@ final class PaymentPlanGetByMerchantTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => hash('sha256', json_encode($curlProvider->calls[0]['Body']['Body']) . $merchantHash)],
+                        4 => ['Key' => 'Hash',          'Value' => hash('sha256', $sdk::$privateKey . $merchantHash)],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 7b986b7a09affd0d7bcb13214f5856b40f444858d728e5457931c82eea3d233c'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]

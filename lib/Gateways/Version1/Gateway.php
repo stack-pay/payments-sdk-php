@@ -65,6 +65,7 @@ class Gateway extends Gateways\Gateway
         $transaction->request()->rawBody(json_encode($transaction->request()->body(), JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE));
 
         $this->requestHeaders($transaction->request());
+
         $this->requestHash($transaction->request());
         $this->requestIdempotency($transaction);
         $this->requestV1($transaction->request());
@@ -312,8 +313,9 @@ class Gateway extends Gateways\Gateway
             . '/' . $transaction->object()->merchant()->id()
             . '/payment-plans';
         $transaction->request()->endpoint($url);
-        $transaction->request()->hashKey($transaction->object()->merchant()->hashKey());
-        $transaction->response()->hashKey($transaction->object()->merchant()->hashKey());
+        $transaction->request()->hashKey($this->privateKey . $transaction->object()->merchant()->hashKey());
+        $transaction->request()->hashBody(false);
+        $transaction->response()->shouldHash(false);
         $this->requestCopyPaymentPlan($transaction);
         $this->execute($transaction);
         $this->responseCopyPaymentPlan($transaction);
@@ -335,9 +337,9 @@ class Gateway extends Gateways\Gateway
         }
         $url .= empty($params) ? '' : ('?' . implode($params, '&'));
         $transaction->request()->endpoint($url);
-        $transaction->request()->hashKey($object->merchant()->hashKey());
-
-        $transaction->response()->hashKey($object->merchant()->hashKey());
+        $transaction->request()->hashBody(false);
+        $transaction->request()->hashKey($this->privateKey . $object->merchant()->hashKey());
+        $transaction->response()->shouldHash(false);
 
         $this->execute($transaction, 'GET');
 
@@ -349,21 +351,10 @@ class Gateway extends Gateways\Gateway
     public function getDefaultPaymentPlans($transaction)
     {
         $transaction->request()->endpoint($this->defaultPaymentPlansURL);
-        $transaction->request()->hashKey($this->privateKey);
-        $transaction->response()->hashKey($this->privateKey);
-        $this->execute($transaction);
+        $transaction->request()->shouldHash(false);
+        $transaction->response()->shouldHash(false);
+        $this->execute($transaction, 'GET');
         $this->responseDefaultPaymentPlans($transaction);
-        return $transaction->object();
-    }
-
-    public function createSubscription($transaction)
-    {
-        $transaction->request()->endpoint($this->createSubscriptionURL);
-        $transaction->request()->hashKey($transaction->object()->merchant()->hashKey());
-        $transaction->response()->hashKey($transaction->object()->merchant()->hashKey());
-        $this->requestCreateSubscription($transaction);
-        $this->execute($transaction);
-        $this->responseCreateSubscription($transaction);
         return $transaction->object();
     }
 }
