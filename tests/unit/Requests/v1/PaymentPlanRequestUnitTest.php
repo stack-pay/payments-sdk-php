@@ -10,11 +10,22 @@ class PaymentPlanRequestUnitTest extends UnitTestCase
     {
         $this->StackPay                = new StackPay\Payments\StackPay('public-12345', 'private-12345');
         $this->merchant                = new Structures\Merchant(13, 'merchant_hash_key_123');
-        $this->paymentPlan             = new Structures\PaymentPlan;
-        $this->paymentPlan->id         = 12345;
-        $this->paymentPlan->merchant   = $this->merchant;
+        $this->paymentMethod           = (new Structures\PaymentMethod())->setID(1000);
+        $this->paymentPlan             = (new Structures\PaymentPlan())
+                                            ->setID(12345)
+                                            ->setMerchant($this->merchant);
+        $this->subscription            = (new Structures\Subscription())
+                                            ->setPaymentPlan($this->paymentPlan)
+                                            ->setPaymentMethod($this->paymentMethod)
+                                            ->setExternalId('1000')
+                                            ->setAmount(10000)
+                                            ->setDownPaymentAmount(1500)
+                                            ->setDay(1);
 
-        $this->request = new PaymentPlanRequest($this->paymentPlan);
+        $this->request = new PaymentPlanRequest(
+            $this->paymentPlan,
+            $this->subscription
+        );
     }
 
     public function testConstructor()
@@ -67,11 +78,30 @@ class PaymentPlanRequestUnitTest extends UnitTestCase
 
     public function testCreatePaymentPlanSubscription()
     {
-        $getRequest = $this->request->getDefaultPaymentPlans();
+        $response = [
+            'fakeKey1' => 'fakeValue1',
+            'fakeKey2' => 'fakeValue2',
+            'fakeKey3' => 'fakeValue3',
+        ];
 
-        $this->assertEquals($getRequest->method, 'GET');
-        $this->assertEquals($getRequest->endpoint, '/api/payment-plans');
-        $this->assertEquals($getRequest->hashKey, $getRequest->hashKey);
-        $this->assertNull($getRequest->body);
+        $translator = Mockery::mock(Translators\V1RESTTranslator::class);
+        $translator->shouldReceive('buildPaymentPlanCreateSubscriptionElement')->once()
+            ->with($this->subscription)
+            ->andReturn($response);
+
+        $this->request->restTranslator = $translator;
+
+        $request = $this->request->createPaymentPlanSubscription();
+
+        $this->assertEquals($request->method, 'POST');
+        $this->assertEquals(
+            $request->endpoint,
+              '/api'
+            . '/merchants/' . $this->paymentPlan->merchant->id
+            . '/payment-plans/' . $this->paymentPlan->id
+            . '/subscriptions'
+        );
+        $this->assertEquals($request->hashKey, $this->merchant->hashKey);
+        $this->assertEquals($request->body, $response);
     }
 }

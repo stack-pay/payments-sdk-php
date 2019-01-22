@@ -106,4 +106,20 @@ trait PaymentPlanTransform
         }
         $transaction->object()->setPlans($plans);
     }
+
+    public function responseCreatePaymentPlanSubscription($transaction)
+    {
+        $body = $transaction->response()->body()['data'];
+
+        $transaction->object()->setID($body['id']);
+
+        $initial = new Structures\Transaction(); // TODO: Needs updated
+        $transaction->object()->setInitialTransaction($initial);
+
+        $scheduledTransactions = [];
+        foreach ($body['scheduled_transactions'] as $scheduledTransactionArr) {
+            $scheduledTransactions[] = new Structures\ScheduledTransaction(); // TODO: Needs updated
+        }
+        $transaction->object()->setScheduledTransactions($scheduledTransactions);
+    }
 }

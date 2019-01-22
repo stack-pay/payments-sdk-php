@@ -357,4 +357,21 @@ class Gateway extends Gateways\Gateway
         $this->responseDefaultPaymentPlans($transaction);
         return $transaction->object();
     }
+
+    public function createPaymentPlanSubscription($transaction)
+    {
+        $url = $this->merchantBaseURL
+            . '/' . $transaction->object()->paymentplan()->merchant()->id()
+            . '/payment-plans'
+            . '/' . $transaction->object()->paymentplan()->id()
+            . '/subscriptions';
+        $transaction->request()->endpoint($url);
+        $transaction->request()->hashKey($this->privateKey . $transaction->object()->paymentplan()->merchant()->hashKey());
+        $transaction->request()->hashBody(false);
+        $transaction->response()->shouldHash(false);
+        $this->requestCreatePaymentPlanSubscription($transaction);
+        $this->execute($transaction);
+        $this->responseCreatePaymentPlanSubscription($transaction);
+        return $transaction->object();
+    }
 }

@@ -12,42 +12,59 @@ class Subscription implements Interfaces\Subscription
     public $externalID;
     public $amount;
     public $splitAmount;
+    public $downPaymentAmount;
     public $initialTransaction;
     public $scheduledTransactions;
+    public $day;
 
     public function id()
     {
-        return $this->$id;
+        return $this->id;
     }
     
     public function paymentMethod()
     {
-        return $this->$paymentMethod;
+        return $this->paymentMethod;
+    }
+    
+    public function paymentPlan()
+    {
+        return $this->paymentPlan;
     }
 
     public function externalID()
     {
-        return $this->$externalID;
+        return $this->externalID;
     }
 
     public function amount()
     {
-        return $this->$amount;
+        return $this->amount;
     }
 
     public function splitAmount()
     {
-        return $this->$splitAmount;
+        return $this->splitAmount;
+    }
+
+    public function downPaymentAmount()
+    {
+        return $this->downPaymentAmount;
     }
 
     public function initialTransaction()
     {
-        return $this->$initialTransaction;
+        return $this->initialTransaction;
     }
 
     public function scheduledTransactions()
     {
-        return $this->$scheduledTransactions;
+        return $this->scheduledTransactions;
+    }
+
+    public function day()
+    {
+        return $this->day;
     }
 
     // --------
@@ -59,9 +76,16 @@ class Subscription implements Interfaces\Subscription
         return $this;
     }
 
-    public function setPaymentMethod(PaymentMethod $paymentMethod = null)
+    public function setPaymentMethod(Interfaces\PaymentMethod $paymentMethod = null)
     {
         $this->paymentMethod = $paymentMethod;
+
+        return $this;
+    }
+
+    public function setPaymentPlan(Interfaces\PaymentPlan $paymentPlan = null)
+    {
+        $this->paymentPlan = $paymentPlan;
 
         return $this;
     }
@@ -87,16 +111,30 @@ class Subscription implements Interfaces\Subscription
         return $this;
     }
 
-    public function setInitialTransaction(Transaction $initialTransaction = null)
+    public function setDownPaymentAmount($downPaymentAmount = null)
+    {
+        $this->downPaymentAmount = $downPaymentAmount;
+
+        return $this;
+    }
+
+    public function setInitialTransaction(Interfaces\Transaction $initialTransaction = null)
     {
         $this->initialTransaction = $initialTransaction;
 
         return $this;
     }
 
-    public function setScheduledTransactions($scheduledTransactions = null)
+    public function setScheduledTransactions(array $scheduledTransactions = null)
     {
         $this->scheduledTransactions = $scheduledTransactions;
+
+        return $this;
+    }
+
+    public function setDay($day = null)
+    {
+        $this->day = $day;
 
         return $this;
     }
