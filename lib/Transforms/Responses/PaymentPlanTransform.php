@@ -131,7 +131,7 @@ trait PaymentPlanTransform
                 ->setID($downPaymentTransactionArr['payment_method']['id'])
             )
             ->setAmount($downPaymentTransactionArr['amount'])
-            ->setCurrency($body['data']['currency_code'])
+            ->setCurrency($body['currency_code'])
             ->setInvoiceNumber($downPaymentTransactionArr['invoice_number'])
             ->setExternalID($downPaymentTransactionArr['external_id'])
             ->setPaymentMethod((new Structures\PaymentMethod())
