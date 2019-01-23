@@ -113,76 +113,70 @@ trait PaymentPlanTransform
 
         $transaction->object()->setID($body['id']);
 
-        $initialTransactionArr = $body['initial_transaction'];
+        $downPaymentTransactionArr = $body['down_payment_transaction'];
 
-        $initial = (new Structures\Transaction())
-            ->setStatus($initialTransactionArr['Status'])
+        $downPayment = (new Structures\Transaction())
+            ->setStatus($downPaymentTransactionArr['status'])
             ->setMerchant((new Structures\Merchant())
-                ->setID($initialTransactionArr['Merchant'])
+                ->setID($transaction->object()->paymentPlan()->merchant()->id())
             )
             ->setOrder((new Structures\Order())
-                ->setID($initialTransactionArr['Order'])
+                ->setID($downPaymentTransactionArr['order_id'])
             )
-            ->setID($initialTransactionArr['Transaction'])
+            ->setID($downPaymentTransactionArr['id'])
             ->setCustomer((new Structures\Customer())
-                ->setID($initialTransactionArr['Payment']['Customer'])
+                ->setID($downPaymentTransactionArr['payment_method']['customer_id'])
             )
             ->setPaymentMethod((new Structures\PaymentMethod())
-                ->setID($initialTransactionArr['Payment']['PaymentMethod'])
+                ->setID($downPaymentTransactionArr['payment_method']['id'])
             )
-            ->setAmount($initialTransactionArr['Payment']['Amount'])
-            ->setCurrency($initialTransactionArr['Payment']['Currency'])
-            ->setInvoiceNumber($initialTransactionArr['Payment']['InvoiceNumber'])
-            ->setExternalID($initialTransactionArr['Payment']['ExternalId'])
-            ->setComment1($initialTransactionArr['Payment']['Comment1'])
-            ->setComment2($initialTransactionArr['Payment']['Comment1'])
-            ->setAuthCode($initialTransactionArr['Payment']['AuthorizationCode'])
-            ->setAVSCode($initialTransactionArr['Payment']['AVSCode'])
-            ->setCvvResponseCode($initialTransactionArr['Payment']['CVVResponseCode'])
+            ->setAmount($downPaymentTransactionArr['amount'])
+            ->setCurrency($body['data']['currency_code'])
+            ->setInvoiceNumber($downPaymentTransactionArr['invoice_number'])
+            ->setExternalID($downPaymentTransactionArr['external_id'])
             ->setPaymentMethod((new Structures\PaymentMethod())
-                ->setID($initialTransactionArr['PaymentMethod']['ID'])
+                ->setID($downPaymentTransactionArr['payment_method']['id'])
                 ->setAccount((new Structures\Account())
-                    ->setType($initialTransactionArr['PaymentMethod']['AccountType'])
-                    ->setLast4($initialTransactionArr['PaymentMethod']['AccountLast4'])
-                    ->setExpireMonth($this->getIfExists($initialTransactionArr['PaymentMethod'],'ExpirationMonth'))
-                    ->setExpireYear($this->getIfExists($initialTransactionArr['PaymentMethod'],'ExpirationYear'))
+                    ->setType($downPaymentTransactionArr['payment_method']['type'])
+                    ->setLast4($downPaymentTransactionArr['payment_method']['account_last_four'])
+                    ->setExpireMonth($downPaymentTransactionArr['payment_method']['expiration_month'])
+                    ->setExpireYear($downPaymentTransactionArr['payment_method']['expiration_year'])
                 )
                 ->setAccountHolder((new Structures\AccountHolder())
-                    ->setName($initialTransactionArr['PaymentMethod']['BillingName'])
+                    ->setName($downPaymentTransactionArr['payment_method']['billing_name'])
                     ->setBillingAddress((new Structures\Address())
-                        ->setAddress1($initialTransactionArr['PaymentMethod']['BillingAddress']['AddressLine1'])
-                        ->setAddress2($initialTransactionArr['PaymentMethod']['BillingAddress']['AddressLine2'])
-                        ->setCity($initialTransactionArr['PaymentMethod']['BillingAddress']['City'])
-                        ->setState($initialTransactionArr['PaymentMethod']['BillingAddress']['State'])
-                        ->setPostalCode($initialTransactionArr['PaymentMethod']['BillingAddress']['Zip'])
-                        ->setCountry($initialTransactionArr['PaymentMethod']['BillingAddress']['Country'])
+                        ->setAddress1($downPaymentTransactionArr['payment_method']['billing_address_1'])
+                        ->setAddress2($downPaymentTransactionArr['payment_method']['billing_address_2'])
+                        ->setCity($downPaymentTransactionArr['payment_method']['billing_city'])
+                        ->setState($downPaymentTransactionArr['payment_method']['billing_state'])
+                        ->setPostalCode($downPaymentTransactionArr['payment_method']['billing_zip'])
+                        ->setCountry($downPaymentTransactionArr['payment_method']['billing_country'])
                     )
                 )
             );
 
 
-        if (array_key_exists('SplitMerchant', $initialTransactionArr['Payment'])) {
-            $initial->setSplit((new Structures\Split())
-                ->setMerchant($initialTransactionArr['Payment']['SplitMerchant'])
-                ->setAmount($initialTransactionArr['Payment']['SplitAmount']));
+        if (array_key_exists('split_merchant_id', $downPaymentTransactionArr)) {
+            $downPayment->setSplit((new Structures\Split())
+                ->setMerchant($downPaymentTransactionArr['split_merchant_id'])
+                ->setAmount($downPaymentTransactionArr['split_amount']));
         }
 
-        $transaction->object()->setInitialTransaction($initial);
+        $transaction->object()->setDownPaymentTransaction($downPayment);
 
         $scheduledTransactions = [];
         foreach ($body['scheduled_transactions'] as $scheduledTransactionArr) {
             $scheduledTransactions[] = (new Structures\ScheduledTransaction())
-                ->setMerchant((new Structures\Merchant())
-                    ->setID($scheduledTransactionArr['merchant_id'])
-                )
+                ->setID($scheduledTransactionArr['id'])
+                ->setMerchant($downPayment->merchant())
                 ->setExternalId($scheduledTransactionArr['external_id'])
                 ->setScheduledAt(new \DateTime($scheduledTransactionArr['scheduled_at']))
                 ->setCurrencyCode($scheduledTransactionArr['currency_code'])
                 ->setAmount($scheduledTransactionArr['amount'])
-                ->setPaymentMethod((new Structures\PaymentMethod())
-                    ->setID($scheduledTransactionArr['payment_method']['id'])
-                );
+                ->setPaymentMethod($downPayment->paymentMethod());
         }
-        $transaction->object()->setScheduledTransactions($scheduledTransactions);
+        $transaction->object()
+            ->setScheduledTransactions($scheduledTransactions)
+            ->setPaymentMethod($downPayment->paymentMethod());
     }
 }

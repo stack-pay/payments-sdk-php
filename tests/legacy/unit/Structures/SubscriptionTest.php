@@ -36,9 +36,9 @@ final class SubscriptionTest extends StructureTestCase
         $this->full('splitAmount', 'int', false);
     }
 
-    public function test_initialTransaction()
+    public function test_downPaymentTransaction()
     {
-        $this->full('initialTransaction', Structures\Transaction::class, false);
+        $this->full('downPaymentTransaction', Structures\Transaction::class, false);
     }
 
     public function test_scheduledTransactions()

@@ -13,7 +13,7 @@ class Subscription implements Interfaces\Subscription
     public $amount;
     public $splitAmount;
     public $downPaymentAmount;
-    public $initialTransaction;
+    public $downPaymentTransaction;
     public $scheduledTransactions;
     public $day;
     public $currencyCode;
@@ -53,9 +53,9 @@ class Subscription implements Interfaces\Subscription
         return $this->downPaymentAmount;
     }
 
-    public function initialTransaction()
+    public function downPaymentTransaction()
     {
-        return $this->initialTransaction;
+        return $this->downPaymentTransaction;
     }
 
     public function scheduledTransactions()
@@ -124,9 +124,9 @@ class Subscription implements Interfaces\Subscription
         return $this;
     }
 
-    public function setInitialTransaction(Interfaces\Transaction $initialTransaction = null)
+    public function setDownPaymentTransaction(Interfaces\Transaction $downPaymentTransaction = null)
     {
-        $this->initialTransaction = $initialTransaction;
+        $this->downPaymentTransaction = $downPaymentTransaction;
 
         return $this;
     }
