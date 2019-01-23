@@ -532,7 +532,8 @@ class StackPay
     }
     
     public function getMerchantPaymentPlans(
-        Interfaces\PaginatedPaymentPlans $paginatedPaymentPlans
+        Interfaces\PaginatedPaymentPlans $paginatedPaymentPlans,
+        $idempotencyKey = null
     ) {
         $transaction = new Transactions\IdempotentTransaction($paginatedPaymentPlans);
         $transaction->idempotencyKey($idempotencyKey);
