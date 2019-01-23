@@ -14,6 +14,7 @@ interface Subscription
     public function initialTransaction();
     public function scheduledTransactions();
     public function day();
+    public function currencyCode();
 
     //-----------
 
@@ -27,4 +28,5 @@ interface Subscription
     public function setInitialTransaction(Transaction $initialTransaction = null);
     public function setScheduledTransactions(array $scheduledTransactions = null);
     public function setDay($day = null);
+    public function setCurrencyCode($currencyCode = null);
 }

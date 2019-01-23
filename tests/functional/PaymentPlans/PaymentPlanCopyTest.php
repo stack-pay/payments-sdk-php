@@ -16,7 +16,7 @@ class PaymentPlanCopyTest extends FunctionalTestCase
 
     protected function buildPaymentPlanCopy()
     {
-        $paymentPlan                  = new Structures\PaymentPlan;
+        $paymentPlan                  = new Structures\PaymentPlan();
         $paymentPlan->id              = 123;
         $paymentPlan->merchant        = $this->merchant;
         $paymentPlan->splitMerchant   = $this->splitMerchant;

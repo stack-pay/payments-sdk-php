@@ -16,6 +16,7 @@ class Subscription implements Interfaces\Subscription
     public $initialTransaction;
     public $scheduledTransactions;
     public $day;
+    public $currencyCode;
 
     public function id()
     {
@@ -65,6 +66,11 @@ class Subscription implements Interfaces\Subscription
     public function day()
     {
         return $this->day;
+    }
+
+    public function currencyCode()
+    {
+        return $this->currencyCode;
     }
 
     // --------
@@ -135,6 +141,13 @@ class Subscription implements Interfaces\Subscription
     public function setDay($day = null)
     {
         $this->day = $day;
+
+        return $this;
+    }
+
+    public function setCurrencyCode($currencyCode = null)
+    {
+        $this->currencyCode = $currencyCode;
 
         return $this;
     }

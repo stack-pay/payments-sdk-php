@@ -113,12 +113,75 @@ trait PaymentPlanTransform
 
         $transaction->object()->setID($body['id']);
 
-        $initial = new Structures\Transaction(); // TODO: Needs updated
+        $initialTransactionArr = $body['initial_transaction'];
+
+        $initial = (new Structures\Transaction())
+            ->setStatus($initialTransactionArr['Status'])
+            ->setMerchant((new Structures\Merchant())
+                ->setID($initialTransactionArr['Merchant'])
+            )
+            ->setOrder((new Structures\Order())
+                ->setID($initialTransactionArr['Order'])
+            )
+            ->setID($initialTransactionArr['Transaction'])
+            ->setCustomer((new Structures\Customer())
+                ->setID($initialTransactionArr['Payment']['Customer'])
+            )
+            ->setPaymentMethod((new Structures\PaymentMethod())
+                ->setID($initialTransactionArr['Payment']['PaymentMethod'])
+            )
+            ->setAmount($initialTransactionArr['Payment']['Amount'])
+            ->setCurrency($initialTransactionArr['Payment']['Currency'])
+            ->setInvoiceNumber($initialTransactionArr['Payment']['InvoiceNumber'])
+            ->setExternalID($initialTransactionArr['Payment']['ExternalId'])
+            ->setComment1($initialTransactionArr['Payment']['Comment1'])
+            ->setComment2($initialTransactionArr['Payment']['Comment1'])
+            ->setAuthCode($initialTransactionArr['Payment']['AuthorizationCode'])
+            ->setAVSCode($initialTransactionArr['Payment']['AVSCode'])
+            ->setCvvResponseCode($initialTransactionArr['Payment']['CVVResponseCode'])
+            ->setPaymentMethod((new Structures\PaymentMethod())
+                ->setID($initialTransactionArr['PaymentMethod']['ID'])
+                ->setAccount((new Structures\Account())
+                    ->setType($initialTransactionArr['PaymentMethod']['AccountType'])
+                    ->setLast4($initialTransactionArr['PaymentMethod']['AccountLast4'])
+                    ->setExpireMonth($this->getIfExists($initialTransactionArr['PaymentMethod'],'ExpirationMonth'))
+                    ->setExpireYear($this->getIfExists($initialTransactionArr['PaymentMethod'],'ExpirationYear'))
+                )
+                ->setAccountHolder((new Structures\AccountHolder())
+                    ->setName($initialTransactionArr['PaymentMethod']['BillingName'])
+                    ->setBillingAddress((new Structures\Address())
+                        ->setAddress1($initialTransactionArr['PaymentMethod']['BillingAddress']['AddressLine1'])
+                        ->setAddress2($initialTransactionArr['PaymentMethod']['BillingAddress']['AddressLine2'])
+                        ->setCity($initialTransactionArr['PaymentMethod']['BillingAddress']['City'])
+                        ->setState($initialTransactionArr['PaymentMethod']['BillingAddress']['State'])
+                        ->setPostalCode($initialTransactionArr['PaymentMethod']['BillingAddress']['Zip'])
+                        ->setCountry($initialTransactionArr['PaymentMethod']['BillingAddress']['Country'])
+                    )
+                )
+            );
+
+
+        if (array_key_exists('SplitMerchant', $initialTransactionArr['Payment'])) {
+            $initial->setSplit((new Structures\Split())
+                ->setMerchant($initialTransactionArr['Payment']['SplitMerchant'])
+                ->setAmount($initialTransactionArr['Payment']['SplitAmount']));
+        }
+
         $transaction->object()->setInitialTransaction($initial);
 
         $scheduledTransactions = [];
         foreach ($body['scheduled_transactions'] as $scheduledTransactionArr) {
-            $scheduledTransactions[] = new Structures\ScheduledTransaction(); // TODO: Needs updated
+            $scheduledTransactions[] = (new Structures\ScheduledTransaction())
+                ->setMerchant((new Structures\Merchant())
+                    ->setID($scheduledTransactionArr['merchant_id'])
+                )
+                ->setExternalId($scheduledTransactionArr['external_id'])
+                ->setScheduledAt(new \DateTime($scheduledTransactionArr['scheduled_at']))
+                ->setCurrencyCode($scheduledTransactionArr['currency_code'])
+                ->setAmount($scheduledTransactionArr['amount'])
+                ->setPaymentMethod((new Structures\PaymentMethod())
+                    ->setID($scheduledTransactionArr['payment_method']['id'])
+                );
         }
         $transaction->object()->setScheduledTransactions($scheduledTransactions);
     }

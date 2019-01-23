@@ -25,19 +25,12 @@ trait PaymentPlanTransform
             'external_id'           => (string)$transaction->object()->externalID(),
             'amount'                => $transaction->object()->amount(),
             'down_payment_amount'   => $transaction->object()->downPaymentAmount(),
+            'currency_code'         => $transaction->object()->currencyCode(),
+            'payment_method'        => [
+                'method'            => 'id',
+                'id'                => $transaction->object()->paymentMethod()->id(),
+            ],
         ];
-
-        if ($transaction->object()->token()) {
-            $body['payment_method'] = [
-                'method'   => 'token',
-                'token'    => $transaction->object()->token()->token(),
-            ];
-        } else {
-            $body['payment_method'] = [
-                'method'   => 'id',
-                'token'    => $transaction->object()->paymentMethod()->id(),
-            ];
-        }
 
         if ($transaction->object()->splitAmount()) {
             $body['split_amount'] = $transaction->object()->splitAmount();

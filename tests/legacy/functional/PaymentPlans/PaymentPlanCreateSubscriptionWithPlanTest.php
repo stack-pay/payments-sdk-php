@@ -82,36 +82,36 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                             'merchant_id'       => $subscription->paymentPlan()->merchant()->id(),
                             'external_id'       => null,
                             'scheduled_at'      => '2019-01-01',
-                            'timezone'          => 'America/New_York',
+                            'timezone'          => 'UTC',
                             'currency_code'     => 'USD',
                             'amount'            => 10000, //amount
                             'payment_method'    => [
-                                'method'    =>  'id',
-                                'id'        =>  $subscription->paymentMethod()->id()
+                                'method'        =>  'id',
+                                'id'            =>  $subscription->paymentMethod()->id()
                             ],
                         ],
                         [
                             'merchant_id'       => $subscription->paymentPlan()->merchant()->id(),
                             'external_id'       => null,
                             'scheduled_at'      => '2019-02-01',
-                            'timezone'          => 'America/New_York',
+                            'timezone'          => 'UTC',
                             'currency_code'     => 'USD',
                             'amount'            => 10000, //amount
                             'payment_method'    => [
-                                'method'    =>  'id',
-                                'id'        =>  $subscription->paymentMethod()->id()
+                                'method'        =>  'id',
+                                'id'            =>  $subscription->paymentMethod()->id()
                             ],
                         ],
                         [
                             'merchant_id'       => $subscription->paymentPlan()->merchant()->id(),
                             'external_id'       => null,
                             'scheduled_at'      => '2019-03-01',
-                            'timezone'          => 'America/New_York',
+                            'timezone'          => 'UTC',
                             'currency_code'     => 'USD',
                             'amount'            => 10000, //amount
                             'payment_method'    => [
-                                'method'    =>  'id',
-                                'id'        =>  $subscription->paymentMethod()->id()
+                                'method'        =>  'id',
+                                'id'            =>  $subscription->paymentMethod()->id()
                             ],
                         ]
                     ]
@@ -127,34 +127,109 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
 
         $sdk->setCurlProvider($curlProvider);
 
-        $plan = $sdk->copyPaymentPlan($plan);
+        $subscription = $sdk->createPaymentPlanSubscription($subscription);
 
         $this->assertEquals(
             $respArray['Body'],
             [
                 'data' => [
-                    'id'                  => $plan->id(),
-                    'name'                => $plan->name(),
-                    'request_incoming_id' => $plan->requestIncomingId(),
-                    'down_payment_amount' => $plan->downPaymentAmount(),
-                    'split_merchant_id'   => $plan->splitMerchant()->id(),
-                    'merchant_id'         => $plan->merchant()->id(),
-                    'configuration' => [
-                        'months'          => $plan->configuration()->months(),
-                        'day'             => $plan->configuration()->day(),
+                    'id'                        => $subscription->id(),
+                    'initial_transaction'       => [
+                        'Status'                => $subscription->initialTransaction()->status(),
+                        'Merchant'              => $subscription->initialTransaction()->merchant()->id(),
+                        'Order'                 => $subscription->initialTransaction()->order()->id(),
+                        'Transaction'           => $subscription->initialTransaction()->id(),
+                        'Payment'               => [
+                            'Customer'          => $subscription->initialTransaction()->customer()->id(),
+                            'PaymentMethod'     => $subscription->initialTransaction()->paymentMethod()->id(),
+                            'Amount'            => $subscription->initialTransaction()->amount(),
+                            'Currency'          => $subscription->initialTransaction()->currency(),
+                            'SplitMerchant'     => $subscription->initialTransaction()->split()->merchant(),
+                            'SplitAmount'       => $subscription->initialTransaction()->split()->amount(),
+                            'InvoiceNumber'     => $subscription->initialTransaction()->invoiceNumber(),
+                            'ExternalId'        => $subscription->initialTransaction()->externalID(),
+                            'Comment1'          => $subscription->initialTransaction()->comment1(),
+                            'Comment2'          => $subscription->initialTransaction()->comment2(),
+                            'AuthorizationCode' => $subscription->initialTransaction()->authCode(),
+                            'AVSCode'           => $subscription->initialTransaction()->aVSCode(),
+                            'CVVResponseCode'   => $subscription->initialTransaction()->cVVResponseCode(),
+                        ],
+                        'PaymentMethod'         => [
+                            'ID'                => $subscription->initialTransaction()->paymentMethod()->id(),
+                            'AccountType'       => $subscription->initialTransaction()->paymentMethod()->account()->type(),
+                            'AccountLast4'      => $subscription->initialTransaction()->paymentMethod()->account()->last4(),
+                            'ExpirationMonth'   => $subscription->initialTransaction()->paymentMethod()->account()->expireMonth(),
+                            'ExpirationYear'    => $subscription->initialTransaction()->paymentMethod()->account()->expireYear(),
+                            'BillingName'       => $subscription->initialTransaction()->paymentMethod()->accountHolder()->name(),
+                            'BillingAddress'    => [
+                                'AddressLine1'  => $subscription->initialTransaction()->paymentMethod()->accountHolder()->billingAddress()->address1(),
+                                'AddressLine2'  => $subscription->initialTransaction()->paymentMethod()->accountHolder()->billingAddress()->address2(),
+                                'City'          => $subscription->initialTransaction()->paymentMethod()->accountHolder()->billingAddress()->city(),
+                                'State'         => $subscription->initialTransaction()->paymentMethod()->accountHolder()->billingAddress()->state(),
+                                'Zip'           => $subscription->initialTransaction()->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
+                                'Country'       => $subscription->initialTransaction()->paymentMethod()->accountHolder()->billingAddress()->country(),
+                            ]
+                        ]
                     ],
-                    'payment_priority'    => $plan->paymentPriority(),
+                    'scheduled_transactions'    => [
+                        [
+                            'merchant_id'       => $subscription->scheduledTransactions()[0]->merchant()->id(),
+                            'external_id'       => $subscription->scheduledTransactions()[0]->externalID(),
+                            'scheduled_at'      => $subscription->scheduledTransactions()[0]->scheduledAt()->format('Y-m-d'),
+                            'timezone'          => $subscription->scheduledTransactions()[0]->scheduledAt()->getTimezone()->getName(),
+                            'currency_code'     => $subscription->scheduledTransactions()[0]->currencyCode(),
+                            'amount'            => $subscription->scheduledTransactions()[0]->amount(),
+                            'payment_method'    => [
+                                'method'        => 'id',
+                                'id'            => $subscription->scheduledTransactions()[0]->paymentMethod()->id(),
+                            ],
+                        ],
+                        [
+                            'merchant_id'       => $subscription->scheduledTransactions()[1]->merchant()->id(),
+                            'external_id'       => $subscription->scheduledTransactions()[1]->externalID(),
+                            'scheduled_at'      => $subscription->scheduledTransactions()[1]->scheduledAt()->format('Y-m-d'),
+                            'timezone'          => $subscription->scheduledTransactions()[1]->scheduledAt()->getTimezone()->getName(),
+                            'currency_code'     => $subscription->scheduledTransactions()[1]->currencyCode(),
+                            'amount'            => $subscription->scheduledTransactions()[1]->amount(),
+                            'payment_method'    => [
+                                'method'        => 'id',
+                                'id'            => $subscription->scheduledTransactions()[1]->paymentMethod()->id(),
+                            ],
+                        ],
+                        [
+                            'merchant_id'       => $subscription->scheduledTransactions()[2]->merchant()->id(),
+                            'external_id'       => $subscription->scheduledTransactions()[2]->externalID(),
+                            'scheduled_at'      => $subscription->scheduledTransactions()[2]->scheduledAt()->format('Y-m-d'),
+                            'timezone'          => $subscription->scheduledTransactions()[2]->scheduledAt()->getTimezone()->getName(),
+                            'currency_code'     => $subscription->scheduledTransactions()[2]->currencyCode(),
+                            'amount'            => $subscription->scheduledTransactions()[2]->amount(),
+                            'payment_method'    => [
+                                'method'        => 'id',
+                                'id'            => $subscription->scheduledTransactions()[2]->paymentMethod()->id(),
+                            ],
+                        ],
+                    ],
                 ],
             ]
         );
         $this->assertEquals(
             [
                 0 => [
-                    'URL'  => 'https://api.mystackpay.com/api/merchants/1000/payment-plans',
+                    'URL'  => 'https://api.mystackpay.com/api/merchants'
+                        . '/' . $subscription->paymentPlan()->merchant()->id()
+                        . '/payment-plans/' . $subscription->paymentPlan()->id()
+                        . '/subscriptions',
                     'Body' => [
                         'Body' => [
-                            'payment_plan_id'     => 1000,
-                            'merchant_id'         => 1000,
+                            'payment_method' => [
+                                'method' => 'id',
+                                'id' => $subscription->paymentPlan()->id(),
+                            ],
+                            'external_id' => $subscription->externalId(),
+                            'amount' =>  $subscription->amount(),
+                            'down_payment_amount' => $subscription->downPaymentAmount(),
+                            'day' => $subscription->day(),
+                            'currency_code' => $subscription->currencyCode(),
                         ],
                         'Header' => [
                             'Application'    => 'PaymentSystem',
