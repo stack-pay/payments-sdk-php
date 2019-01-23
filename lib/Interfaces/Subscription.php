@@ -10,8 +10,11 @@ interface Subscription
     public function externalID();
     public function amount();
     public function splitAmount();
-    public function initialTransaction();
+    public function downPaymentAmount();
+    public function downPaymentTransaction();
     public function scheduledTransactions();
+    public function day();
+    public function currencyCode();
 
     //-----------
 
@@ -21,6 +24,9 @@ interface Subscription
     public function setExternalID($externalID = null);
     public function setAmount($amount = null);
     public function setSplitAmount($splitAmount = null);
-    public function setInitialTransaction(Transaction $initialTransaction = null);
-    public function setScheduledTransactions($scheduledTransactions = null);
+    public function setDownPaymentAmount($downPaymentAmount = null);
+    public function setDownPaymentTransaction(Transaction $downPaymentTransaction = null);
+    public function setScheduledTransactions(array $scheduledTransactions = null);
+    public function setDay($day = null);
+    public function setCurrencyCode($currencyCode = null);
 }

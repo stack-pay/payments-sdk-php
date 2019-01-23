@@ -106,4 +106,77 @@ trait PaymentPlanTransform
         }
         $transaction->object()->setPlans($plans);
     }
+
+    public function responseCreatePaymentPlanSubscription($transaction)
+    {
+        $body = $transaction->response()->body()['data'];
+
+        $transaction->object()->setID($body['id']);
+
+        $downPaymentTransactionArr = $body['down_payment_transaction'];
+
+        $downPayment = (new Structures\Transaction())
+            ->setStatus($downPaymentTransactionArr['status'])
+            ->setMerchant((new Structures\Merchant())
+                ->setID($transaction->object()->paymentPlan()->merchant()->id())
+            )
+            ->setOrder((new Structures\Order())
+                ->setID($downPaymentTransactionArr['order_id'])
+            )
+            ->setID($downPaymentTransactionArr['id'])
+            ->setCustomer((new Structures\Customer())
+                ->setID($downPaymentTransactionArr['payment_method']['customer_id'])
+            )
+            ->setPaymentMethod((new Structures\PaymentMethod())
+                ->setID($downPaymentTransactionArr['payment_method']['id'])
+            )
+            ->setAmount($downPaymentTransactionArr['amount'])
+            ->setCurrency($body['data']['currency_code'])
+            ->setInvoiceNumber($downPaymentTransactionArr['invoice_number'])
+            ->setExternalID($downPaymentTransactionArr['external_id'])
+            ->setPaymentMethod((new Structures\PaymentMethod())
+                ->setID($downPaymentTransactionArr['payment_method']['id'])
+                ->setAccount((new Structures\Account())
+                    ->setType($downPaymentTransactionArr['payment_method']['type'])
+                    ->setLast4($downPaymentTransactionArr['payment_method']['account_last_four'])
+                    ->setExpireMonth($downPaymentTransactionArr['payment_method']['expiration_month'])
+                    ->setExpireYear($downPaymentTransactionArr['payment_method']['expiration_year'])
+                )
+                ->setAccountHolder((new Structures\AccountHolder())
+                    ->setName($downPaymentTransactionArr['payment_method']['billing_name'])
+                    ->setBillingAddress((new Structures\Address())
+                        ->setAddress1($downPaymentTransactionArr['payment_method']['billing_address_1'])
+                        ->setAddress2($downPaymentTransactionArr['payment_method']['billing_address_2'])
+                        ->setCity($downPaymentTransactionArr['payment_method']['billing_city'])
+                        ->setState($downPaymentTransactionArr['payment_method']['billing_state'])
+                        ->setPostalCode($downPaymentTransactionArr['payment_method']['billing_zip'])
+                        ->setCountry($downPaymentTransactionArr['payment_method']['billing_country'])
+                    )
+                )
+            );
+
+
+        if (array_key_exists('split_merchant_id', $downPaymentTransactionArr)) {
+            $downPayment->setSplit((new Structures\Split())
+                ->setMerchant($downPaymentTransactionArr['split_merchant_id'])
+                ->setAmount($downPaymentTransactionArr['split_amount']));
+        }
+
+        $transaction->object()->setDownPaymentTransaction($downPayment);
+
+        $scheduledTransactions = [];
+        foreach ($body['scheduled_transactions'] as $scheduledTransactionArr) {
+            $scheduledTransactions[] = (new Structures\ScheduledTransaction())
+                ->setID($scheduledTransactionArr['id'])
+                ->setMerchant($downPayment->merchant())
+                ->setExternalId($scheduledTransactionArr['external_id'])
+                ->setScheduledAt(new \DateTime($scheduledTransactionArr['scheduled_at']))
+                ->setCurrencyCode($scheduledTransactionArr['currency_code'])
+                ->setAmount($scheduledTransactionArr['amount'])
+                ->setPaymentMethod($downPayment->paymentMethod());
+        }
+        $transaction->object()
+            ->setScheduledTransactions($scheduledTransactions)
+            ->setPaymentMethod($downPayment->paymentMethod());
+    }
 }

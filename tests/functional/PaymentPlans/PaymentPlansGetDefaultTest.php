@@ -15,7 +15,7 @@ class PaymentPlansGetDefaultTest extends FunctionalTestCase
 
     protected function buildPaymentPlan()
     {
-        $paymentPlan                  = new Structures\PaymentPlan;
+        $paymentPlan                  = new Structures\PaymentPlan();
         $paymentPlan->merchant        = $this->merchant;
 
         return $paymentPlan;

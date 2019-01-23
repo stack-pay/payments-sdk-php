@@ -547,4 +547,13 @@ class StackPay
         $transaction->idempotencyKey($idempotencyKey);
         return self::$gateway->getDefaultPaymentPlans($transaction);
     }
+    
+    public function createPaymentPlanSubscription(
+        Interfaces\Subscription $Subscription,
+        $idempotencyKey = null
+    ) {
+        $transaction = new Transactions\IdempotentTransaction($Subscription);
+        $transaction->idempotencyKey($idempotencyKey);
+        return self::$gateway->createPaymentPlanSubscription($transaction);
+    }
 }

@@ -150,4 +150,25 @@ class V1RESTTranslator
 
         return $paymentPlanElement;
     }
+
+    public function buildPaymentPlanCreateSubscriptionElement(Structures\Subscription $object)
+    {
+        $element = [
+            'external_id'         => (string) $object->externalId,
+            'currency_code'       => $object->currencyCode,
+            'amount'              => $object->amount,
+            'down_payment_amount' => $object->downPaymentAmount,
+            'payment_method'      => $this->buildPaymentMethodElement($object->paymentMethod),
+        ];
+
+        if ($object->day) {
+            $element['day'] = $object->day;
+        }
+
+        if ($object->splitAmount) {
+            $element['split_amount'] = $object->splitAmount;
+        }
+
+        return $element;
+    }
 }
