@@ -157,7 +157,7 @@ class V1RESTTranslator
             'external_id'         => (string) $object->externalId,
             'currency_code'       => $object->currencyCode,
             'amount'              => $object->amount,
-            'down_payment_amount' => $object->amount,
+            'down_payment_amount' => $object->downPaymentAmount,
             'payment_method'      => $this->buildPaymentMethodElement($object->paymentMethod),
         ];
 
