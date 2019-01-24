@@ -50,4 +50,26 @@ class Sale
 
         return $sale;
     }
+
+    public static function withMasterPass(
+        $masterpassTransID,
+        Interfaces\Merchant      $merchant,
+        $amount,
+        Interfaces\Customer      $customer = null,
+        Interfaces\Split         $split = null,
+        $currency = null
+    ) {
+        $sale = (new Structures\Sale())
+            ->setMasterPassTransactionId($masterpassTransID)
+            ->setMerchant($merchant)
+            ->setAmount($amount)
+            ->setCustomer($customer)
+            ->setSplit($split);
+
+        if ($currency) {
+            $sale->setCurrency($currency);
+        }
+
+        return $sale;
+    }
 }
