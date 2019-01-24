@@ -47,7 +47,7 @@ trait PaymentPlanTransform
             $plan = (new Structures\PaymentPlan())
                 ->setID($planArray['id'])
                 ->setName($planArray['name'])
-                ->setRequestIncomingId($planArray['request_incoming_id'])
+                ->setRequestIncomingId($planArray['incoming_request_id'])
                 ->setDownPaymentAmount($planArray['down_payment_amount'])
                 ->setConfiguration($planConfig)
                 ->setMerchant((new Structures\Merchant())

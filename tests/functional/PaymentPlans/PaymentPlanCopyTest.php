@@ -34,7 +34,7 @@ class PaymentPlanCopyTest extends FunctionalTestCase
                 'data' => [
                     'id'                  => 12345,
                     'name'                => 'Monthly Plan - 6 Months',
-                    'request_incoming_id' => 1111,
+                    'incoming_request_id' => 1111,
                     'down_payment_amount' => 0,
                     'merchant_id'         => 123,
                     'split_merchant_id'   => 124,

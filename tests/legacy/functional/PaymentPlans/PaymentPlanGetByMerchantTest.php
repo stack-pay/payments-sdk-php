@@ -34,7 +34,7 @@ final class PaymentPlanGetByMerchantTest extends TestCase
                     [
                         'id' => 1000,
                         'name' => '3-Months plan',
-                        'request_incoming_id' => 1,
+                        'incoming_request_id' => 1,
                         'down_payment_amount' => 100,
                         'split_merchant_id' => 2,
                         'merchant_id' => $plans->merchant()->id(),
@@ -46,7 +46,7 @@ final class PaymentPlanGetByMerchantTest extends TestCase
                     [
                         'id' => 1001,
                         'name' => '6-Months plan',
-                        'request_incoming_id' => 1,
+                        'incoming_request_id' => 1,
                         'down_payment_amount' => 100,
                         'split_merchant_id' => 2,
                         'merchant_id' => $plans->merchant()->id(),
@@ -86,7 +86,7 @@ final class PaymentPlanGetByMerchantTest extends TestCase
                     [
                         'id' => $plans->plans()[0]->id(),
                         'name' => $plans->plans()[0]->name(),
-                        'request_incoming_id' => $plans->plans()[0]->requestIncomingId(),
+                        'incoming_request_id' => $plans->plans()[0]->requestIncomingId(),
                         'down_payment_amount' => $plans->plans()[0]->downPaymentAmount(),
                         'split_merchant_id' => $plans->plans()[0]->splitMerchant()->id(),
                         'merchant_id' => $plans->plans()[0]->merchant()->id(),
@@ -98,7 +98,7 @@ final class PaymentPlanGetByMerchantTest extends TestCase
                     [
                         'id' => $plans->plans()[1]->id(),
                         'name' => $plans->plans()[1]->name(),
-                        'request_incoming_id' => $plans->plans()[1]->requestIncomingId(),
+                        'incoming_request_id' => $plans->plans()[1]->requestIncomingId(),
                         'down_payment_amount' => $plans->plans()[1]->downPaymentAmount(),
                         'split_merchant_id' => $plans->plans()[1]->splitMerchant()->id(),
                         'merchant_id' => $plans->plans()[1]->merchant()->id(),
