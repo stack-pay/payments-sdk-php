@@ -13,7 +13,7 @@ trait PaymentPlanTransform
 
         $transaction->object()->setID($body['id']);
         $transaction->object()->setName($body['name']);
-        $transaction->object()->setRequestIncomingId($body['request_incoming_id']);
+        $transaction->object()->setRequestIncomingId($body['incoming_request_id']);
         $transaction->object()->setDownPaymentAmount($body['down_payment_amount']);
         $transaction->object()->setMerchant((new Structures\Merchant())
             ->setID($body['merchant_id']));
@@ -47,7 +47,7 @@ trait PaymentPlanTransform
             $plan = (new Structures\PaymentPlan())
                 ->setID($planArray['id'])
                 ->setName($planArray['name'])
-                ->setRequestIncomingId($planArray['request_incoming_id'])
+                ->setRequestIncomingId($planArray['incoming_request_id'])
                 ->setDownPaymentAmount($planArray['down_payment_amount'])
                 ->setConfiguration($planConfig)
                 ->setMerchant((new Structures\Merchant())
@@ -83,24 +83,12 @@ trait PaymentPlanTransform
             $plan = (new Structures\PaymentPlan())
                 ->setID($value['id'])
                 ->setName($value['name'])
-                ->setRequestIncomingId($value['request_incoming_id'])
                 ->setDownPaymentAmount($value['down_payment_amount'])
-                ->setMerchant((new Structures\Merchant())
-                    ->setID($value['merchant_id'])
-                )
                 ->setConfiguration((new Structures\PaymentPlanConfig())
                     ->setMonths($value['configuration']['months'])
                 );
-            if (!empty($value['split_merchant_id'])) {
-                $plan->setSplitMerchant((new Structures\Merchant())
-                    ->setID($value['split_merchant_id'])
-                );
-            }
             if (!empty($value['configuration']['day'])) {
                 $plan->configuration()->setDay($value['configuration']['day']);
-            }
-            if (!empty($value['payment_priority'])) {
-                $plan->setPaymentPriority($value['payment_priority']);
             }
             $plans[] = $plan;
         }

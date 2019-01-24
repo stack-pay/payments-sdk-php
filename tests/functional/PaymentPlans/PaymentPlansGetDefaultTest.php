@@ -31,7 +31,6 @@ class PaymentPlansGetDefaultTest extends FunctionalTestCase
                     [
                         'id'                  => 12345,
                         'name'                => 'Monthly Plan - 3 Months',
-                        'request_incoming_id' => 1111,
                         'down_payment_amount' => 0,
                         'merchant_id'         => 123,
                         'split_merchant_id'   => 124,
@@ -44,7 +43,6 @@ class PaymentPlansGetDefaultTest extends FunctionalTestCase
                     [
                         'id'                  => 12346,
                         'name'                => 'Monthly Plan - 6 Months',
-                        'request_incoming_id' => 1112,
                         'down_payment_amount' => 0,
                         'merchant_id'         => 123,
                         'split_merchant_id'   => 124,
