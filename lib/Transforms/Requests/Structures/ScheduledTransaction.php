@@ -9,13 +9,17 @@ trait ScheduledTransaction
     public function requestScheduledTransaction($transaction)
     {
         $body = [
-            'external_id'   => $transaction->object()->externalId(),
-            'merchant_id'   => $transaction->object()->merchant()->id(),
-            'scheduled_at'  => $transaction->object()->scheduledAt()->format('Y-m-d'),
-            'timezone'      => $transaction->object()->scheduledAt()->getTimezone()->getName(),
-            'currency_code' => $transaction->object()->currencyCode(),
-            'amount'        => $transaction->object()->amount()
+            'external_id'       => $transaction->object()->externalId(),
+            'merchant_id'       => $transaction->object()->merchant()->id(),
+            'scheduled_at'      => $transaction->object()->scheduledAt()->format('Y-m-d'),
+            'timezone'          => $transaction->object()->scheduledAt()->getTimezone()->getName(),
+            'currency_code'     => $transaction->object()->currencyCode(),
+            'amount'            => $transaction->object()->amount(),    
         ];
+
+        if ($transaction->object()->subscriptionID()) {
+            $body['subscription_id'] = $transaction->object()->subscriptionID();
+        }
 
         if ($transaction->object()->paymentMethod() &&
             $transaction->object()->paymentMethod()->id()

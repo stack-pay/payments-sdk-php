@@ -63,4 +63,14 @@ class ScheduledTransactionRequest extends Request
 
         return $this;
     }
+
+    public function getDailyScheduledTransactions()
+    {
+        $this->method   = 'GET';
+        $this->endpoint = '/api/scheduled-transactions?createdBetween'. $this->scheduledTransaction->scheduledAt.','. $this->scheduledTransaction->scheduledAt;
+        $this->hashKey  = StackPay::$privateKey;
+        $this->body     = null;
+
+        return $this;
+    }
 }

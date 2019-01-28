@@ -124,6 +124,9 @@ trait PaymentPlanTransform
             ->setExternalID($downPaymentTransactionArr['external_id'])
             ->setPaymentMethod((new Structures\PaymentMethod())
                 ->setID($downPaymentTransactionArr['payment_method']['id'])
+                ->setCustomer((new Structures\Account())
+                    ->setID($downPaymentTransactionArr['payment_method']['customer_id'])
+                )
                 ->setAccount((new Structures\Account())
                     ->setType($downPaymentTransactionArr['payment_method']['type'])
                     ->setLast4($downPaymentTransactionArr['payment_method']['account_last_four'])
@@ -148,6 +151,21 @@ trait PaymentPlanTransform
             $downPayment->setSplit((new Structures\Split())
                 ->setMerchant($downPaymentTransactionArr['split_merchant_id'])
                 ->setAmount($downPaymentTransactionArr['split_amount']));
+        }
+
+        if($downPaymentTransactionArr['payment_method']['method'] == 'credit_card') {
+            $downPayment->paymentMethod()->setAccount((new Structures\Account())
+                ->setType($downPaymentTransactionArr['payment_method']['type'])
+                ->setLast4($downPaymentTransactionArr['payment_method']['account_last_four'])
+                ->setExpireMonth($downPaymentTransactionArr['payment_method']['expiration_month'])
+                ->setExpireYear($downPaymentTransactionArr['payment_method']['expiration_year'])
+            );
+        } elseif ($downPaymentTransactionArr['payment_method']['method'] == 'bank_account') {
+            $downPayment->paymentMethod()->setAccount((new Structures\Account())
+                ->setType($downPaymentTransactionArr['payment_method']['type'])
+                ->setLast4($downPaymentTransactionArr['payment_method']['account_last_four'])
+                ->setExpireMonth($downPaymentTransactionArr['payment_method']['routing_last_four'])
+            );
         }
 
         $transaction->object()->setDownPaymentTransaction($downPayment);

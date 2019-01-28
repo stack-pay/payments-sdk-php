@@ -522,6 +522,15 @@ class StackPay
         return self::$gateway->deleteScheduledTransaction($transaction);
     }
 
+    public function getDailyScheduledTransaction(
+        Interfaces\PaginatedScheduledTransactions $paginatedScheduledTransactions,
+        $idempotencyKey = null
+    ) {
+        $transaction = new Transactions\IdempotentTransaction($paginatedScheduledTransactions);
+        $transaction->idempotencyKey($idempotencyKey);
+        return self::$gateway->getDailyScheduledTransaction($transaction);
+    }
+
     public function copyPaymentPlan(
         Interfaces\PaymentPlan $paymentPlan,
         $idempotencyKey = null

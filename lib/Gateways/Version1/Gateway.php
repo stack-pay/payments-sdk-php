@@ -307,6 +307,20 @@ class Gateway extends Gateways\Gateway
         return $transaction->object();
     }
 
+    public function getDailyScheduledTransaction($transaction)
+    {
+        $transaction->request()->endpoint($this->scheduledTransactionURL . '?createdBetween'. $transaction->object()->beforeDate().','. $transaction->object()->afterDate());
+        $transaction->request()->hashKey($this->privateKey);
+
+        $transaction->response()->hashKey($this->privateKey);
+
+        $this->execute($transaction, 'GET');
+
+        $this->responseGetScheduledTransaction($transaction);
+
+        return $transaction->object();
+    }
+
     public function copyPaymentPlan($transaction)
     {
         $url = $this->merchantBaseURL
