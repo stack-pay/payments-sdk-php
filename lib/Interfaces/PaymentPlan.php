@@ -12,6 +12,7 @@ interface PaymentPlan
     public function merchant();
     public function configuration();
     public function paymentPriority();
+    public function isActive();
 
     //-----------
 
@@ -23,4 +24,5 @@ interface PaymentPlan
     public function setMerchant(Merchant $merchant = null);
     public function setConfiguration(PaymentPlanConfig $config = null);
     public function setPaymentPriority($paymentPrioroty = null);
+    public function setIsActive($isActive = null);
 }

@@ -19,6 +19,7 @@ class Merchant implements Interfaces\Merchant
     public $link;
     public $externalID;
     public $applicationName;
+    public $accessToken;
 
     public function __construct($id = null, $request_hash_key = null)
     {
@@ -89,6 +90,11 @@ class Merchant implements Interfaces\Merchant
     public function applicationName()
     {
         return $this->applicationName;
+    }
+
+    public function hostedPageAccessToken()
+    {
+        return $this->accessToken;
     }
 
     //-----------
@@ -179,6 +185,13 @@ class Merchant implements Interfaces\Merchant
     public function setApplicationName($applicationName = null)
     {
         $this->applicationName = $applicationName;
+
+        return $this;
+    }
+
+    public function setHostedPageAccessToken($accessToken = null)
+    {
+        $this->accessToken = $accessToken;
 
         return $this;
     }

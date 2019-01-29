@@ -7,7 +7,7 @@ use StackPay\Payments\Structures;
 
 trait PaymentPlanTransform
 {
-    public function responseCopyPaymentPlan($transaction)
+    public function responsePaymentPlan($transaction)
     {
         $body = $transaction->response()->body()['data'];
 
@@ -95,7 +95,7 @@ trait PaymentPlanTransform
         $transaction->object()->setPlans($plans);
     }
 
-    public function responseCreatePaymentPlanSubscription($transaction)
+    public function responsePaymentPlanSubscription($transaction)
     {
         $body = $transaction->response()->body()['data'];
 
@@ -124,7 +124,7 @@ trait PaymentPlanTransform
             ->setExternalID($downPaymentTransactionArr['external_id'])
             ->setPaymentMethod((new Structures\PaymentMethod())
                 ->setID($downPaymentTransactionArr['payment_method']['id'])
-                ->setCustomer((new Structures\Account())
+                ->setCustomer((new Structures\Customer())
                     ->setID($downPaymentTransactionArr['payment_method']['customer_id'])
                 )
                 ->setAccount((new Structures\Account())

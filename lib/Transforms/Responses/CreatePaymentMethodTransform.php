@@ -4,7 +4,7 @@ namespace StackPay\Payments\Transforms\Responses;
 
 trait CreatePaymentMethodTransform
 {
-    public function responseCreatePaymentMethod($transaction)
+    public function responsePaymentMethod($transaction)
     {
         $body = $transaction->response()->body();
         $transaction->object()->createCustomer()->setID($body['Customer']);

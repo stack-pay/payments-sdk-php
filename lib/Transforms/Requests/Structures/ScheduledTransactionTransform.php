@@ -4,7 +4,7 @@ namespace StackPay\Payments\Transforms\Requests\Structures;
 
 use StackPay\Payments\AccountTypes;
 
-trait ScheduledTransaction
+trait ScheduledTransactionTransform
 {
     public function requestScheduledTransaction($transaction)
     {
