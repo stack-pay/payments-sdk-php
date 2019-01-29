@@ -1,6 +1,7 @@
 <?php
 
 use StackPay\Payments\Requests\v1\ScheduledTransactionRequest;
+use StackPay\Payments\Requests\v1\PaginatedScheduledTransactionRequest;
 use StackPay\Payments\Structures;
 use StackPay\Payments\Translators;
 
@@ -8,15 +9,22 @@ class ScheduledTransactionRequestUnitTest extends UnitTestCase
 {
     public function setUp()
     {
-        $this->StackPay                         = new StackPay\Payments\StackPay('public-12345', 'private-12345');
+        $this->StackPay                                     = new StackPay\Payments\StackPay('public-12345', 'private-12345');
 
-        $this->merchant                         = new Structures\Merchant(13, 'merchant_hash_key_123');
+        $this->merchant                                     = new Structures\Merchant(13, 'merchant_hash_key_123');
 
-        $this->scheduledTransaction             = new Structures\ScheduledTransaction;
-        $this->scheduledTransaction->id         = 12345;
-        $this->scheduledTransaction->merchant   = $this->merchant;
+        $this->scheduledTransaction                         = new Structures\ScheduledTransaction;
+        $this->scheduledTransaction->id                     = 12345;
+        $this->scheduledTransaction->merchant               = $this->merchant;
+        $this->scheduledTransaction->scheduledAt            = new DateTime('2016-01-01', new DateTimeZone('America/New_York'));
+
+        $this->paginatedScheduledTransaction                = new Structures\PaginatedScheduledTransactions;
+        $this->paginatedScheduledTransaction->beforeDate    = new DateTime('2016-01-01', new DateTimeZone('America/New_York'));
+        $this->paginatedScheduledTransaction->afterDate     = new DateTime('2016-01-01', new DateTimeZone('America/New_York'));
+
 
         $this->request = new ScheduledTransactionRequest($this->scheduledTransaction);
+        $this->paginatedRequest = new PaginatedScheduledTransactionRequest($this->paginatedScheduledTransaction);
     }
 
     public function testConstructor()
@@ -104,5 +112,30 @@ class ScheduledTransactionRequestUnitTest extends UnitTestCase
         $this->assertEquals($retryRequest->endpoint, '/api/scheduled-transactions/'. $this->scheduledTransaction->id .'/attempts');
         $this->assertEquals($retryRequest->hashKey, $this->StackPay::$privateKey);
         $this->assertEquals($retryRequest->body, ['payment_method' => $mockedPaymentMethodElement]);
+    }
+
+    public function testGetDailyScheduledTransactions()
+    {
+        $getRequest = $this->paginatedRequest->getDailyScheduledTransactions();
+
+        $this->assertEquals($getRequest->method, 'GET');
+        $this->assertEquals($getRequest->endpoint, '/api/scheduled-transactions?createdBetween='. $this->paginatedScheduledTransaction->beforeDate->format('Y-m-d').','. $this->paginatedScheduledTransaction->afterDate->format('Y-m-d'));
+        $this->assertEquals($getRequest->hashKey, $this->StackPay::$privateKey);
+        $this->assertNull($getRequest->body);
+
+        $this->paginatedScheduledTransaction->status        = 'scheduled';
+        $getRequest = $this->paginatedRequest->getDailyScheduledTransactions();
+        $this->assertEquals($getRequest->method, 'GET');
+        $this->assertEquals($getRequest->endpoint, '/api/scheduled-transactions?createdBetween='. $this->paginatedScheduledTransaction->beforeDate->format('Y-m-d').','. $this->paginatedScheduledTransaction->afterDate->format('Y-m-d').'&status='. $this->paginatedScheduledTransaction->status);
+        $this->assertEquals($getRequest->hashKey, $this->StackPay::$privateKey);
+        $this->assertNull($getRequest->body);
+
+        $this->paginatedScheduledTransaction->perPage       = '1';
+        $this->paginatedScheduledTransaction->currentPage   = '10';
+        $getRequest = $this->paginatedRequest->getDailyScheduledTransactions();
+        $this->assertEquals($getRequest->method, 'GET');
+        $this->assertEquals($getRequest->endpoint, '/api/scheduled-transactions?createdBetween='. $this->paginatedScheduledTransaction->beforeDate->format('Y-m-d').','. $this->paginatedScheduledTransaction->afterDate->format('Y-m-d').'&status='. $this->paginatedScheduledTransaction->status.'&per_page='. $this->paginatedScheduledTransaction->perPage.'&page='. $this->paginatedScheduledTransaction->currentPage);
+        $this->assertEquals($getRequest->hashKey, $this->StackPay::$privateKey);
+        $this->assertNull($getRequest->body);
     }
 }

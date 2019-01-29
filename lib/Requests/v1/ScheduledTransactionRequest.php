@@ -63,24 +63,4 @@ class ScheduledTransactionRequest extends Request
 
         return $this;
     }
-
-    public function getDailyScheduledTransactions()
-    {
-        $this->method   = 'GET';
-        $this->endpoint = '/api/scheduled-transactions?createdBetween='. $this->paginatedScheduledTransaction->beforeDate.','. $this->paginatedScheduledTransaction->afterDate;
-        $this->hashKey  = StackPay::$privateKey;
-        $this->body     = null;
-
-        if ($this->paginatedScheduledTransaction->status) {
-            $this->endpoint .= '&status='. $this->scheduledTransaction->status;
-        }
-        if ($this->paginatedScheduledTransaction->perPage) {
-            $this->endpoint .= '&per_page='. $this->scheduledTransaction->perPage;
-        }
-        if ($this->paginatedScheduledTransaction->currentPage) {
-            $this->endpoint .= '&page='. $this->scheduledTransaction->currentPage;
-        }
-
-        return $this;
-    }
 }

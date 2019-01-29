@@ -45,4 +45,9 @@ final class ScheduledTransactionTest extends StructureTestCase
     {
         $this->full('split', Structures\Split::class, true);
     }
+
+    public function test_subscriptionID()
+    {
+        $this->full('subscriptionId', 'int', false);
+    }
 }

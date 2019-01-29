@@ -4,11 +4,12 @@ namespace StackPay\Payments\Structures;
 
 use StackPay\Payments\Interfaces;
 
-class PaginatedScheduledTransactions implements Interfaces\PaginatedScheduledTransaction
+class PaginatedScheduledTransactions implements Interfaces\PaginatedScheduledTransactions
 {
     public $merchant;
     public $beforeDate;
     public $afterDate;
+    public $status;
     public $scheduledTransactions;
     public $total;
     public $count;
@@ -30,6 +31,11 @@ class PaginatedScheduledTransactions implements Interfaces\PaginatedScheduledTra
     public function afterDate()
     {
         return $this->afterDate;
+    }
+
+    public function status()
+    {
+        return $this->status;
     }
 
     public function scheduledTransactions()
@@ -76,16 +82,23 @@ class PaginatedScheduledTransactions implements Interfaces\PaginatedScheduledTra
         return $this;
     }
 
-    public function setBeforeDate($beforeDate = null)
+    public function setBeforeDate(\DateTime $beforeDate = null)
     {
         $this->beforeDate = $beforeDate;
 
         return $this;
     }
 
-    public function setAfterDate($afterDate = null)
+    public function setAfterDate(\DateTime $afterDate = null)
     {
         $this->afterDate = $afterDate;
+
+        return $this;
+    }
+
+    public function setStatus($status = 'scheduled')
+    {
+        $this->status = $status;
 
         return $this;
     }
