@@ -72,6 +72,7 @@ class PaymentPlanRequest extends Request
         $this->method   = 'PUT';
         $this->endpoint = '/api/merchants/' . $this->subscription->paymentPlan->merchant->id . '/payment-plans/' . $this->subscription->paymentPlan->id . '/subscriptions/' . $this->subscription->id;
         $this->hashKey  = $this->subscription->paymentPlan->merchant->hashKey;
+        $this->body     = $this->restTranslator->buildPaymentPlanCreateSubscriptionElement($this->subscription);
 
         return $this;
     }
