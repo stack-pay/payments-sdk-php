@@ -325,9 +325,19 @@ class Gateway extends Gateways\Gateway
         return $transaction->object();
     }
 
-    public function getDailyScheduledTransaction($transaction)
+    public function getDailyScheduledTransactions($transaction)
     {
-        $transaction->request()->endpoint($this->scheduledTransactionURL . '?createdBetween'. $transaction->object()->beforeDate().','. $transaction->object()->afterDate());
+        $url = $this->scheduledTransactionURL . '?createdBetween='. $transaction->object()->beforeDate().','. $transaction->object()->afterDate();
+        if ($transaction->object()->status()) {
+            $url .= '&status='. $transaction->object()->status();
+        }
+        if ($transaction->object()->perPage()) {
+            $url .= '&per_page='. $transaction->object()->perPage();
+        }
+        if ($transaction->object()->currentPage()) {
+            $url .= '&page='. $transaction->object()->currentPage();
+        }
+        $transaction->request()->endpoint($url);
         $transaction->request()->hashKey($this->privateKey);
 
         $transaction->response()->hashKey($this->privateKey);
