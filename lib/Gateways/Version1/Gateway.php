@@ -339,12 +339,11 @@ class Gateway extends Gateways\Gateway
         }
         $transaction->request()->endpoint($url);
         $transaction->request()->hashKey($this->privateKey);
-
-        $transaction->response()->hashKey($this->privateKey);
+        $transaction->response()->shouldHash(false);
 
         $this->execute($transaction, 'GET');
 
-        $this->responseGetScheduledTransaction($transaction);
+        $this->responseDailyScheduledTransactions($transaction);
 
         return $transaction->object();
     }

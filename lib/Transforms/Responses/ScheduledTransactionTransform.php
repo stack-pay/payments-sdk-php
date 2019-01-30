@@ -2,6 +2,8 @@
 
 namespace StackPay\Payments\Transforms\Responses;
 
+use StackPay\Payments\Structures;
+
 trait ScheduledTransactionTransform
 {
     public function responseScheduledTransaction($transaction)
@@ -70,24 +72,20 @@ trait ScheduledTransactionTransform
                 ->setSubscriptionID($scheduledTransactionArray['subscription_id'])
                 ->setMerchant((new Structures\Merchant())
                     ->setID($scheduledTransactionArray['merchant_id'])
-                )
-                ->setPaymentMethod((new Structures\PaymentMethod())
-                    ->setID($scheduledTransactionArray['payment_method']['id'])
-                    ->setCustomer((new Structures\Account())
-                        ->setID($scheduledTransactionArray['payment_method']['customer_id'])
-                    )
-                    ->setAccountHolder((new Structures\AccountHolder())
-                        ->setName($scheduledTransactionArray['payment_method']['billing_name'])
-                        ->setBillingAddress((new Structures\Address())
-                            ->setAddress1($scheduledTransactionArray['payment_method']['billing_address_1'])
-                            ->setAddress2($scheduledTransactionArray['payment_method']['billing_address_2'])
-                            ->setCity($scheduledTransactionArray['payment_method']['billing_city'])
-                            ->setState($scheduledTransactionArray['payment_method']['billing_state'])
-                            ->setPostalCode($scheduledTransactionArray['payment_method']['billing_zip'])
-                            ->setCountry($scheduledTransactionArray['payment_method']['billing_country'])
-                        )
-                    )
                 );
+            $scheduledTransaction->createPaymentMethod()
+                ->setID($scheduledTransactionArray['payment_method']['id'])
+                ->createCustomer()
+                    ->setID($scheduledTransactionArray['payment_method']['customer_id']);
+            $scheduledTransaction->paymentMethod()->createAccountHolder()
+                    ->setName($scheduledTransactionArray['payment_method']['billing_name']);
+            $scheduledTransaction->paymentMethod()->accountHolder()->createBillingAddress()
+                ->setAddress1($scheduledTransactionArray['payment_method']['billing_address_1'])
+                ->setAddress2($scheduledTransactionArray['payment_method']['billing_address_2'])
+                ->setCity($scheduledTransactionArray['payment_method']['billing_city'])
+                ->setState($scheduledTransactionArray['payment_method']['billing_state'])
+                ->setPostalCode($scheduledTransactionArray['payment_method']['billing_zip'])
+                ->setCountry($scheduledTransactionArray['payment_method']['billing_country']);
 
             if (!empty($scheduledTransactionArray['split_merchant_id'])) {
                 $scheduledTransaction->setSplit((new Structures\Split())
