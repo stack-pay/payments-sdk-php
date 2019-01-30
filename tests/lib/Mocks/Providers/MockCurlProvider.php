@@ -54,6 +54,22 @@ class MockCurlProvider extends Providers\CurlProvider implements Providers\CurlP
         return $this->returnValues[count($this->calls)-1]['Body'];
     }
 
+    public function put($url, array $body)
+    {
+        array_push($this->calls, [
+            'URL'  => $url,
+            'Body' => $body,
+            'Headers' => $this->headers
+        ]);
+
+        if (count($this->calls) > $this->returnValues)
+        {
+            throw new Exception('Unexpected call to curl, expecting '. (count($this->calls) - 1) .' calls');
+        }
+
+        return $this->returnValues[count($this->calls)-1]['Body'];
+    }
+
     public function setHeader($key, $value)
     {
         array_push($this->headers, [
