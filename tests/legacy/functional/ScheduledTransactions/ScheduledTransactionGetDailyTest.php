@@ -96,35 +96,35 @@ final class GetDailyScheduledTransactionsTest extends TestCase
         $transaction = $sdk->getDailyScheduledTransactions($transaction);
 
         $respArray = json_decode($respArray, true);
-        var_dump($transaction);
-		$this->assertEquals(
+        
+        $this->assertEquals(
 			$respArray['Body']['data'],
 			[
 					[
 						"id"							=> $transaction->scheduledTransactions()[0]->id(),
 						"merchant_id"					=> $transaction->scheduledTransactions()[0]->merchant()->id(),
 						"payment_method_id"				=> $transaction->scheduledTransactions()[0]->paymentMethod()->id(),
-						"external_id"					=> null,
-						"scheduled_at"					=> date('Y-m-d',$transaction->scheduledTransactions()[0]->scheduledAt()),
-						"status"						=> "scheduled",
-						"currency_code"					=> "USD",
+						"external_id"					=> $transaction->scheduledTransactions()[0]->externalId(),
+						"scheduled_at"					=> $transaction->scheduledTransactions()[0]->scheduledAt()->format('Y-m-d'),
+						"status"						=> $transaction->scheduledTransactions()[0]->status(),
+						"currency_code"					=> $transaction->scheduledTransactions()[0]->currencyCode(),
 						"amount"						=> $transaction->scheduledTransactions()[0]->amount(),
-						"split_amount"					=> null,
-						"split_merchant_id"				=> null,
-						"subscription"					=> $transaction->scheduledTransactions()[0]->subscriptiondId(),
+						"split_amount"					=> ($transaction->scheduledTransactions()[0]->split() ? $transaction->scheduledTransactions()[0]->split()->amount() : null),
+						"split_merchant_id"				=> ($transaction->scheduledTransactions()[0]->split() ? $transaction->scheduledTransactions()[0]->split()->merchant()->id() : null),
+						"subscription"					=> $transaction->scheduledTransactions()[0]->subscriptionId(),
 						"payment_method"				=> [
 
-									"method"					=> "credit_card",
+									"method"					=> $transaction->scheduledTransactions()[0]->paymentMethod()->method(),
 									"id"						=> $transaction->scheduledTransactions()[0]->paymentMethod()->id(),
 									"customer_id"				=> $transaction->scheduledTransactions()[0]->paymentMethod()->customer()->id(),
 									"type"						=> $transaction->scheduledTransactions()[0]->paymentMethod()->account()->type(),
-									"routing_last_four" 		=> null,
+									"routing_last_four" 		=> $transaction->scheduledTransactions()[0]->paymentMethod()->account()->routingLast4(),
 									"account_last_four"			=> $transaction->scheduledTransactions()[0]->paymentMethod()->account()->last4(),
 									"expiration_month"			=> $transaction->scheduledTransactions()[0]->paymentMethod()->account()->expireMonth(),
 									"expiration_year"			=> $transaction->scheduledTransactions()[0]->paymentMethod()->account()->expireYear(),
 									"billing_name"				=> $transaction->scheduledTransactions()[0]->paymentMethod()->accountHolder()->name(),
 									"billing_address_1"			=> $transaction->scheduledTransactions()[0]->paymentMethod()->accountHolder()->billingAddress()->address1(),
-									"billing_address_2"			=> null,
+									"billing_address_2"			=> $transaction->scheduledTransactions()[0]->paymentMethod()->accountHolder()->billingAddress()->address2(),
 									"billing_city"				=> $transaction->scheduledTransactions()[0]->paymentMethod()->accountHolder()->billingAddress()->city(),
 									"billing_zip"				=> $transaction->scheduledTransactions()[0]->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
 									"billing_state"				=> $transaction->scheduledTransactions()[0]->paymentMethod()->accountHolder()->billingAddress()->state(),

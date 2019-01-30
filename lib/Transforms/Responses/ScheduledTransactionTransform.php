@@ -67,18 +67,36 @@ trait ScheduledTransactionTransform
 
             $scheduledTransaction = (new Structures\ScheduledTransaction())
                 ->setID($scheduledTransactionArray['id'])
+                ->setExternalID($scheduledTransactionArray['external_id'])
                 ->setAmount($scheduledTransactionArray['amount'])
                 ->setScheduledAt(new \DateTime($scheduledTransactionArray['scheduled_at']))
-                ->setSubscriptionID($scheduledTransactionArray['subscription_id'])
+                ->setStatus($scheduledTransactionArray['status'])
+                ->setCurrencyCode($scheduledTransactionArray['currency_code'])
+                ->setSubscriptionID($scheduledTransactionArray['subscription'])
                 ->setMerchant((new Structures\Merchant())
                     ->setID($scheduledTransactionArray['merchant_id'])
                 );
+            
             $scheduledTransaction->createPaymentMethod()
                 ->setID($scheduledTransactionArray['payment_method']['id'])
-                ->createCustomer()
-                    ->setID($scheduledTransactionArray['payment_method']['customer_id']);
+                ->setMethod($scheduledTransactionArray['payment_method']['method']);
+
+            $scheduledTransaction->paymentMethod()->createAccount()
+                ->setSavePaymentMethod($scheduledTransactionArray['payment_method']['method'])
+                ->setType($scheduledTransactionArray['payment_method']['type'])
+                ->setRoutingLast4($scheduledTransactionArray['payment_method']['routing_last_four'])
+                ->setLast4($scheduledTransactionArray['payment_method']['account_last_four'])
+                ->setExpireMonth($scheduledTransactionArray['payment_method']['expiration_month'])
+                ->setExpireYear($scheduledTransactionArray['payment_method']['expiration_year']);
+
+            $scheduledTransaction->paymentMethod()->createCustomer()
+                ->setID($scheduledTransactionArray['payment_method']['customer']['id'])
+                ->setFirstName($scheduledTransactionArray['payment_method']['customer']['first_name'])
+                ->setLastName($scheduledTransactionArray['payment_method']['customer']['last_name']);
+            
             $scheduledTransaction->paymentMethod()->createAccountHolder()
-                    ->setName($scheduledTransactionArray['payment_method']['billing_name']);
+                ->setName($scheduledTransactionArray['payment_method']['billing_name']);
+
             $scheduledTransaction->paymentMethod()->accountHolder()->createBillingAddress()
                 ->setAddress1($scheduledTransactionArray['payment_method']['billing_address_1'])
                 ->setAddress2($scheduledTransactionArray['payment_method']['billing_address_2'])
@@ -88,12 +106,10 @@ trait ScheduledTransactionTransform
                 ->setCountry($scheduledTransactionArray['payment_method']['billing_country']);
 
             if (!empty($scheduledTransactionArray['split_merchant_id'])) {
-                $scheduledTransaction->setSplit((new Structures\Split())
-                    ->setAmount()
-                    ->setSplitMerchant((new Structures\Merchant())
-                        ->setID($scheduledTransactionArray['split_merchant_id'])
-                    )
-                );
+                $scheduledTransaction->createSplit()
+                    ->setAmount($scheduledTransactionArray['split_amount'])
+                    ->createMerchant()
+                        ->setID($scheduledTransactionArray['split_merchant_id']);
             }
 
             if($scheduledTransactionArray['payment_method']['method'] == 'credit_card') {
@@ -107,7 +123,7 @@ trait ScheduledTransactionTransform
                 $scheduledTransaction->paymentMethod()->setAccount((new Structures\Account())
                     ->setType($scheduledTransactionArray['payment_method']['type'])
                     ->setLast4($scheduledTransactionArray['payment_method']['account_last_four'])
-                    ->setExpireMonth($scheduledTransactionArray['payment_method']['routing_last_four'])
+                    ->setRoutingLast4($scheduledTransactionArray['payment_method']['routing_last_four'])
                 );
             }
 
