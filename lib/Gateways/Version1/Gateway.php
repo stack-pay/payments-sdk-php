@@ -125,7 +125,7 @@ class Gateway extends Gateways\Gateway
 
         $this->execute($transaction);
 
-        $this->responsePaymentMethod($transaction);
+        $this->responseCreatePaymentMethod($transaction);
 
         return $transaction->object();
     }
@@ -338,7 +338,7 @@ class Gateway extends Gateways\Gateway
             $url .= '&page='. $transaction->object()->currentPage();
         }
         $transaction->request()->endpoint($url);
-        $transaction->request()->hashKey($this->privateKey);
+        $transaction->request()->shouldHash(false);
         $transaction->response()->shouldHash(false);
 
         $this->execute($transaction, 'GET');

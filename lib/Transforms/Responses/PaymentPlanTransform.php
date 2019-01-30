@@ -121,12 +121,11 @@ trait PaymentPlanTransform
             ->setAmount($downPaymentTransactionArr['amount'])
             ->setCurrency($body['currency_code'])
             ->setInvoiceNumber($downPaymentTransactionArr['invoice_number'])
-            ->setExternalID($downPaymentTransactionArr['external_id'])
-            ->setPaymentMethod((new Structures\PaymentMethod())
+            ->setExternalID($downPaymentTransactionArr['external_id']);
+            
+            
+            $paymentMethod = ((new Structures\PaymentMethod())
                 ->setID($downPaymentTransactionArr['payment_method']['id'])
-                ->setCustomer((new Structures\Customer())
-                    ->setID($downPaymentTransactionArr['payment_method']['customer_id'])
-                )
                 ->setAccount((new Structures\Account())
                     ->setType($downPaymentTransactionArr['payment_method']['type'])
                     ->setLast4($downPaymentTransactionArr['payment_method']['account_last_four'])
@@ -145,6 +144,13 @@ trait PaymentPlanTransform
                     )
                 )
             );
+            
+            if($downPaymentTransactionArr['payment_method']['customer_id']) {
+                $paymentMethod->setCustomer((new Structures\Customer())
+                    ->setID($downPaymentTransactionArr['payment_method']['customer_id']));
+            }
+
+            $downPayment->setPaymentMethod($paymentMethod);
 
 
         if (array_key_exists('split_merchant_id', $downPaymentTransactionArr)) {
