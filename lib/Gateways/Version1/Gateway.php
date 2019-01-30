@@ -327,7 +327,7 @@ class Gateway extends Gateways\Gateway
 
     public function getDailyScheduledTransactions($transaction)
     {
-        $url = $this->scheduledTransactionURL . '?createdBetween='. $transaction->object()->beforeDate().','. $transaction->object()->afterDate();
+        $url = $this->scheduledTransactionURL . '?createdBetween='. $transaction->object()->beforeDate()->format('Y-m-d') . ',' . $transaction->object()->afterDate()->format('Y-m-d');
         if ($transaction->object()->status()) {
             $url .= '&status='. $transaction->object()->status();
         }
