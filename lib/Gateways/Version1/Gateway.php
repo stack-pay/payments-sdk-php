@@ -57,7 +57,7 @@ class Gateway extends Gateways\Gateway
     protected $merchantRatesURL         = 'api/merchants/rates';
     protected $merchantLimitsURL        = 'api/merchants/limits';
     protected $merchantLinkURL          = 'api/merchants/link';
-    protected $merchantAccessTokenURL   = 'api/merchnats/auth';
+    protected $merchantAccessTokenURL   = 'api/merchants/auth';
     protected $scheduledTransactionURL  = 'api/scheduled-transactions';
     protected $defaultPaymentPlansURL   = 'api/payment-plans';
 

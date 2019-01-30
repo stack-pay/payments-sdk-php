@@ -10,7 +10,6 @@ trait MerchantTransform
     public function responseHostedPageAccessToken($transaction)
     {
         $body = $transaction->response()->body();
-        $transaction->object()->setID($body['id']);
-        $transaction->object()->setAccessToken($body['access_token']);
+        $transaction->object()->setHostedPageAccessToken($body['access_token']);
     }
 }
