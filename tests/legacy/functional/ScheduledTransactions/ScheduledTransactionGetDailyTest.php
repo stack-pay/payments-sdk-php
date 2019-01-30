@@ -63,49 +63,13 @@ final class GetDailyScheduledTransactionsTest extends TestCase
                             }
                         },
                         "transactions": []
-                    },
-                    {
-                        "id": 262,
-                        "merchant_id": 3063,
-                        "payment_method_id": 8068,
-                        "external_id": null,
-                        "scheduled_at": "2019-03-23",
-                        "status": "scheduled",
-                        "currency_code": "USD",
-                        "amount": 135,
-                        "split_amount": null,
-                        "split_merchant_id": null,
-                        "subscription": 11,
-                        "payment_method": {
-                            "method": "credit_card",
-                            "id": 8068,
-                            "customer_id": 8133,
-                            "type": "visa",
-                            "routing_last_four": null,
-                            "account_last_four": "1111",
-                            "expiration_month": 1,
-                            "expiration_year": 2020,
-                            "billing_name": "Stack Testa",
-                            "billing_address_1": "123 Test Ln",
-                            "billing_address_2": null,
-                            "billing_city": "StackVille",
-                            "billing_zip": "01234",
-                            "billing_state": "TX",
-                            "billing_country": "USA",
-                            "customer": {
-                                "id": 8133,
-                                "first_name": "Stack",
-                                "last_name": "Testa"
-                            }
-                        },
-                        "transactions": []
                     }
                 ],
                 "meta": {
                     "pagination": {
                         "total": 372,
-                        "count": 2,
-                        "per_page": 2,
+                        "count": 1,
+                        "per_page": 1,
                         "current_page": 1,
                         "total_pages": 186,
                         "links": {
@@ -131,7 +95,52 @@ final class GetDailyScheduledTransactionsTest extends TestCase
 
         $transaction = $sdk->getDailyScheduledTransactions($transaction);
 
+        $respArray = json_decode($respArray, true);
         var_dump($transaction);
+		$this->assertEquals(
+			$respArray['Body']['data'],
+			[
+					[
+						"id"							=> $transaction->scheduledTransactions()[0]->id(),
+						"merchant_id"					=> $transaction->scheduledTransactions()[0]->merchant()->id(),
+						"payment_method_id"				=> $transaction->scheduledTransactions()[0]->paymentMethod()->id(),
+						"external_id"					=> null,
+						"scheduled_at"					=> date('Y-m-d',$transaction->scheduledTransactions()[0]->scheduledAt()),
+						"status"						=> "scheduled",
+						"currency_code"					=> "USD",
+						"amount"						=> $transaction->scheduledTransactions()[0]->amount(),
+						"split_amount"					=> null,
+						"split_merchant_id"				=> null,
+						"subscription"					=> $transaction->scheduledTransactions()[0]->subscriptiondId(),
+						"payment_method"				=> [
+
+									"method"					=> "credit_card",
+									"id"						=> $transaction->scheduledTransactions()[0]->paymentMethod()->id(),
+									"customer_id"				=> $transaction->scheduledTransactions()[0]->paymentMethod()->customer()->id(),
+									"type"						=> $transaction->scheduledTransactions()[0]->paymentMethod()->account()->type(),
+									"routing_last_four" 		=> null,
+									"account_last_four"			=> $transaction->scheduledTransactions()[0]->paymentMethod()->account()->last4(),
+									"expiration_month"			=> $transaction->scheduledTransactions()[0]->paymentMethod()->account()->expireMonth(),
+									"expiration_year"			=> $transaction->scheduledTransactions()[0]->paymentMethod()->account()->expireYear(),
+									"billing_name"				=> $transaction->scheduledTransactions()[0]->paymentMethod()->accountHolder()->name(),
+									"billing_address_1"			=> $transaction->scheduledTransactions()[0]->paymentMethod()->accountHolder()->billingAddress()->address1(),
+									"billing_address_2"			=> null,
+									"billing_city"				=> $transaction->scheduledTransactions()[0]->paymentMethod()->accountHolder()->billingAddress()->city(),
+									"billing_zip"				=> $transaction->scheduledTransactions()[0]->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
+									"billing_state"				=> $transaction->scheduledTransactions()[0]->paymentMethod()->accountHolder()->billingAddress()->state(),
+									"billing_country"			=> $transaction->scheduledTransactions()[0]->paymentMethod()->accountHolder()->billingAddress()->country(),
+									"customer"					=> [
+
+											"id"			=> $transaction->scheduledTransactions()[0]->paymentMethod()->customer()->id(),
+											"first_name"	=> $transaction->scheduledTransactions()[0]->paymentMethod()->customer()->firstName(),
+											"last_name"		=> $transaction->scheduledTransactions()[0]->paymentMethod()->customer()->lastName()
+									]
+
+						],
+						"transactions" 					=> []
+					]
+			]
+		);
 
     }
 }
