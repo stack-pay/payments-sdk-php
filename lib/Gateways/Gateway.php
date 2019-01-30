@@ -123,6 +123,12 @@ abstract class Gateway
                 );
                 break;
 
+            case 'put':
+                $response = $this->curlProvider->put(
+                    $this->baseURL ."/". $transaction->request()->endpoint()
+                );
+                break;
+
             default:
                 throw new \Exception('Invalid HTTP method selected for request.');
         }
