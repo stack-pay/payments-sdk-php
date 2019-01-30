@@ -57,6 +57,10 @@ trait PaymentPlanTransform
             $body['split_amount'] = $transaction->object()->splitAmount();
         }
 
+        if ($transaction->object()->splitMerchant()) {
+            $body['split_merchant_id'] = $transaction->object()->splitMerchant()->id();
+        }
+
         if ($transaction->object()->day()) {
             $body['day'] = $transaction->object()->day();
         }

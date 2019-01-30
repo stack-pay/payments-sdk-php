@@ -184,5 +184,11 @@ trait PaymentPlanTransform
         $transaction->object()
             ->setScheduledTransactions($scheduledTransactions)
             ->setPaymentMethod($downPayment->paymentMethod());
+
+        if (array_key_exists('split_merchant_id', $body)) {
+            $transaction->object()->setSplitMerchant((new Structures\Merchant())
+                ->setId($body['split_merchant_id'])
+            );
+        }
     }
 }

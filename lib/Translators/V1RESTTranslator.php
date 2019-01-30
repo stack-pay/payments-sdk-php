@@ -190,6 +190,10 @@ class V1RESTTranslator
             $element['day'] = $object->day;
         }
 
+        if($object->splitMerchant) {
+            $element['split_merchant_id'] = $object->splitMerchant->id;
+        }
+
         if ($object->splitAmount) {
             $element['split_amount'] = $object->splitAmount;
         }
