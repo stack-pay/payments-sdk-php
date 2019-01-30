@@ -125,7 +125,8 @@ abstract class Gateway
 
             case 'put':
                 $response = $this->curlProvider->put(
-                    $this->baseURL ."/". $transaction->request()->endpoint()
+                    $this->baseURL ."/". $transaction->request()->endpoint(),
+                    $transaction->request()->body()
                 );
                 break;
 

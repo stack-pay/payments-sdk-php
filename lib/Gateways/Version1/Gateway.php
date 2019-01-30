@@ -446,7 +446,7 @@ class Gateway extends Gateways\Gateway
         $transaction->request()->hashBody(false);
         $transaction->response()->shouldHash(false);
         $this->requestEditPaymentPlanSubscription($transaction);
-        $this->execute($transaction);
+        $this->execute($transaction, 'PUT');
         $this->responsePaymentPlanSubscription($transaction);
         return $transaction->object();
     }
