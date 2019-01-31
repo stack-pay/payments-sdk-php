@@ -29,7 +29,7 @@ $paymentMethod = (new Payments\Structures\PaymentMethod())
             ->setCountry('USA')
         )
     );
-$paymentMethod = $sdk->createPaymentMethod($paymentMethod);
+$paymentMethod = $stackpay->createPaymentMethod($paymentMethod);
 
 $subscription = $stackpay->createPaymentPlanSubscription((new Payments\Structures\Subscription())
     ->setPaymentMethod($paymentMethod)
