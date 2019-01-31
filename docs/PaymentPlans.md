@@ -34,7 +34,18 @@ $copyPlan = $stackpay->copyPaymentPlan($copyPlan);
 ## Edit Payment Plan
 
 ```php
-// TODO
+$paymentPlanID = 1;
+
+$merchant = (new StackPay\Payments\Structures\Merchant())
+    ->setID($merchantId)
+    ->setHashKey($merchantHashKey);
+
+$paymentPlan = (new Payments\Structures\PaymentPlan())
+    ->setID($paymentPlanID)
+    ->setDownPaymentAmount(500)
+    ->setMerchant($merchant);
+
+$paymentPlan = $stackpay->editPaymentPlan($paymentPlan);
 ```
 
 ## Get Default Payment Plans
