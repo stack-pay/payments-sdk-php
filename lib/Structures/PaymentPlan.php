@@ -14,6 +14,7 @@ class PaymentPlan implements Interfaces\PaymentPlan
     public $merchant;
     public $configuration;
     public $paymentPriority;
+    public $isActive;
 
     public function id()
     {
@@ -53,6 +54,11 @@ class PaymentPlan implements Interfaces\PaymentPlan
     public function paymentPriority()
     {
         return $this->paymentPriority;
+    }
+
+    public function isActive()
+    {
+        return $this->isActive;
     }
 
     // --------
@@ -109,6 +115,13 @@ class PaymentPlan implements Interfaces\PaymentPlan
     public function setPaymentPriority($paymentPriority = null)
     {
         $this->paymentPriority = $paymentPriority;
+
+        return $this;
+    }
+
+    public function setIsActive($isActive = null)
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

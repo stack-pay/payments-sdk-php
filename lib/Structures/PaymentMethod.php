@@ -31,6 +31,7 @@ class PaymentMethod implements Interfaces\PaymentMethod
     public $billingState;
     public $billingZip;
     public $billingCountry;
+    public $method;
 
     public function account()
     {
@@ -55,6 +56,11 @@ class PaymentMethod implements Interfaces\PaymentMethod
     public function status()
     {
         return $this->status;
+    }
+    
+    public function method()
+    {
+        return $this->method;
     }
 
     //-----
@@ -90,6 +96,13 @@ class PaymentMethod implements Interfaces\PaymentMethod
     public function setStatus($status = null)
     {
         $this->status = $status;
+
+        return $this;
+    }
+    
+    public function setMethod($method = null)
+    {
+        $this->method = $method;
 
         return $this;
     }

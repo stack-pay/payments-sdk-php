@@ -12,6 +12,7 @@ class Subscription implements Interfaces\Subscription
     public $externalID;
     public $amount;
     public $splitAmount;
+    public $splitMerchant;
     public $downPaymentAmount;
     public $downPaymentTransaction;
     public $scheduledTransactions;
@@ -46,6 +47,11 @@ class Subscription implements Interfaces\Subscription
     public function splitAmount()
     {
         return $this->splitAmount;
+    }
+
+    public function splitMerchant()
+    {
+        return $this->splitMerchant;
     }
 
     public function downPaymentAmount()
@@ -106,6 +112,13 @@ class Subscription implements Interfaces\Subscription
     public function setAmount($amount = null)
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function setSplitMerchant(Interfaces\Merchant $splitMerchant = null)
+    {
+        $this->spliMerchant = $splitMerchant;
 
         return $this;
     }

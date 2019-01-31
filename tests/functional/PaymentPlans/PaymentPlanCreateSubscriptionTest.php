@@ -30,6 +30,7 @@ class PaymentPlanCreateSubscriptionTest extends FunctionalTestCase
         $subscription->downPaymentAmount = 5000;
         $subscription->day               = 10;
         $subscription->currencyCode      = 'USD';
+        $subscription->splitMerchant     = new Structures\Merchant();
 
         $subscription->paymentMethod     = $paymentMethod;
         $subscription->paymentPlan       = $paymentPlan;
@@ -47,6 +48,7 @@ class PaymentPlanCreateSubscriptionTest extends FunctionalTestCase
             [
                 'data' => [
                     'id' => 1,
+                    'split_merchant_id' => null,
                     'down_payment_transaction' => [
                         'id' => 8445,
                         'created_at' => '2019-01-23 01:33:51',

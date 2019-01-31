@@ -9,6 +9,7 @@ interface ScheduledTransaction
     public function paymentMethod();
     public function amount();
     public function scheduledAt();
+    public function subscriptionID();
 
     //-------
 
@@ -18,6 +19,7 @@ interface ScheduledTransaction
     public function setAmount($amount = null);
     public function setScheduledAt(\DateTime $date = null);
     public function setSplit(Split $split = null);
+    public function setSubscriptionID($subscriptionId = null);
 
     //------
 

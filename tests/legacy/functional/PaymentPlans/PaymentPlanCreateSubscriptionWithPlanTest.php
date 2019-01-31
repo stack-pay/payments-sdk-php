@@ -35,11 +35,13 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
             ->setExternalId('1000')
             ->setAmount(20000)
             ->setDownPaymentAmount(1500)
-            ->setDay(1);
+            ->setDay(1)
+            ->setSplitMerchant((new Structures\Merchant()));
         $respArray = [
             'Body' => [
                 'data' => [
                     'id' => 1,
+                    'split_merchant_id' => null,
                     'down_payment_transaction' => [
                         'id' => 8445,
                         'created_at' => '2019-01-23 01:33:51',
@@ -208,8 +210,9 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
             $respArray['Body'],
             [
                 'data' => [
-                    'id'                        => $subscription->id(),
-                    'down_payment_transaction'       => [
+                    'id' => $subscription->id(),
+                    'split_merchant_id' => null,
+                    'down_payment_transaction'  => [
                         'id' => $subscription->downPaymentTransaction()->id(),
                         'created_at' => '2019-01-23 01:33:51',
                         'status' => $subscription->downPaymentTransaction()->status(),
