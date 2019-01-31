@@ -21,16 +21,30 @@ trait PaymentPlanTransform
 
     public function requestEditPaymentPlan($transaction)
     {
-        $request = [
-            'name'                  => $transaction->object()->name(),
-            'down_payment_amount'   => $transaction->object()->downPaymentAmount(),
-            'merchant_id'           => $transaction->object()->merchant()->id(),
-            'configuration'         => [
-                'months'                => $transaction->object()->configuration()->months(),
-                'day'                   => $transaction->object()->configuration()->day()
-            ],
-            'is_active'             => $transaction->object()->isActive(),
-        ];
+        $request = [];
+        if (!is_null($transaction->object()->name())) {
+            $request['name'] = $transaction->object()->name();
+        }
+        if (!is_null($transaction->object()->downPaymentAmount())) {
+            $request['down_payment_amount'] = $transaction->object()->downPaymentAmount();
+        }
+        if (!is_null($transaction->object()->merchant())) {
+            if (!is_null($transaction->object()->merchant()->id())) {
+                $request['merchant_id'] = $transaction->object()->merchant()->id();
+            }
+        }
+        if (!is_null($transaction->object()->configuration())) {
+            $request['configuration'] = [];
+            if (!is_null($transaction->object()->configuration()->months())) {
+                $request['configuration']['months'] = $transaction->object()->configuration()->months();
+            }
+            if (!is_null($transaction->object()->configuration()->day())) {
+                $request['configuration']['day'] = $transaction->object()->configuration()->day();
+            }
+        }
+        if (!is_null($transaction->object()->isActive())) {
+            $request['is_active'] = $transaction->object()->isActive();
+        }
         if (!is_null($transaction->object()->splitMerchant())) {
             $request['split_merchant_id'] = $transaction->object()->splitMerchant()->id();
         }

@@ -47,6 +47,7 @@ class Gateway extends Gateways\Gateway
     use Transforms\Responses\MerchantLinkTransform;
     use Transforms\Responses\ScheduledTransactionTransform;
     use Transforms\Responses\PaymentPlanTransform;
+    use Transforms\Responses\MerchantTransform;
 
     protected $application              = 'PaymentSystem';
     protected $apiVersion               = 'v1';
@@ -57,7 +58,7 @@ class Gateway extends Gateways\Gateway
     protected $merchantRatesURL         = 'api/merchants/rates';
     protected $merchantLimitsURL        = 'api/merchants/limits';
     protected $merchantLinkURL          = 'api/merchants/link';
-    protected $merchantAccessTokenURL   = 'api/merchants/auth';
+    protected $merchantAccessTokenURL   = 'api/auth/token';
     protected $scheduledTransactionURL  = 'api/scheduled-transactions';
     protected $defaultPaymentPlansURL   = 'api/payment-plans';
 
@@ -270,10 +271,10 @@ class Gateway extends Gateways\Gateway
     {
         $object = $transaction->object();
         $url = $this->merchantAccessTokenURL
-            . '?merchant_id=' . $object->merchant()->id();
+            . '?merchant_id=' . $object->id();
         $transaction->request()->endpoint($url);
         $transaction->request()->hashBody(false);
-        $transaction->request()->hashKey($this->privateKey . $object->merchant()->hashKey());
+        $transaction->request()->hashKey($this->privateKey . $object->hashKey());
         $transaction->response()->shouldHash(false);
 
         $this->execute($transaction, 'GET');
