@@ -30,7 +30,8 @@ class PaymentPlanCreateSubscriptionTest extends FunctionalTestCase
         $subscription->downPaymentAmount = 5000;
         $subscription->day               = 10;
         $subscription->currencyCode      = 'USD';
-        $subscription->splitMerchant     = new Structures\Merchant();
+        $subscription->splitAmount       = 400;
+        $subscription->splitMerchant     = $this->splitMerchant;
 
         $subscription->paymentMethod     = $paymentMethod;
         $subscription->paymentPlan       = $paymentPlan;
@@ -48,7 +49,7 @@ class PaymentPlanCreateSubscriptionTest extends FunctionalTestCase
             [
                 'data' => [
                     'id' => 1,
-                    'split_merchant_id' => null,
+                    'split_merchant_id' => $this->splitMerchant->id(),
                     'down_payment_transaction' => [
                         'id' => 8445,
                         'created_at' => '2019-01-23 01:33:51',
@@ -60,8 +61,8 @@ class PaymentPlanCreateSubscriptionTest extends FunctionalTestCase
                         'external_id' => null,
                         'invoice_number' => null,
                         'amount' => 5000,
-                        'split_merchant_id' => null,
-                        'split_amount' => null,
+                        'split_merchant_id' => $this->splitMerchant->id(),
+                        'split_amount' => 100,
                         'fee_rate' => 3.65,
                         'fee_flat' => 30,
                         'fee_total' => 213,
@@ -99,8 +100,8 @@ class PaymentPlanCreateSubscriptionTest extends FunctionalTestCase
                             'status' => 'scheduled',
                             'currency_code' => 'USD',
                             'amount' => 1668,
-                            'split_amount' => null,
-                            'split_merchant_id' => null,
+                            'split_amount' => 100,
+                            'split_merchant_id' => $this->splitMerchant->id(),
                             'subscription' => 1,
                             'payment_method' => [
                                 'method' => 'credit_card',
@@ -135,8 +136,8 @@ class PaymentPlanCreateSubscriptionTest extends FunctionalTestCase
                             'status' => 'scheduled',
                             'currency_code' => 'USD',
                             'amount' => 1668,
-                            'split_amount' => null,
-                            'split_merchant_id' => null,
+                            'split_amount' => 100,
+                            'split_merchant_id' => $this->splitMerchant->id(),
                             'subscription' => 1,
                             'payment_method' => [
                                 'method' => 'credit_card',
@@ -171,8 +172,8 @@ class PaymentPlanCreateSubscriptionTest extends FunctionalTestCase
                             'status' => 'scheduled',
                             'currency_code' => 'USD',
                             'amount' => 1668,
-                            'split_amount' => null,
-                            'split_merchant_id' => null,
+                            'split_amount' => 100,
+                            'split_merchant_id' => $this->splitMerchant->id(),
                             'subscription' => 1,
                             'payment_method' => [
                                 'method' => 'credit_card',

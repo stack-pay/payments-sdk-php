@@ -27,6 +27,9 @@ trait PaymentPlanTransform
         if (!empty($body['configuration']['day'])) {
             $transaction->object()->configuration()->setDay($body['configuration']['day']);
         }
+        if (!empty($body['configuration']['grace_period'])) {
+            $transaction->object()->configuration()->setGracePeriod($body['configuration']['grace_period']);
+        }
         if (!empty($body['payment_priority'])) {
             $transaction->object()->setPaymentPriority($body['payment_priority']);
         }
@@ -43,6 +46,9 @@ trait PaymentPlanTransform
                 ->setMonths($planArray['configuration']['months']);
             if (isset($planArray['configuration']['day'])) {
                 $planConfig->setDay($planArray['configuration']['day']);
+            }
+            if (isset($planArray['configuration']['grace_period'])) {
+                $planConfig->setGracePeriod($planArray['configuration']['grace_period']);
             }
 
             $plan = (new Structures\PaymentPlan())
@@ -92,6 +98,9 @@ trait PaymentPlanTransform
                 );
             if (!empty($value['configuration']['day'])) {
                 $plan->configuration()->setDay($value['configuration']['day']);
+            }
+            if (!empty($value['configuration']['grace_period'])) {
+                $plan->configuration()->setGracePeriod($value['configuration']['grace_period']);
             }
             $plans[] = $plan;
         }
@@ -158,7 +167,9 @@ trait PaymentPlanTransform
 
         if (array_key_exists('split_merchant_id', $downPaymentTransactionArr)) {
             $downPayment->setSplit((new Structures\Split())
-                ->setMerchant($downPaymentTransactionArr['split_merchant_id'])
+                ->setMerchant((new Structures\Merchant())
+                    ->setID($downPaymentTransactionArr['split_merchant_id'])
+                )
                 ->setAmount($downPaymentTransactionArr['split_amount']));
         }
 
@@ -196,7 +207,7 @@ trait PaymentPlanTransform
 
         if (array_key_exists('split_merchant_id', $body)) {
             $transaction->object()->setSplitMerchant((new Structures\Merchant())
-                ->setId($body['split_merchant_id'])
+                ->setID($body['split_merchant_id'])
             );
         }
     }

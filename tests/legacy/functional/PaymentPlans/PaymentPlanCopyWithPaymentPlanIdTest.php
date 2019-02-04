@@ -39,6 +39,7 @@ final class PaymentPlanCopyWithPaymentPlanIdTest extends TestCase
                     'configuration' => [
                         'months'          => 3,
                         'day'             => 15,
+                        'grace_period'    => 5,
                     ],
                     'payment_priority'    => 'equal',
                 ],
@@ -68,6 +69,7 @@ final class PaymentPlanCopyWithPaymentPlanIdTest extends TestCase
                     'configuration' => [
                         'months'          => $plan->configuration()->months(),
                         'day'             => $plan->configuration()->day(),
+                        'grace_period'    => $plan->configuration()->gracePeriod(),
                     ],
                     'payment_priority'    => $plan->paymentPriority(),
                 ],
