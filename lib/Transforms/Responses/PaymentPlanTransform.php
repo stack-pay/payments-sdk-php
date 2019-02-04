@@ -134,8 +134,7 @@ trait PaymentPlanTransform
             ->setCurrency($body['currency_code'])
             ->setInvoiceNumber($downPaymentTransactionArr['invoice_number'])
             ->setExternalID($downPaymentTransactionArr['external_id']);
-            
-            
+
             $paymentMethod = ((new Structures\PaymentMethod())
                 ->setID($downPaymentTransactionArr['payment_method']['id'])
                 ->setAccount((new Structures\Account())
@@ -199,7 +198,26 @@ trait PaymentPlanTransform
                 ->setScheduledAt(new \DateTime($scheduledTransactionArr['scheduled_at']))
                 ->setCurrencyCode($scheduledTransactionArr['currency_code'])
                 ->setAmount($scheduledTransactionArr['amount'])
-                ->setPaymentMethod($downPayment->paymentMethod());
+                ->setPaymentMethod((new Structures\PaymentMethod())
+                    ->setID($scheduledTransactionArr['payment_method']['id'])
+                    ->setAccount((new Structures\Account())
+                        ->setType($scheduledTransactionArr['payment_method']['type'])
+                        ->setLast4($scheduledTransactionArr['payment_method']['account_last_four'])
+                        ->setExpireMonth($scheduledTransactionArr['payment_method']['expiration_month'])
+                        ->setExpireYear($scheduledTransactionArr['payment_method']['expiration_year'])
+                    )
+                    ->setAccountHolder((new Structures\AccountHolder())
+                        ->setName($scheduledTransactionArr['payment_method']['billing_name'])
+                        ->setBillingAddress((new Structures\Address())
+                            ->setAddress1($scheduledTransactionArr['payment_method']['billing_address_1'])
+                            ->setAddress2($scheduledTransactionArr['payment_method']['billing_address_2'])
+                            ->setCity($scheduledTransactionArr['payment_method']['billing_city'])
+                            ->setState($scheduledTransactionArr['payment_method']['billing_state'])
+                            ->setPostalCode($scheduledTransactionArr['payment_method']['billing_zip'])
+                            ->setCountry($scheduledTransactionArr['payment_method']['billing_country'])
+                        )
+                    )
+                );
         }
         $transaction->object()
             ->setScheduledTransactions($scheduledTransactions)
