@@ -118,7 +118,7 @@ class Subscription implements Interfaces\Subscription
 
     public function setSplitMerchant(Interfaces\Merchant $splitMerchant = null)
     {
-        $this->spliMerchant = $splitMerchant;
+        $this->splitMerchant = $splitMerchant;
 
         return $this;
     }
