@@ -89,19 +89,8 @@ trait PaymentPlanTransform
     {
         $body = [
             'payment_method'        => [
-                'type'              => $transaction->object()->paymentMethod()->account()->type(),
-                'account_last_four' => $transaction->object()->paymentMethod()->account()->last4(),
-                'expiration_month'  => $transaction->object()->paymentMethod()->account()->expireMonth(),
-                'expiration_year'   => $transaction->object()->paymentMethod()->account()->expireYear(),
-                'routing_last_four' => $transaction->object()->paymentMethod()->account()->routingLast4(),
-                'billing_name'      => $transaction->object()->paymentMethod()->accountHolder()->name(),
-                'billing_address_1' => $transaction->object()->paymentMethod()->accountHolder()->billingAddress()->address1(),
-                'billing_address_2' => $transaction->object()->paymentMethod()->accountHolder()->billingAddress()->address2(),
-                'billing_city'      => $transaction->object()->paymentMethod()->accountHolder()->billingAddress()->city(),
-                'billing_state'     => $transaction->object()->paymentMethod()->accountHolder()->billingAddress()->state(),
-                'billing_zip'       => $transaction->object()->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
-                'billing_country'   => $transaction->object()->paymentMethod()->accountHolder()->billingAddress()->country(),
-                'customer_id'       => $transaction->object()->paymentMethod()->customer()->id(),
+                'method'            => 'id',
+                'id'                => $transaction->object()->paymentMethod()->id(),
             ],
         ];
 

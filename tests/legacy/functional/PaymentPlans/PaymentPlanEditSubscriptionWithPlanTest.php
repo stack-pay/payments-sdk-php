@@ -396,19 +396,8 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 					'Body' => [
 						'Body' => [
 							'payment_method' => [
-								'customer_id' => $subscription->paymentMethod()->customer()->id(),
-								'type' => $subscription->paymentMethod()->account()->type(),
-								'routing_last_four' => null,
-								'account_last_four' => $subscription->paymentMethod()->account()->Last4(),
-								'expiration_month' => $subscription->paymentMethod()->account()->expireMonth(),
-								'expiration_year' => $subscription->paymentMethod()->account()->expireYear(),
-								'billing_name' => $subscription->paymentMethod()->accountHolder()->name(),
-								'billing_address_1' => $subscription->paymentMethod()->accountHolder()->billingAddress()->address1(),
-								'billing_address_2' => null,
-								'billing_city' => $subscription->paymentMethod()->accountHolder()->billingAddress()->city(),
-								'billing_zip' => $subscription->paymentMethod()->accountHolder()->billingAddress()->postalCode(),
-								'billing_state' => $subscription->paymentMethod()->accountHolder()->billingAddress()->state(),
-								'billing_country' => $subscription->paymentMethod()->accountHolder()->billingAddress()->country(),
+								'method' => 'id',
+								'id' => $subscription->paymentMethod()->id(),
 							]
 						],
 						'Header' => [
