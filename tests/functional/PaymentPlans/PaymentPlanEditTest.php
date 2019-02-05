@@ -37,6 +37,7 @@ class PaymentPlanEditTest extends FunctionalTestCase
                     'name'                => 'Monthly Plan - 6 Months',
                     'incoming_request_id' => 1111,
                     'down_payment_amount' => 0,
+                    'down_payment_type'   => 'flat',
                     'merchant_id'         => 123,
                     'split_merchant_id'   => 124,
                     'payment_priority'    => PaymentPriority::EQUAL,

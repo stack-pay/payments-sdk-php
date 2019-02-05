@@ -34,6 +34,7 @@ final class PaymentPlanCopyWithPaymentPlanIdTest extends TestCase
                     'name'                => '3-Months Plan',
                     'incoming_request_id' => 1,
                     'down_payment_amount' => 100,
+                    'down_payment_type'   => 'flat',
                     'split_merchant_id'   => 2,
                     'merchant_id'         => 1000,
                     'configuration' => [
@@ -64,6 +65,7 @@ final class PaymentPlanCopyWithPaymentPlanIdTest extends TestCase
                     'name'                => $plan->name(),
                     'incoming_request_id' => $plan->requestIncomingId(),
                     'down_payment_amount' => $plan->downPaymentAmount(),
+                    'down_payment_type'   => $plan->downPaymentType(),
                     'split_merchant_id'   => $plan->splitMerchant()->id(),
                     'merchant_id'         => $plan->merchant()->id(),
                     'configuration' => [

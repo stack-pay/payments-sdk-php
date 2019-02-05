@@ -28,6 +28,9 @@ trait PaymentPlanTransform
         if (!is_null($transaction->object()->downPaymentAmount())) {
             $request['down_payment_amount'] = $transaction->object()->downPaymentAmount();
         }
+        if (!is_null($transaction->object()->downPaymentType())) {
+            $request['down_payment_type'] = $transaction->object()->downPaymentType();
+        }
         if (!is_null($transaction->object()->merchant())) {
             if (!is_null($transaction->object()->merchant()->id())) {
                 $request['merchant_id'] = $transaction->object()->merchant()->id();

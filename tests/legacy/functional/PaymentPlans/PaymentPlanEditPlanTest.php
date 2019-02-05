@@ -29,6 +29,7 @@ final class PaymentPlanEditPlanTest extends TestCase
             )
             ->setName('testplan')
             ->setDownPaymentAmount(200)
+            ->setDownPaymentType('flat')
             ->setConfiguration((new Structures\PaymentPlanConfig())
                 ->setMonths(3)
                 ->setDay(15)
@@ -41,6 +42,7 @@ final class PaymentPlanEditPlanTest extends TestCase
                     'name'                => '3-Months Plan',
                     'incoming_request_id' => 1,
                     'down_payment_amount' => 100,
+                    'down_payment_type'   => 'flat',
                     'split_merchant_id'   => 2,
                     'merchant_id'         => 1000,
                     'configuration' => [
@@ -71,6 +73,7 @@ final class PaymentPlanEditPlanTest extends TestCase
                     'name'                => $plan->name(),
                     'incoming_request_id' => $plan->requestIncomingId(),
                     'down_payment_amount' => $plan->downPaymentAmount(),
+                    'down_payment_type'   => $plan->downPaymentType(),
                     'split_merchant_id'   => $plan->splitMerchant()->id(),
                     'merchant_id'         => $plan->merchant()->id(),
                     'configuration' => [
@@ -92,6 +95,7 @@ final class PaymentPlanEditPlanTest extends TestCase
                             'name'                => 'testplan',
                             'is_active'           => 1,
                             'down_payment_amount' => 200,
+                            'down_payment_type'   => 'flat',
                             'configuration' => [ 
                                 'months' => 3,
                                 'day'    => 15
