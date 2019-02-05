@@ -30,6 +30,16 @@ class PaymentPlanRequest extends Request
         return $this;
     }
 
+    public function editPaymentPlan()
+    {
+        $this->method   = 'PUT';
+        $this->endpoint = '/api/merchants/' . $this->paymentPlan->merchant->id . '/payment-plans/' . $this->paymentPlan->id;
+        $this->hashKey  = $this->paymentPlan->merchant->hashKey;
+        $this->body     = $this->restTranslator->buildPaymentPlanElement($this->paymentPlan);
+        
+        return $this;
+    }
+
     public function getMerchantPaymentPlans()
     {
         $this->method   = 'GET';
@@ -52,6 +62,16 @@ class PaymentPlanRequest extends Request
     {
         $this->method   = 'POST';
         $this->endpoint = '/api/merchants/' . $this->subscription->paymentPlan->merchant->id . '/payment-plans/' . $this->subscription->paymentPlan->id . '/subscriptions';
+        $this->hashKey  = $this->subscription->paymentPlan->merchant->hashKey;
+        $this->body     = $this->restTranslator->buildPaymentPlanCreateSubscriptionElement($this->subscription);
+
+        return $this;
+    }
+
+    public function editPaymentPlanSubscription()
+    {
+        $this->method   = 'PUT';
+        $this->endpoint = '/api/merchants/' . $this->subscription->paymentPlan->merchant->id . '/payment-plans/' . $this->subscription->paymentPlan->id . '/subscriptions/' . $this->subscription->id;
         $this->hashKey  = $this->subscription->paymentPlan->merchant->hashKey;
         $this->body     = $this->restTranslator->buildPaymentPlanCreateSubscriptionElement($this->subscription);
 

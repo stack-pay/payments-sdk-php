@@ -11,7 +11,7 @@ use StackPay\Payments\Structures;
 
 use Test\Mocks\Providers\MockCurlProvider;
 
-final class PaymentPlanCopyWithPaymentPlanIdTest extends TestCase
+final class PaymentPlanEditPlanTest extends TestCase
 {
     public function testSucessfulCase()
     {
@@ -26,11 +26,19 @@ final class PaymentPlanCopyWithPaymentPlanIdTest extends TestCase
             ->setMerchant((new Structures\Merchant())
                 ->setID(1000)
                 ->setHashKey($merchantHash)
-            );
+            )
+            ->setName('testplan')
+            ->setDownPaymentAmount(200)
+            ->setDownPaymentType('flat')
+            ->setConfiguration((new Structures\PaymentPlanConfig())
+                ->setMonths(3)
+                ->setDay(15)
+            )
+            ->setIsActive(1);
         $respArray = [
             'Body' => [
                 'data' => [
-                    'id'                  => 1001,
+                    'id'                  => 1000,
                     'name'                => '3-Months Plan',
                     'incoming_request_id' => 1,
                     'down_payment_amount' => 100,
@@ -40,9 +48,9 @@ final class PaymentPlanCopyWithPaymentPlanIdTest extends TestCase
                     'configuration' => [
                         'months'          => 3,
                         'day'             => 15,
-                        'grace_period'    => 5,
                     ],
                     'payment_priority'    => 'equal',
+                    'is_active'           => 1
                 ],
             ],
         ];
@@ -55,7 +63,7 @@ final class PaymentPlanCopyWithPaymentPlanIdTest extends TestCase
 
         $sdk->setCurlProvider($curlProvider);
 
-        $plan = $sdk->copyPaymentPlan($plan);
+        $plan = $sdk->editPaymentPlan($plan);
 
         $this->assertEquals(
             $respArray['Body'],
@@ -71,20 +79,27 @@ final class PaymentPlanCopyWithPaymentPlanIdTest extends TestCase
                     'configuration' => [
                         'months'          => $plan->configuration()->months(),
                         'day'             => $plan->configuration()->day(),
-                        'grace_period'    => $plan->configuration()->gracePeriod(),
                     ],
                     'payment_priority'    => $plan->paymentPriority(),
+                    'is_active'           => $plan->isActive()
                 ],
             ]
         );
         $this->assertEquals(
             [
                 0 => [
-                    'URL'  => 'https://api.mystackpay.com/api/merchants/1000/payment-plans',
+                    'URL'  => 'https://api.mystackpay.com/api/merchants/1000/payment-plans/1000',
                     'Body' => [
                         'Body' => [
-                            'payment_plan_id'     => 1000,
                             'merchant_id'         => 1000,
+                            'name'                => 'testplan',
+                            'is_active'           => 1,
+                            'down_payment_amount' => 200,
+                            'down_payment_type'   => 'flat',
+                            'configuration' => [ 
+                                'months' => 3,
+                                'day'    => 15
+                            ]
                         ],
                         'Header' => [
                             'Application'    => 'PaymentSystem',

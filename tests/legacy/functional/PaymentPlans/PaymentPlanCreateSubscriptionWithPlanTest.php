@@ -8,6 +8,7 @@ use StackPay\Payments\StackPay;
 use StackPay\Payments\Currency;
 use StackPay\Payments\Modes;
 use StackPay\Payments\Structures;
+use StackPay\Payments\PaymentPriority;
 
 use Test\Mocks\Providers\MockCurlProvider;
 
@@ -28,6 +29,7 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                     ->setID(1000)
                     ->setHashKey($merchantHash)
                 )
+                ->setPaymentPriority(PaymentPriority::EQUAL)
             )
             ->setPaymentMethod((new Structures\PaymentMethod())
                 ->setID(1000)
@@ -35,11 +37,16 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
             ->setExternalId('1000')
             ->setAmount(20000)
             ->setDownPaymentAmount(1500)
-            ->setDay(1);
+            ->setDay(1)
+            ->setSplitAmount(400)
+            ->setSplitMerchant((new Structures\Merchant())
+                ->setID(1001)
+            );
         $respArray = [
             'Body' => [
                 'data' => [
                     'id' => 1,
+                    'split_merchant_id' => 1001,
                     'down_payment_transaction' => [
                         'id' => 8445,
                         'created_at' => '2019-01-23 01:33:51',
@@ -51,8 +58,8 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                         'external_id' => null,
                         'invoice_number' => null,
                         'amount' => 5000,
-                        'split_merchant_id' => null,
-                        'split_amount' => null,
+                        'split_merchant_id' => 1001,
+                        'split_amount' => 100,
                         'fee_rate' => 3.65,
                         'fee_flat' => 30,
                         'fee_total' => 213,
@@ -90,8 +97,8 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                             'status' => 'scheduled',
                             'currency_code' => 'USD',
                             'amount' => 1668,
-                            'split_amount' => null,
-                            'split_merchant_id' => null,
+                            'split_amount' => 100,
+                            'split_merchant_id' => 1001,
                             'subscription' => 1,
                             'payment_method' => [
                                 'method' => 'credit_card',
@@ -126,8 +133,8 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                             'status' => 'scheduled',
                             'currency_code' => 'USD',
                             'amount' => 1668,
-                            'split_amount' => null,
-                            'split_merchant_id' => null,
+                            'split_amount' => 100,
+                            'split_merchant_id' => 1001,
                             'subscription' => 1,
                             'payment_method' => [
                                 'method' => 'credit_card',
@@ -162,8 +169,8 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                             'status' => 'scheduled',
                             'currency_code' => 'USD',
                             'amount' => 1668,
-                            'split_amount' => null,
-                            'split_merchant_id' => null,
+                            'split_amount' => 100,
+                            'split_merchant_id' => 1001,
                             'subscription' => 1,
                             'payment_method' => [
                                 'method' => 'credit_card',
@@ -208,8 +215,9 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
             $respArray['Body'],
             [
                 'data' => [
-                    'id'                        => $subscription->id(),
-                    'down_payment_transaction'       => [
+                    'id' => $subscription->id(),
+                    'split_merchant_id' => 1001,
+                    'down_payment_transaction'  => [
                         'id' => $subscription->downPaymentTransaction()->id(),
                         'created_at' => '2019-01-23 01:33:51',
                         'status' => $subscription->downPaymentTransaction()->status(),
@@ -220,8 +228,8 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                         'external_id' => null,
                         'invoice_number' => null,
                         'amount' => $subscription->downPaymentTransaction()->amount(),
-                        'split_merchant_id' => null,
-                        'split_amount' => null,
+                        'split_merchant_id' => 1001,
+                        'split_amount' => 100,
                         'fee_rate' => 3.65,
                         'fee_flat' => 30,
                         'fee_total' => 213,
@@ -259,8 +267,8 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                             'status'                => 'scheduled',
                             'currency_code'         => $subscription->scheduledTransactions()[0]->currencyCode(),
                             'amount'                => $subscription->scheduledTransactions()[0]->amount(),
-                            'split_amount'          => null,
-                            'split_merchant_id'     => null,
+                            'split_amount'          => 100,
+                            'split_merchant_id'     => 1001,
                             'subscription'          => 1,
                             'payment_method'        => [
                                 'method'            => 'credit_card',
@@ -295,8 +303,8 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                             'status'                => 'scheduled',
                             'currency_code'         => $subscription->scheduledTransactions()[1]->currencyCode(),
                             'amount'                => $subscription->scheduledTransactions()[1]->amount(),
-                            'split_amount'          => null,
-                            'split_merchant_id'     => null,
+                            'split_amount'          => 100,
+                            'split_merchant_id'     => 1001,
                             'subscription'          => 1,
                             'payment_method'        => [
                                 'method'            => 'credit_card',
@@ -331,8 +339,8 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                             'status'                => 'scheduled',
                             'currency_code'         => $subscription->scheduledTransactions()[2]->currencyCode(),
                             'amount'                => $subscription->scheduledTransactions()[2]->amount(),
-                            'split_amount'          => null,
-                            'split_merchant_id'     => null,
+                            'split_amount'          => 100,
+                            'split_merchant_id'     => 1001,
                             'subscription'          => 1,
                             'payment_method'        => [
                                 'method'            => 'credit_card',
@@ -380,6 +388,8 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                             'down_payment_amount' => $subscription->downPaymentAmount(),
                             'day' => $subscription->day(),
                             'currency_code' => $subscription->currencyCode(),
+                            'split_merchant_id' => $subscription->splitMerchant()->id(),
+                            'split_amount' => $subscription->splitAmount()
                         ],
                         'Header' => [
                             'Application'    => 'PaymentSystem',

@@ -123,6 +123,13 @@ abstract class Gateway
                 );
                 break;
 
+            case 'put':
+                $response = $this->curlProvider->put(
+                    $this->baseURL ."/". $transaction->request()->endpoint(),
+                    $transaction->request()->body()
+                );
+                break;
+
             default:
                 throw new \Exception('Invalid HTTP method selected for request.');
         }
@@ -152,14 +159,18 @@ abstract class Gateway
     abstract public function merchantRates($transaction);
     abstract public function merchantLimits($transaction);
     abstract public function generateMerchantLink($transaction);
+    abstract public function generateHostedPageAccessToken($transaction);
 
     abstract public function createScheduledTransaction($transaction);
     abstract public function getScheduledTransaction($transaction);
     abstract public function deleteScheduledTransaction($transaction);
+    abstract public function getDailyScheduledTransactions($transaction);
 
     abstract public function copyPaymentPlan($transaction);
+    abstract public function editPaymentPlan($transaction);
     abstract public function getMerchantPaymentPlans($transaction);
     abstract public function getDefaultPaymentPlans($transaction);
 
     abstract public function createPaymentPlanSubscription($transaction);
+    abstract public function editPaymentPlanSubscription($transaction);
 }

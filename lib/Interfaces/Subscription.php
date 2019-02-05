@@ -10,6 +10,7 @@ interface Subscription
     public function externalID();
     public function amount();
     public function splitAmount();
+    public function splitMerchant();
     public function downPaymentAmount();
     public function downPaymentTransaction();
     public function scheduledTransactions();
@@ -23,6 +24,7 @@ interface Subscription
     public function setPaymentPlan(PaymentPlan $paymentPlan = null);
     public function setExternalID($externalID = null);
     public function setAmount($amount = null);
+    public function setSplitMerchant(Merchant $splitMerchant = null);
     public function setSplitAmount($splitAmount = null);
     public function setDownPaymentAmount($downPaymentAmount = null);
     public function setDownPaymentTransaction(Transaction $downPaymentTransaction = null);

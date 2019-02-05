@@ -15,6 +15,7 @@ class PaymentPlanRequestUnitTest extends UnitTestCase
                                             ->setID(12345)
                                             ->setMerchant($this->merchant);
         $this->subscription            = (new Structures\Subscription())
+                                            ->setID(555)
                                             ->setPaymentPlan($this->paymentPlan)
                                             ->setPaymentMethod($this->paymentMethod)
                                             ->setExternalId('1000')
@@ -104,4 +105,34 @@ class PaymentPlanRequestUnitTest extends UnitTestCase
         $this->assertEquals($request->hashKey, $this->merchant->hashKey);
         $this->assertEquals($request->body, $response);
     }
+
+    public function testEditPaymentPlanSubscription()
+    {
+        $this->paymentMethod->setID(9999);
+        $response = [
+            'paymentMethod' => ['id' => '9999']
+        ];
+
+        $translator = Mockery::mock(Translators\V1RESTTranslator::class);
+        $translator->shouldReceive('buildPaymentPlanCreateSubscriptionElement')->once()
+            ->with($this->subscription)
+            ->andReturn($response);
+
+        $this->request->restTranslator = $translator;
+
+        $request = $this->request->editPaymentPlanSubscription();
+
+        $this->assertEquals($request->method, 'PUT');
+        $this->assertEquals(
+            $request->endpoint,
+              '/api'
+            . '/merchants/' . $this->subscription->paymentPlan->merchant->id
+            . '/payment-plans/' . $this->subscription->paymentPlan->id
+            . '/subscriptions/' . $this->subscription->id
+        );
+        $this->assertEquals($request->body['paymentMethod']['id'], $this->paymentMethod->id);
+    }
+
+    // TODO: testEditPaymentPlan when other tests are updated.
+    
 }
