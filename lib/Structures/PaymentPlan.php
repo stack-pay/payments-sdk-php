@@ -10,6 +10,7 @@ class PaymentPlan implements Interfaces\PaymentPlan
     public $name;
     public $requestIncomingId;
     public $downPaymentAmount;
+    public $downPaymentType;
     public $splitMerchant;
     public $merchant;
     public $configuration;
@@ -34,6 +35,11 @@ class PaymentPlan implements Interfaces\PaymentPlan
     public function downPaymentAmount()
     {
         return $this->downPaymentAmount;
+    }
+    
+    public function downPaymentType()
+    {
+        return $this->downPaymentType;
     }
     
     public function splitMerchant()
@@ -87,6 +93,13 @@ class PaymentPlan implements Interfaces\PaymentPlan
     public function setDownPaymentAmount($downPaymentAmount = null)
     {
         $this->downPaymentAmount = $downPaymentAmount;
+
+        return $this;
+    }
+    
+    public function setDownPaymentType($downPaymentType = null)
+    {
+        $this->downPaymentType = $downPaymentType;
 
         return $this;
     }

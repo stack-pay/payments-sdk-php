@@ -36,6 +36,7 @@ final class PaymentPlanGetByMerchantTest extends TestCase
                         'name' => '3-Months plan',
                         'incoming_request_id' => 1,
                         'down_payment_amount' => 100,
+                        'down_payment_type' => 'flat',
                         'split_merchant_id' => 2,
                         'merchant_id' => $plans->merchant()->id(),
                         'configuration' => [
@@ -48,6 +49,7 @@ final class PaymentPlanGetByMerchantTest extends TestCase
                         'name' => '6-Months plan',
                         'incoming_request_id' => 1,
                         'down_payment_amount' => 100,
+                        'down_payment_type' => 'flat',
                         'split_merchant_id' => 2,
                         'merchant_id' => $plans->merchant()->id(),
                         'configuration' => [
@@ -88,6 +90,7 @@ final class PaymentPlanGetByMerchantTest extends TestCase
                         'name' => $plans->plans()[0]->name(),
                         'incoming_request_id' => $plans->plans()[0]->requestIncomingId(),
                         'down_payment_amount' => $plans->plans()[0]->downPaymentAmount(),
+                        'down_payment_type' => $plans->plans()[0]->downPaymentType(),
                         'split_merchant_id' => $plans->plans()[0]->splitMerchant()->id(),
                         'merchant_id' => $plans->plans()[0]->merchant()->id(),
                         'configuration' => [
@@ -100,6 +103,7 @@ final class PaymentPlanGetByMerchantTest extends TestCase
                         'name' => $plans->plans()[1]->name(),
                         'incoming_request_id' => $plans->plans()[1]->requestIncomingId(),
                         'down_payment_amount' => $plans->plans()[1]->downPaymentAmount(),
+                        'down_payment_type' => $plans->plans()[1]->downPaymentType(),
                         'split_merchant_id' => $plans->plans()[1]->splitMerchant()->id(),
                         'merchant_id' => $plans->plans()[1]->merchant()->id(),
                         'configuration' => [

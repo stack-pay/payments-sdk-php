@@ -16,6 +16,7 @@ trait PaymentPlanTransform
         $transaction->object()->setIsActive($body['is_active']);
         $transaction->object()->setRequestIncomingId($body['incoming_request_id']);
         $transaction->object()->setDownPaymentAmount($body['down_payment_amount']);
+        $transaction->object()->setDownPaymentType($body['down_payment_type']);
         $transaction->object()->setMerchant((new Structures\Merchant())
             ->setID($body['merchant_id']));
         $transaction->object()->setConfiguration((new Structures\PaymentPlanConfig())
@@ -57,6 +58,7 @@ trait PaymentPlanTransform
                 ->setIsActive($planArray['is_active'])
                 ->setRequestIncomingId($planArray['incoming_request_id'])
                 ->setDownPaymentAmount($planArray['down_payment_amount'])
+                ->setDownPaymentType($planArray['down_payment_type'])
                 ->setConfiguration($planConfig)
                 ->setMerchant((new Structures\Merchant())
                     ->setID($planArray['merchant_id'])
@@ -93,6 +95,7 @@ trait PaymentPlanTransform
                 ->setName($value['name'])
                 ->setIsActive($value['is_active'])
                 ->setDownPaymentAmount($value['down_payment_amount'])
+                ->setDownPaymentType($value['down_payment_type'])
                 ->setConfiguration((new Structures\PaymentPlanConfig())
                     ->setMonths($value['configuration']['months'])
                 );
