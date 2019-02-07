@@ -90,12 +90,21 @@ trait PaymentPlanTransform
 
     public function requestEditPaymentPlanSubscription($transaction)
     {
-        $body = [
-            'payment_method'        => [
+        $body = [];
+        if (!is_null($transaction->object()->paymentMethod()->id())) {
+            $body['payment_method'] = [
                 'method'            => 'id',
                 'id'                => $transaction->object()->paymentMethod()->id(),
-            ],
-        ];
+            ];
+        }
+
+        if (!is_null($transaction->object()->amount())) {
+            $body['amount'] = $transaction->object()->amount();
+        }
+
+        if (!is_null($transaction->object()->splitAmount())) {
+            $body['split_amount'] = $transaction->object()->splitAmount();
+        }
 
         $transaction->request()->body($body);
     }
