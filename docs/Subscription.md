@@ -44,14 +44,19 @@ Update the payment method on a subscription. Use the same object stack as Create
 ```php
 $subscriptionId = 1;
 
+$newAmount = 50000;
+
+$splitAmount = 10000;
+
 $paymentMethod = (new Payments\Structures\PaymentMethod())
     ->setID(1234);
 
-$subscription = $stackpay->createPaymentPlanSubscription((new Payments\Structures\Subscription())
+$subscription = (new Payments\Structures\Subscription())
     ->setID($subscriptionId)
     ->setPaymentMethod($paymentMethod)
     ->setPaymentPlan($paymentPlan)
-);
+    ->setAmount($newAmount)
+    ->setSplitAmount($splitAmount);
 
 $updatedSubscription = $stackpay->editPaymentPlanSubscription($subscription);
 ```
