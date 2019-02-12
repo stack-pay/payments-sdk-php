@@ -47,6 +47,9 @@ trait PaymentPlanTransform
             if (!is_null($transaction->object()->configuration()->gracePeriod())) {
                 $request['configuration']['grace_period'] = $transaction->object()->configuration()->gracePeriod();
             }
+            if (!is_null($transaction->object()->configuration()->installments())) {
+                $request['configuration']['installments'] = $transaction->object()->configuration()->installments();
+            }
         }
         if (!is_null($transaction->object()->isActive())) {
             $request['is_active'] = $transaction->object()->isActive();
