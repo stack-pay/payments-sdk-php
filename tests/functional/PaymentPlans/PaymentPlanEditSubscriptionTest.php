@@ -43,6 +43,8 @@ class PaymentPlanEditSubscriptionTest extends FunctionalTestCase
 		$subscription = $this->buildPaymentPlanSubscription();
 
 		$subscription->paymentMethod->id = 999;
+		$subscription->amount = 20000;
+		$subscription->splitAmount = 10000;
 
 		// mock API success response
 		$this->mockApiResponse(
@@ -60,9 +62,9 @@ class PaymentPlanEditSubscriptionTest extends FunctionalTestCase
 						'type' => 'process',
 						'external_id' => null,
 						'invoice_number' => null,
-						'amount' => 5000,
+						'amount' => 20000,
 						'split_merchant_id' => null,
-						'split_amount' => null,
+						'split_amount' => 10000,
 						'fee_rate' => 3.65,
 						'fee_flat' => 30,
 						'fee_total' => 213,
@@ -99,7 +101,7 @@ class PaymentPlanEditSubscriptionTest extends FunctionalTestCase
 							'scheduled_at' => '2019-02-23',
 							'status' => 'scheduled',
 							'currency_code' => 'USD',
-							'amount' => 1668,
+							'amount' => 6666,
 							'split_amount' => null,
 							'split_merchant_id' => null,
 							'subscription' => 1,
@@ -135,7 +137,7 @@ class PaymentPlanEditSubscriptionTest extends FunctionalTestCase
 							'scheduled_at' => '2019-03-23',
 							'status' => 'scheduled',
 							'currency_code' => 'USD',
-							'amount' => 1668,
+							'amount' => 6666,
 							'split_amount' => null,
 							'split_merchant_id' => null,
 							'subscription' => 1,
@@ -171,7 +173,7 @@ class PaymentPlanEditSubscriptionTest extends FunctionalTestCase
 							'scheduled_at' => '2019-04-23',
 							'status' => 'scheduled',
 							'currency_code' => 'USD',
-							'amount' => 1668,
+							'amount' => 6668,
 							'split_amount' => null,
 							'split_merchant_id' => null,
 							'subscription' => 1,
