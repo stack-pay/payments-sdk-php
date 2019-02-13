@@ -205,7 +205,11 @@ final class PaymentPlanEditPlanTest extends TestCase
                     'merchant_id'         => $plan->merchant()->id(),
                     'configuration' => [
                         'day'             => $plan->configuration()->day(),
-                        'installments'    => $plan->configuration()->installments()  
+                        'installments'    => [[
+                            'date'          => $plan->configuration()->installments()[0]->date(),
+                            'percentage'    => $plan->configuration()->installments()[0]->percentage(),
+                            'interval'      => $plan->configuration()->installments()[0]->interval(),
+                        ]]
                     ],
                     'payment_priority'    => $plan->paymentPriority(),
                     'is_active'           => $plan->isActive()

@@ -24,7 +24,16 @@ trait PaymentPlanTransform
             $planConfig->setMonths($body['configuration']['months']);
         }
         if (!empty($body['configuration']['installments'])) {
-            $planConfig->setInstallments($body['configuration']['installments']);
+            $installments = [];
+            foreach ($body['configuration']['installments'] as $installmentArray) {
+                $installment = (new Structures\PaymentPlanInstallment())
+                    ->setDate($installmentArray['date'])
+                    ->setPercentage($installmentArray['percentage'])
+                    ->setInterval($installmentArray['interval']);
+                             
+                $installments [] = $installment;
+            }
+            $planConfig->setInstallments($installments);
         }
         if (!empty($body['configuration']['day'])) {
             $planConfig->setDay($body['configuration']['day']);
@@ -66,7 +75,7 @@ trait PaymentPlanTransform
                         ->setDate($installmentArray['date'])
                         ->setPercentage($installmentArray['percentage'])
                         ->setInterval($installmentArray['interval']);
-                                 
+
                     $installments [] = $installment;
                 }
                 $planConfig->setInstallments($installments);
