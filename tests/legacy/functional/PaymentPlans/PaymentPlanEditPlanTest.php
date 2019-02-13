@@ -33,7 +33,6 @@ final class PaymentPlanEditPlanTest extends TestCase
             ->setConfiguration((new Structures\PaymentPlanConfig())
                 ->setMonths(3)
                 ->setDay(15)
-                ->setInstallments(null)
             )
             ->setIsActive(1);
         $respArray = [
@@ -135,6 +134,11 @@ final class PaymentPlanEditPlanTest extends TestCase
         );
 
         $merchantHash = 'asdasdasdasd';
+        $installments = [];
+        $installment = (new Structures\PaymentPlanInstallment())
+            ->setDate('2022-08-30')
+            ->setPercentage(10000);
+        $installments[] = $installment;
         $plan = (new Structures\PaymentPlan())
             ->setID(1000)
             ->setMerchant((new Structures\Merchant())
@@ -145,15 +149,12 @@ final class PaymentPlanEditPlanTest extends TestCase
             ->setDownPaymentAmount(200)
             ->setDownPaymentType('flat')
             ->setConfiguration((new Structures\PaymentPlanConfig())
-                ->setMonths(null)
                 ->setDay(15)
-                ->setInstallments([
-                    (new Structures\PaymentPlanInstallment)
-                        ->setDate('2022-08-30')
-                        ->setPercentage(10000)
-                ])
+                ->setInstallments($installments)
             )
             ->setIsActive(1);
+
+        
         $respArray = [
             'Body' => [
                 'data' => [
@@ -165,7 +166,6 @@ final class PaymentPlanEditPlanTest extends TestCase
                     'split_merchant_id'   => 2,
                     'merchant_id'         => 1000,
                     'configuration' => [
-                        'months'          => null,
                         'day'             => 15,
                         'installments'    => [
                             [
@@ -190,6 +190,7 @@ final class PaymentPlanEditPlanTest extends TestCase
 
         $plan = $sdk->editPaymentPlan($plan);
 
+        var_dump($plan->configuration()->installments());
         $this->assertEquals(
             $respArray['Body'],
             [
@@ -202,14 +203,8 @@ final class PaymentPlanEditPlanTest extends TestCase
                     'split_merchant_id'   => $plan->splitMerchant()->id(),
                     'merchant_id'         => $plan->merchant()->id(),
                     'configuration' => [
-                        'months'          => null,
-                        'day'             => 15,
-                        'installments'    => [
-                            [
-                                'date'          => '2022-08-30',
-                                'percentage'    => 10000
-                            ]
-                        ]
+                        'day'             => $plan->configuration()->day(),
+                        'installments'    => $plan->configuration()->installments()  
                     ],
                     'payment_priority'    => $plan->paymentPriority(),
                     'is_active'           => $plan->isActive()
@@ -228,7 +223,6 @@ final class PaymentPlanEditPlanTest extends TestCase
                             'down_payment_amount' => 200,
                             'down_payment_type'   => 'flat',
                             'configuration' => [
-                                'months'          => null,
                                 'day'             => 15,
                                 'installments'    => [
                                     [

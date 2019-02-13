@@ -58,9 +58,18 @@ trait PaymentPlanTransform
             }
             if (isset($planArray['configuration']['grace_period'])) {
                 $planConfig->setGracePeriod($planArray['configuration']['grace_period']);
-            }
+            }     
             if (isset($planArray['configuration']['installments'])) {
-                $planConfig->setInstallments($planArray['configuration']['installments']);
+                $installments = [];
+                foreach ($planArray['configuration']['installments'] as $installmentArray) {
+                    $installment = (new Structures\PaymentPlanInstallment())
+                        ->setDate($installmentArray['date'])
+                        ->setPercentage($installmentArray['percentage'])
+                        ->setInterval($installmentArray['interval']);
+                                 
+                    $installments [] = $installment;
+                }
+                $planConfig->setInstallments($installments);
             }
 
             $plan = (new Structures\PaymentPlan())

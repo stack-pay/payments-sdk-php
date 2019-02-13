@@ -48,6 +48,9 @@ trait PaymentPlanTransform
                 $request['configuration']['grace_period'] = $transaction->object()->configuration()->gracePeriod();
             }
             if (!is_null($transaction->object()->configuration()->installments())) {
+                foreach($transaction->object()->configuration()->installments() as $installmentArray) {
+
+                }
                 $request['configuration']['installments'] = $transaction->object()->configuration()->installments();
             }
         }
