@@ -47,6 +47,18 @@ trait PaymentPlanTransform
             if (!is_null($transaction->object()->configuration()->gracePeriod())) {
                 $request['configuration']['grace_period'] = $transaction->object()->configuration()->gracePeriod();
             }
+            if (!is_null($transaction->object()->configuration()->installments())) {
+                $installments = [];
+                foreach ($transaction->object()->configuration()->installments() as $installmentArray) {
+                    $installment = [
+                        'date' => $installmentArray->date(),
+                        'percentage' => $installmentArray->percentage(),
+                        'interval' => $installmentArray->interval()
+                    ];
+                    $installments [] = $installment;
+                }
+                $request['configuration']['installments'] = $installments;
+            }
         }
         if (!is_null($transaction->object()->isActive())) {
             $request['is_active'] = $transaction->object()->isActive();

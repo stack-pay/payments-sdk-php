@@ -20,4 +20,9 @@ final class PaymentPlanConfigTest extends StructureTestCase
     {
         $this->full('gracePeriod', 'int', false);
     }
+
+    public function test_installments()
+    {
+        $this->full('installments', 'array', false);
+    }
 }

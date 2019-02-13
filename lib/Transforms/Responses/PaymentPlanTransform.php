@@ -19,17 +19,32 @@ trait PaymentPlanTransform
         $transaction->object()->setDownPaymentType($body['down_payment_type']);
         $transaction->object()->setMerchant((new Structures\Merchant())
             ->setID($body['merchant_id']));
-        $transaction->object()->setConfiguration((new Structures\PaymentPlanConfig())
-            ->setMonths($body['configuration']['months']));
+        $planConfig = new Structures\PaymentPlanConfig();
+        if (!empty($body['configuration']['months'])) {
+            $planConfig->setMonths($body['configuration']['months']);
+        }
+        if (!empty($body['configuration']['installments'])) {
+            $installments = [];
+            foreach ($body['configuration']['installments'] as $installmentArray) {
+                $installment = (new Structures\PaymentPlanInstallment())
+                    ->setDate($installmentArray['date'])
+                    ->setPercentage($installmentArray['percentage'])
+                    ->setInterval($installmentArray['interval']);
+                             
+                $installments [] = $installment;
+            }
+            $planConfig->setInstallments($installments);
+        }
+        if (!empty($body['configuration']['day'])) {
+            $planConfig->setDay($body['configuration']['day']);
+        }
+        if (!empty($body['configuration']['grace_period'])) {
+            $planConfig->setGracePeriod($body['configuration']['grace_period']);
+        }
+        $transaction->object()->setConfiguration($planConfig);
         if (!empty($body['split_merchant_id'])) {
             $transaction->object()->setSplitMerchant((new Structures\Merchant())
                 ->setID($body['split_merchant_id']));
-        }
-        if (!empty($body['configuration']['day'])) {
-            $transaction->object()->configuration()->setDay($body['configuration']['day']);
-        }
-        if (!empty($body['configuration']['grace_period'])) {
-            $transaction->object()->configuration()->setGracePeriod($body['configuration']['grace_period']);
         }
         if (!empty($body['payment_priority'])) {
             $transaction->object()->setPaymentPriority($body['payment_priority']);
@@ -43,13 +58,27 @@ trait PaymentPlanTransform
 
         $plans = [];
         foreach ($body['data'] as $planArray) {
-            $planConfig = (new Structures\PaymentPlanConfig)
-                ->setMonths($planArray['configuration']['months']);
+            $planConfig = (new Structures\PaymentPlanConfig);
+            if (isset($planArray['configuration']['months'])) {
+                $planConfig->setMonths($planArray['configuration']['months']);
+            }
             if (isset($planArray['configuration']['day'])) {
                 $planConfig->setDay($planArray['configuration']['day']);
             }
             if (isset($planArray['configuration']['grace_period'])) {
                 $planConfig->setGracePeriod($planArray['configuration']['grace_period']);
+            }     
+            if (isset($planArray['configuration']['installments'])) {
+                $installments = [];
+                foreach ($planArray['configuration']['installments'] as $installmentArray) {
+                    $installment = (new Structures\PaymentPlanInstallment())
+                        ->setDate($installmentArray['date'])
+                        ->setPercentage($installmentArray['percentage'])
+                        ->setInterval($installmentArray['interval']);
+
+                    $installments [] = $installment;
+                }
+                $planConfig->setInstallments($installments);
             }
 
             $plan = (new Structures\PaymentPlan())

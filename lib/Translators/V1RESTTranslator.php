@@ -161,7 +161,9 @@ class V1RESTTranslator
             'merchant_id'           => $paymentPlan->merchant->id,
             'configuration'         => [
                 'months'                => $paymentPlan->configuration->months,
-                'day'                   => $paymentPlan->configuration->day
+                'day'                   => $paymentPlan->configuration->day,
+                'grace_period'          => $paymentPlan->configuration->gracePeriod,
+                'installments'          => $paymentPlan->configuration->installments
             ],
             'is_active'             => $paymentPlan->isActive,
         ];
