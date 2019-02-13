@@ -57,7 +57,7 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 			)
 			->setExternalId('1000')
 			->setAmount(20000)
-            ->setSplitAmount(10000)
+			->setSplitAmount(10000)
 			->setDownPaymentAmount(1500)
 			->setDay(1);
 
@@ -400,7 +400,7 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 								'method' => 'id',
 								'id' => $subscription->paymentMethod()->id(),
 							],
-                            'amount' => $subscription->amount(),
+							'amount' => $subscription->amount(),
                             'split_amount' => $subscription->splitAmount()
 						],
 						'Header' => [
