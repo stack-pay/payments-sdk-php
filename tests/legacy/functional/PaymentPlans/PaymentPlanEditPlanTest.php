@@ -137,7 +137,8 @@ final class PaymentPlanEditPlanTest extends TestCase
         $installments = [];
         $installment = (new Structures\PaymentPlanInstallment())
             ->setDate('2022-08-30')
-            ->setPercentage(10000);
+            ->setPercentage(10000)
+            ->setInterval(null);
         $installments[] = $installment;
         $plan = (new Structures\PaymentPlan())
             ->setID(1000)
@@ -170,7 +171,8 @@ final class PaymentPlanEditPlanTest extends TestCase
                         'installments'    => [
                             [
                                 'date'          => '2022-08-30',
-                                'percentage'    => 10000
+                                'percentage'    => 10000,
+                                'interval'      => null
                             ]
                         ]
                     ],
@@ -190,7 +192,6 @@ final class PaymentPlanEditPlanTest extends TestCase
 
         $plan = $sdk->editPaymentPlan($plan);
 
-        var_dump($plan->configuration()->installments());
         $this->assertEquals(
             $respArray['Body'],
             [
@@ -227,7 +228,8 @@ final class PaymentPlanEditPlanTest extends TestCase
                                 'installments'    => [
                                     [
                                         'date'          => '2022-08-30',
-                                        'percentage'    => 10000
+                                        'percentage'    => 10000,
+                                        'interval'      => null
                                     ]
                                 ]
                             ]
