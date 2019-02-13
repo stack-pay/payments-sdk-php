@@ -15,6 +15,7 @@ class ScheduledTransaction extends Auth implements Interfaces\ScheduledTransacti
     public $amount;
     public $currencyCode;
     public $scheduledAt;
+    public $subscriptionId;
 
     // V1Translator
     public $split;
@@ -56,6 +57,11 @@ class ScheduledTransaction extends Auth implements Interfaces\ScheduledTransacti
     public function scheduledAt()
     {
         return $this->scheduledAt;
+    }
+
+    public function subscriptionId()
+    {
+        return $this->subscriptionId;
     }
 
     public function split()
@@ -108,6 +114,13 @@ class ScheduledTransaction extends Auth implements Interfaces\ScheduledTransacti
     public function setCurrencyCode($currencyCode = null)
     {
         $this->currencyCode = $currencyCode;
+
+        return $this;
+    }
+
+    public function setSubscriptionId($subscriptionId = null)
+    {
+        $this->subscriptionId = $subscriptionId;
 
         return $this;
     }

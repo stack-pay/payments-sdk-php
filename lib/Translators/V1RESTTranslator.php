@@ -151,6 +151,33 @@ class V1RESTTranslator
         return $paymentPlanElement;
     }
 
+    public function buildPaymentPlanElement(Structures\PaymentPlan $paymentPlan)
+    {
+        $paymentPlanElement = [
+            'payment_plan_id'       => $paymentPlan->id,
+            'name'                  => $paymentPlan->name,
+            'request_incoming_id'   => $paymentPlan->requestIncomingId,
+            'down_payment_amount'   => $paymentPlan->downPaymentAmount,
+            'merchant_id'           => $paymentPlan->merchant->id,
+            'configuration'         => [
+                'months'                => $paymentPlan->configuration->months,
+                'day'                   => $paymentPlan->configuration->day,
+                'grace_period'          => $paymentPlan->configuration->gracePeriod,
+                'installments'          => $paymentPlan->configuration->installments
+            ],
+            'is_active'             => $paymentPlan->isActive,
+        ];
+
+        if ($paymentPlan->splitMerchant) {
+            $paymentPlanElement['split_merchant_id'] = $paymentPlan->splitMerchant->id;
+        }
+        if ($paymentPlan->paymentPriority) {
+            $paymentPlanElement['payment_priority'] = $paymentPlan->paymentPriority;
+        }
+
+        return $paymentPlanElement;
+    }
+
     public function buildPaymentPlanCreateSubscriptionElement(Structures\Subscription $object)
     {
         $element = [
@@ -163,6 +190,10 @@ class V1RESTTranslator
 
         if ($object->day) {
             $element['day'] = $object->day;
+        }
+
+        if($object->splitMerchant) {
+            $element['split_merchant_id'] = $object->splitMerchant->id;
         }
 
         if ($object->splitAmount) {

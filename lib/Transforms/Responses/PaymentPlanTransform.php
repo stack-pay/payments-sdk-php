@@ -7,24 +7,44 @@ use StackPay\Payments\Structures;
 
 trait PaymentPlanTransform
 {
-    public function responseCopyPaymentPlan($transaction)
+    public function responsePaymentPlan($transaction)
     {
         $body = $transaction->response()->body()['data'];
 
         $transaction->object()->setID($body['id']);
         $transaction->object()->setName($body['name']);
+        $transaction->object()->setIsActive($body['is_active']);
         $transaction->object()->setRequestIncomingId($body['incoming_request_id']);
         $transaction->object()->setDownPaymentAmount($body['down_payment_amount']);
+        $transaction->object()->setDownPaymentType($body['down_payment_type']);
         $transaction->object()->setMerchant((new Structures\Merchant())
             ->setID($body['merchant_id']));
-        $transaction->object()->setConfiguration((new Structures\PaymentPlanConfig())
-            ->setMonths($body['configuration']['months']));
+        $planConfig = new Structures\PaymentPlanConfig();
+        if (!empty($body['configuration']['months'])) {
+            $planConfig->setMonths($body['configuration']['months']);
+        }
+        if (!empty($body['configuration']['installments'])) {
+            $installments = [];
+            foreach ($body['configuration']['installments'] as $installmentArray) {
+                $installment = (new Structures\PaymentPlanInstallment())
+                    ->setDate($installmentArray['date'])
+                    ->setPercentage($installmentArray['percentage'])
+                    ->setInterval($installmentArray['interval']);
+                             
+                $installments [] = $installment;
+            }
+            $planConfig->setInstallments($installments);
+        }
+        if (!empty($body['configuration']['day'])) {
+            $planConfig->setDay($body['configuration']['day']);
+        }
+        if (!empty($body['configuration']['grace_period'])) {
+            $planConfig->setGracePeriod($body['configuration']['grace_period']);
+        }
+        $transaction->object()->setConfiguration($planConfig);
         if (!empty($body['split_merchant_id'])) {
             $transaction->object()->setSplitMerchant((new Structures\Merchant())
                 ->setID($body['split_merchant_id']));
-        }
-        if (!empty($body['configuration']['day'])) {
-            $transaction->object()->configuration()->setDay($body['configuration']['day']);
         }
         if (!empty($body['payment_priority'])) {
             $transaction->object()->setPaymentPriority($body['payment_priority']);
@@ -38,17 +58,36 @@ trait PaymentPlanTransform
 
         $plans = [];
         foreach ($body['data'] as $planArray) {
-            $planConfig = (new Structures\PaymentPlanConfig)
-                ->setMonths($planArray['configuration']['months']);
+            $planConfig = (new Structures\PaymentPlanConfig);
+            if (isset($planArray['configuration']['months'])) {
+                $planConfig->setMonths($planArray['configuration']['months']);
+            }
             if (isset($planArray['configuration']['day'])) {
                 $planConfig->setDay($planArray['configuration']['day']);
+            }
+            if (isset($planArray['configuration']['grace_period'])) {
+                $planConfig->setGracePeriod($planArray['configuration']['grace_period']);
+            }     
+            if (isset($planArray['configuration']['installments'])) {
+                $installments = [];
+                foreach ($planArray['configuration']['installments'] as $installmentArray) {
+                    $installment = (new Structures\PaymentPlanInstallment())
+                        ->setDate($installmentArray['date'])
+                        ->setPercentage($installmentArray['percentage'])
+                        ->setInterval($installmentArray['interval']);
+
+                    $installments [] = $installment;
+                }
+                $planConfig->setInstallments($installments);
             }
 
             $plan = (new Structures\PaymentPlan())
                 ->setID($planArray['id'])
                 ->setName($planArray['name'])
+                ->setIsActive($planArray['is_active'])
                 ->setRequestIncomingId($planArray['incoming_request_id'])
                 ->setDownPaymentAmount($planArray['down_payment_amount'])
+                ->setDownPaymentType($planArray['down_payment_type'])
                 ->setConfiguration($planConfig)
                 ->setMerchant((new Structures\Merchant())
                     ->setID($planArray['merchant_id'])
@@ -83,19 +122,24 @@ trait PaymentPlanTransform
             $plan = (new Structures\PaymentPlan())
                 ->setID($value['id'])
                 ->setName($value['name'])
+                ->setIsActive($value['is_active'])
                 ->setDownPaymentAmount($value['down_payment_amount'])
+                ->setDownPaymentType($value['down_payment_type'])
                 ->setConfiguration((new Structures\PaymentPlanConfig())
                     ->setMonths($value['configuration']['months'])
                 );
             if (!empty($value['configuration']['day'])) {
                 $plan->configuration()->setDay($value['configuration']['day']);
             }
+            if (!empty($value['configuration']['grace_period'])) {
+                $plan->configuration()->setGracePeriod($value['configuration']['grace_period']);
+            }
             $plans[] = $plan;
         }
         $transaction->object()->setPlans($plans);
     }
 
-    public function responseCreatePaymentPlanSubscription($transaction)
+    public function responsePaymentPlanSubscription($transaction)
     {
         $body = $transaction->response()->body()['data'];
 
@@ -121,8 +165,9 @@ trait PaymentPlanTransform
             ->setAmount($downPaymentTransactionArr['amount'])
             ->setCurrency($body['currency_code'])
             ->setInvoiceNumber($downPaymentTransactionArr['invoice_number'])
-            ->setExternalID($downPaymentTransactionArr['external_id'])
-            ->setPaymentMethod((new Structures\PaymentMethod())
+            ->setExternalID($downPaymentTransactionArr['external_id']);
+
+            $paymentMethod = ((new Structures\PaymentMethod())
                 ->setID($downPaymentTransactionArr['payment_method']['id'])
                 ->setAccount((new Structures\Account())
                     ->setType($downPaymentTransactionArr['payment_method']['type'])
@@ -142,12 +187,36 @@ trait PaymentPlanTransform
                     )
                 )
             );
+            
+            if($downPaymentTransactionArr['payment_method']['customer_id']) {
+                $paymentMethod->setCustomer((new Structures\Customer())
+                    ->setID($downPaymentTransactionArr['payment_method']['customer_id']));
+            }
+
+            $downPayment->setPaymentMethod($paymentMethod);
 
 
         if (array_key_exists('split_merchant_id', $downPaymentTransactionArr)) {
             $downPayment->setSplit((new Structures\Split())
-                ->setMerchant($downPaymentTransactionArr['split_merchant_id'])
+                ->setMerchant((new Structures\Merchant())
+                    ->setID($downPaymentTransactionArr['split_merchant_id'])
+                )
                 ->setAmount($downPaymentTransactionArr['split_amount']));
+        }
+
+        if($downPaymentTransactionArr['payment_method']['method'] == 'credit_card') {
+            $downPayment->paymentMethod()->setAccount((new Structures\Account())
+                ->setType($downPaymentTransactionArr['payment_method']['type'])
+                ->setLast4($downPaymentTransactionArr['payment_method']['account_last_four'])
+                ->setExpireMonth($downPaymentTransactionArr['payment_method']['expiration_month'])
+                ->setExpireYear($downPaymentTransactionArr['payment_method']['expiration_year'])
+            );
+        } elseif ($downPaymentTransactionArr['payment_method']['method'] == 'bank_account') {
+            $downPayment->paymentMethod()->setAccount((new Structures\Account())
+                ->setType($downPaymentTransactionArr['payment_method']['type'])
+                ->setLast4($downPaymentTransactionArr['payment_method']['account_last_four'])
+                ->setExpireMonth($downPaymentTransactionArr['payment_method']['routing_last_four'])
+            );
         }
 
         $transaction->object()->setDownPaymentTransaction($downPayment);
@@ -161,10 +230,35 @@ trait PaymentPlanTransform
                 ->setScheduledAt(new \DateTime($scheduledTransactionArr['scheduled_at']))
                 ->setCurrencyCode($scheduledTransactionArr['currency_code'])
                 ->setAmount($scheduledTransactionArr['amount'])
-                ->setPaymentMethod($downPayment->paymentMethod());
+                ->setPaymentMethod((new Structures\PaymentMethod())
+                    ->setID($scheduledTransactionArr['payment_method']['id'])
+                    ->setAccount((new Structures\Account())
+                        ->setType($scheduledTransactionArr['payment_method']['type'])
+                        ->setLast4($scheduledTransactionArr['payment_method']['account_last_four'])
+                        ->setExpireMonth($scheduledTransactionArr['payment_method']['expiration_month'])
+                        ->setExpireYear($scheduledTransactionArr['payment_method']['expiration_year'])
+                    )
+                    ->setAccountHolder((new Structures\AccountHolder())
+                        ->setName($scheduledTransactionArr['payment_method']['billing_name'])
+                        ->setBillingAddress((new Structures\Address())
+                            ->setAddress1($scheduledTransactionArr['payment_method']['billing_address_1'])
+                            ->setAddress2($scheduledTransactionArr['payment_method']['billing_address_2'])
+                            ->setCity($scheduledTransactionArr['payment_method']['billing_city'])
+                            ->setState($scheduledTransactionArr['payment_method']['billing_state'])
+                            ->setPostalCode($scheduledTransactionArr['payment_method']['billing_zip'])
+                            ->setCountry($scheduledTransactionArr['payment_method']['billing_country'])
+                        )
+                    )
+                );
         }
         $transaction->object()
             ->setScheduledTransactions($scheduledTransactions)
             ->setPaymentMethod($downPayment->paymentMethod());
+
+        if (array_key_exists('split_merchant_id', $body)) {
+            $transaction->object()->setSplitMerchant((new Structures\Merchant())
+                ->setID($body['split_merchant_id'])
+            );
+        }
     }
 }

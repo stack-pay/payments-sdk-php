@@ -28,6 +28,7 @@ final class PaymentPlanGetDefaultPlansTest extends TestCase
                         'id'                  => 1000,
                         'name'                => '3-Months Plan',
                         'down_payment_amount' => 100,
+                        'down_payment_type'   => 'flat',
                         'configuration' => [
                             'months'          => 3,
                             'day'             => 15,
@@ -55,6 +56,7 @@ final class PaymentPlanGetDefaultPlansTest extends TestCase
                         'id'                  => $plans->plans()[0]->id(),
                         'name'                => $plans->plans()[0]->name(),
                         'down_payment_amount' => $plans->plans()[0]->downPaymentAmount(),
+                        'down_payment_type'   => $plans->plans()[0]->downPaymentType(),
                         'configuration' => [
                             'months'          => $plans->plans()[0]->configuration()->months(),
                             'day'             => $plans->plans()[0]->configuration()->day(),

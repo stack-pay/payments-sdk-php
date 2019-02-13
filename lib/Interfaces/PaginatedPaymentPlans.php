@@ -9,6 +9,6 @@ interface PaginatedPaymentPlans extends Paginated
 
     // ---------
 
-    public function setMerchant(Merchant $plans = null);
+    public function setMerchant(Merchant $merchant = null);
     public function setPlans(array $plans = null);
 }

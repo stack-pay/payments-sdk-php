@@ -10,10 +10,12 @@ class PaymentPlan implements Interfaces\PaymentPlan
     public $name;
     public $requestIncomingId;
     public $downPaymentAmount;
+    public $downPaymentType;
     public $splitMerchant;
     public $merchant;
     public $configuration;
     public $paymentPriority;
+    public $isActive;
 
     public function id()
     {
@@ -35,6 +37,11 @@ class PaymentPlan implements Interfaces\PaymentPlan
         return $this->downPaymentAmount;
     }
     
+    public function downPaymentType()
+    {
+        return $this->downPaymentType;
+    }
+    
     public function splitMerchant()
     {
         return $this->splitMerchant;
@@ -53,6 +60,11 @@ class PaymentPlan implements Interfaces\PaymentPlan
     public function paymentPriority()
     {
         return $this->paymentPriority;
+    }
+
+    public function isActive()
+    {
+        return $this->isActive;
     }
 
     // --------
@@ -84,6 +96,13 @@ class PaymentPlan implements Interfaces\PaymentPlan
 
         return $this;
     }
+    
+    public function setDownPaymentType($downPaymentType = null)
+    {
+        $this->downPaymentType = $downPaymentType;
+
+        return $this;
+    }
 
     public function setSplitMerchant(Interfaces\Merchant $splitMerchant = null)
     {
@@ -109,6 +128,13 @@ class PaymentPlan implements Interfaces\PaymentPlan
     public function setPaymentPriority($paymentPriority = null)
     {
         $this->paymentPriority = $paymentPriority;
+
+        return $this;
+    }
+
+    public function setIsActive($isActive = null)
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }

@@ -76,4 +76,9 @@ final class MerchantTest extends StructureTestCase
     {
         $this->full('externalID', 'string', false);
     }
+
+    public function test_hostedPageAccessToken()
+    {
+        $this->full('hostedPageAccessToken', 'string', false);
+    }
 }
