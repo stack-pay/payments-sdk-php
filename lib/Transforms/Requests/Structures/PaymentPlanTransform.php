@@ -103,7 +103,7 @@ trait PaymentPlanTransform
     public function requestEditPaymentPlanSubscription($transaction)
     {
         $body = [];
-        if (!is_null($transaction->object()->paymentMethod()->id())) {
+        if (!is_null($transaction->object()->paymentMethod())) {
             $body['payment_method'] = [
                 'method'            => 'id',
                 'id'                => $transaction->object()->paymentMethod()->id(),
