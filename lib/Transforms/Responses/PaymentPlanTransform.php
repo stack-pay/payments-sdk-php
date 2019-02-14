@@ -26,10 +26,17 @@ trait PaymentPlanTransform
         if (!empty($body['configuration']['installments'])) {
             $installments = [];
             foreach ($body['configuration']['installments'] as $installmentArray) {
-                $installment = (new Structures\PaymentPlanInstallment())
-                    ->setDate($installmentArray['date'])
-                    ->setPercentage($installmentArray['percentage'])
-                    ->setInterval($installmentArray['interval']);
+                $installment = (new Structures\PaymentPlanInstallment());
+                    
+                if (isset($installmentArray['date'])) {
+                    $installment->setDate($installmentArray['date']);
+                }
+                if (isset($installmentArray['percentage'])) {
+                    $installment->setPercentage($installmentArray['percentage']);
+                }
+                if (isset($installmentArray['interval'])) {
+                    $installment->setInterval($installmentArray['interval']);
+                }
                              
                 $installments [] = $installment;
             }
@@ -71,11 +78,18 @@ trait PaymentPlanTransform
             if (isset($planArray['configuration']['installments'])) {
                 $installments = [];
                 foreach ($planArray['configuration']['installments'] as $installmentArray) {
-                    $installment = (new Structures\PaymentPlanInstallment())
-                        ->setDate($installmentArray['date'])
-                        ->setPercentage($installmentArray['percentage'])
-                        ->setInterval($installmentArray['interval']);
-
+                    $installment = (new Structures\PaymentPlanInstallment());
+                    
+                    if (isset($installmentArray['date'])) {
+                        $installment->setDate($installmentArray['date']);
+                    }
+                    if (isset($installmentArray['percentage'])) {
+                        $installment->setPercentage($installmentArray['percentage']);
+                    }
+                    if (isset($installmentArray['interval'])) {
+                        $installment->setInterval($installmentArray['interval']);
+                    }
+                    
                     $installments [] = $installment;
                 }
                 $planConfig->setInstallments($installments);
