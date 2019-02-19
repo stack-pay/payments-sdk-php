@@ -59,6 +59,52 @@ class PaymentPlanEditTest extends FunctionalTestCase
         $this->assertResourceResponse();
     }
 
+    public function testCreateWithInstallments()
+    {
+        // mock API success response
+        $this->mockApiResponse(
+            200, 
+            [
+                'data' => [
+                    'id'                  => 12345,
+                    'name'                => 'Monthly Plan - 6 Months',
+                    'incoming_request_id' => 1111,
+                    'down_payment_amount' => 0,
+                    'down_payment_type'   => 'flat',
+                    'merchant_id'         => 123,
+                    'split_merchant_id'   => 124,
+                    'payment_priority'    => PaymentPriority::EQUAL,
+                    'is_active'           => 1,
+                    'configuration'       => [
+                        'day'             => 1,
+                        'intallments'     => [
+                            [
+                                'date'          => '2022-08-30',
+                                'percentage'    => 5000
+                            ],
+                            [
+                                'date'          => '2022-10-30',
+                                'percentage'    => 2500
+                            ],
+                            [
+                                'date'          => '2022-12-30',
+                                'percentage'    => 2500
+                            ]
+                        ]
+                    ],
+                ],
+            ],
+            $this->merchant->hashKey
+        );
+
+        $request = (new Requests\v1\PaymentPlanRequest($this->buildPaymentPlanCopy()))
+            ->editPaymentPlan();
+
+        $this->response = $request->send();
+
+        $this->assertResourceResponse();
+    }
+
     public function testCreateWithValidationResponse()
     {
         // mock API success response
