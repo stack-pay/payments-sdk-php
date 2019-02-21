@@ -144,6 +144,10 @@ trait PaymentPlanTransform
         $body = $transaction->response()->body()['data'];
 
         $transaction->object()->setID($body['id']);
+        $transaction->object()->setExternalID($body['external_id']);
+        $transaction->object()->setAmount($body['amount']);
+        $transaction->object()->setDownPaymentAmount($body['down_payment_amount']);
+        $transaction->object()->setCurrencyCode($body['currency_code']);
 
         $downPaymentTransactionArr = $body['down_payment_transaction'];
 
