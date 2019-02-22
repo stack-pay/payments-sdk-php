@@ -65,6 +65,7 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 			'Body' => [
 				'data' => [
 					'id' => 1,
+					'completion_fee' => 500,
 					'amount' => 20000,
                     'external_id' => 1000,
                     'down_payment_amount' => 1500,
@@ -236,10 +237,11 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 			$respArray['Body'],
 			[
 				'data' => [
-					'id' => $subscription->id(),
+					'id'                        => $subscription->id(),
+					'completion_fee' => 500,
 					'amount' => $subscription->amount(),
-                    'external_id' => $subscription->externalId(),
-                    'down_payment_amount' => $subscription->downPaymentAmount(),
+					'external_id' => $subscription->externalId(),
+					'down_payment_amount' => $subscription->downPaymentAmount(),
 					'down_payment_transaction'       => [
 						'id' => $subscription->downPaymentTransaction()->id(),
 						'created_at' => '2019-01-23 01:33:51',
