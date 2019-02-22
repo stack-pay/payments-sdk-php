@@ -58,6 +58,15 @@ class PaymentPlanRequest extends Request
         return $this;
     }
 
+    public function getPaymentPlanSubscription()
+    {
+        $this->method   = 'GET';
+        $this->endpoint = '/api/merchants/' . $this->subscription->paymentPlan->merchant->id . '/subscriptions/' . $this->subscription->id;
+        $this->hashKey  = $this->subscription->paymentPlan->merchant->hashKey;
+        
+        return $this;
+    }
+
     public function createPaymentPlanSubscription()
     {
         $this->method   = 'POST';

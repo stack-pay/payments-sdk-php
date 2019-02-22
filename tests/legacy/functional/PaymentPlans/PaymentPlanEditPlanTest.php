@@ -137,8 +137,7 @@ final class PaymentPlanEditPlanTest extends TestCase
         $installments = [];
         $installment = (new Structures\PaymentPlanInstallment())
             ->setDate('2022-08-30')
-            ->setPercentage(10000)
-            ->setInterval(null);
+            ->setPercentage(10000);
         $installments[] = $installment;
         $plan = (new Structures\PaymentPlan())
             ->setID(1000)
@@ -171,8 +170,7 @@ final class PaymentPlanEditPlanTest extends TestCase
                         'installments'    => [
                             [
                                 'date'          => '2022-08-30',
-                                'percentage'    => 10000,
-                                'interval'      => null
+                                'percentage'    => 10000
                             ]
                         ]
                     ],
@@ -207,8 +205,7 @@ final class PaymentPlanEditPlanTest extends TestCase
                         'day'             => $plan->configuration()->day(),
                         'installments'    => [[
                             'date'          => $plan->configuration()->installments()[0]->date(),
-                            'percentage'    => $plan->configuration()->installments()[0]->percentage(),
-                            'interval'      => $plan->configuration()->installments()[0]->interval(),
+                            'percentage'    => $plan->configuration()->installments()[0]->percentage()
                         ]]
                     ],
                     'payment_priority'    => $plan->paymentPriority(),
@@ -233,7 +230,6 @@ final class PaymentPlanEditPlanTest extends TestCase
                                     [
                                         'date'          => '2022-08-30',
                                         'percentage'    => 10000,
-                                        'interval'      => null
                                     ]
                                 ]
                             ]
