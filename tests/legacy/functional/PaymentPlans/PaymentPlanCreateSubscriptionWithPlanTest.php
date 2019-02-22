@@ -48,6 +48,7 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                     'id' => 1,
                     'split_merchant_id' => 1001,
                     'split_amount' => 400,
+                    'completion_fee' => 500,
                     'amount' => 20000,
                     'external_id' => 1000,
                     'down_payment_amount' => 1500,
@@ -220,6 +221,7 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
             [
                 'data' => [
                     'id' => $subscription->id(),
+                    'completion_fee' => 500,
                     'split_merchant_id' => 1001,
                     'split_amount' => 400,
                     'amount' => 20000,
