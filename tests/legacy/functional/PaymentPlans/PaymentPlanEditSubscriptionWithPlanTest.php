@@ -65,6 +65,7 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 			'Body' => [
 				'data' => [
 					'id' => 1,
+					'completion_fee' => 500,
 					'down_payment_transaction' => [
 						'id' => 8445,
 						'created_at' => '2019-01-23 01:33:51',
@@ -234,6 +235,7 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 			[
 				'data' => [
 					'id'                        => $subscription->id(),
+					'completion_fee' => 500,
 					'down_payment_transaction'       => [
 						'id' => $subscription->downPaymentTransaction()->id(),
 						'created_at' => '2019-01-23 01:33:51',

@@ -144,6 +144,7 @@ trait PaymentPlanTransform
         $body = $transaction->response()->body()['data'];
 
         $transaction->object()->setID($body['id']);
+        $transaction->object()->setCompletionFee($body['completion_fee']);
 
         $downPaymentTransactionArr = $body['down_payment_transaction'];
 

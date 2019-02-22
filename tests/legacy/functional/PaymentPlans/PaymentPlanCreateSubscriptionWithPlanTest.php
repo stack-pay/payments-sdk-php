@@ -47,6 +47,7 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                 'data' => [
                     'id' => 1,
                     'split_merchant_id' => 1001,
+                    'completion_fee' => 500,
                     'down_payment_transaction' => [
                         'id' => 8445,
                         'created_at' => '2019-01-23 01:33:51',
@@ -216,6 +217,7 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
             [
                 'data' => [
                     'id' => $subscription->id(),
+                    'completion_fee' => 500,
                     'split_merchant_id' => 1001,
                     'down_payment_transaction'  => [
                         'id' => $subscription->downPaymentTransaction()->id(),
