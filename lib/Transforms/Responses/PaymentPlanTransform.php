@@ -161,6 +161,7 @@ trait PaymentPlanTransform
         $transaction->object()->setCompletionFee($body['completion_fee']);
         $transaction->object()->setExternalID($body['external_id']);
         $transaction->object()->setAmount($body['amount']);
+        $transaction->object()->setSplitAmount($body['split_amount']);
         $transaction->object()->setDownPaymentAmount($body['down_payment_amount']);
         $transaction->object()->setCurrencyCode($body['currency_code']);
 
@@ -220,7 +221,8 @@ trait PaymentPlanTransform
                 ->setMerchant((new Structures\Merchant())
                     ->setID($downPaymentTransactionArr['split_merchant_id'])
                 )
-                ->setAmount($downPaymentTransactionArr['split_amount']));
+                ->setAmount($downPaymentTransactionArr['split_amount'])
+            );
         }
 
         if($downPaymentTransactionArr['payment_method']['method'] == 'credit_card') {
@@ -249,6 +251,12 @@ trait PaymentPlanTransform
                 ->setScheduledAt(new \DateTime($scheduledTransactionArr['scheduled_at']))
                 ->setCurrencyCode($scheduledTransactionArr['currency_code'])
                 ->setAmount($scheduledTransactionArr['amount'])
+                ->setSplit((new Structures\Split())
+                    ->setMerchant((new Structures\Merchant())
+                        ->setID($downPaymentTransactionArr['split_merchant_id'])
+                    )
+                    ->setAmount($downPaymentTransactionArr['split_amount'])
+                )
                 ->setPaymentMethod((new Structures\PaymentMethod())
                     ->setID($scheduledTransactionArr['payment_method']['id'])
                     ->setAccount((new Structures\Account())

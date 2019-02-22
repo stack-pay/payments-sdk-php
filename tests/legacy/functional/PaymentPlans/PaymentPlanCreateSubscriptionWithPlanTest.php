@@ -34,7 +34,7 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
             ->setPaymentMethod((new Structures\PaymentMethod())
                 ->setID(1000)
             )
-            ->setExternalId('1000')
+            ->setExternalId(1000)
             ->setAmount(20000)
             ->setDownPaymentAmount(1500)
             ->setDay(1)
@@ -47,6 +47,7 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                 'data' => [
                     'id' => 1,
                     'split_merchant_id' => 1001,
+                    'split_amount' => 400,
                     'completion_fee' => 500,
                     'amount' => 20000,
                     'external_id' => 1000,
@@ -222,6 +223,7 @@ final class PaymentPlanCreateSubscriptionWithPlanTest extends TestCase
                     'id' => $subscription->id(),
                     'completion_fee' => 500,
                     'split_merchant_id' => 1001,
+                    'split_amount' => 400,
                     'amount' => 20000,
                     'external_id' => 1000,
                     'down_payment_amount' => 1500,
