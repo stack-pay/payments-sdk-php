@@ -158,12 +158,18 @@ trait PaymentPlanTransform
         $body = $transaction->response()->body()['data'];
 
         $transaction->object()->setID($body['id']);
-        $transaction->object()->setCompletionFee($body['completion_fee']);
         $transaction->object()->setExternalID($body['external_id']);
         $transaction->object()->setAmount($body['amount']);
-        $transaction->object()->setSplitAmount($body['split_amount']);
         $transaction->object()->setDownPaymentAmount($body['down_payment_amount']);
         $transaction->object()->setCurrencyCode($body['currency_code']);
+
+        if (!empty($body['split_amount'])) {
+            $transaction->object()->setSplitAmount($body['split_amount']);
+        }
+
+        if (!empty($body['completion_fee'])) {
+            $transaction->object()->setCompletionFee($body['completion_fee']);
+        }
 
         $downPaymentTransactionArr = $body['down_payment_transaction'];
 
