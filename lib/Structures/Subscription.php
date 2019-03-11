@@ -18,6 +18,7 @@ class Subscription implements Interfaces\Subscription
     public $scheduledTransactions;
     public $day;
     public $currencyCode;
+    public $completionFee;
 
     public function id()
     {
@@ -52,6 +53,11 @@ class Subscription implements Interfaces\Subscription
     public function splitMerchant()
     {
         return $this->splitMerchant;
+    }
+
+    public function completionFee()
+    {
+        return $this->completionFee;
     }
 
     public function downPaymentAmount()
@@ -126,6 +132,13 @@ class Subscription implements Interfaces\Subscription
     public function setSplitAmount($splitAmount = null)
     {
         $this->splitAmount = $splitAmount;
+
+        return $this;
+    }
+
+    public function setCompletionFee($completionFee = null)
+    {
+        $this->completionFee = $completionFee;
 
         return $this;
     }
