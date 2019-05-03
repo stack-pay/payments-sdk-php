@@ -18,6 +18,7 @@ trait AuthTransform
         $transaction->object()->setAuthCode($body['Payment']['AuthorizationCode']);
         $transaction->object()->setAVSCode($body['Payment']['AVSCode']);
         $transaction->object()->setCvvResponseCode($body['Payment']['CVVResponseCode']);
+        $transaction->object()->setSoftDescriptor($body['Payment']['SoftDescriptor']);
 
         $transaction->object()
             ->createPaymentMethod()

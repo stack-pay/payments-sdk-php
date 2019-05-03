@@ -14,7 +14,8 @@ trait ScheduledTransactionTransform
             'scheduled_at'      => $transaction->object()->scheduledAt()->format('Y-m-d'),
             'timezone'          => $transaction->object()->scheduledAt()->getTimezone()->getName(),
             'currency_code'     => $transaction->object()->currencyCode(),
-            'amount'            => $transaction->object()->amount(),    
+            'amount'            => $transaction->object()->amount(),   
+            'soft_descriptor'   => $transaction->object()->softDescriptor(), 
         ];
 
         if ($transaction->object()->subscriptionID()) {

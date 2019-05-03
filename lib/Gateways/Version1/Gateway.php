@@ -81,6 +81,7 @@ class Gateway extends Gateways\Gateway
 
         if (! empty($transaction->response()->body())) {
             // Transform the response
+            var_dump('BBBBBBBBBBBBBBBBBBB');
             $this->responseV1($transaction->response());
 
             $transaction->response()->rawBody(json_encode($transaction->response()->body()));
@@ -144,11 +145,13 @@ class Gateway extends Gateways\Gateway
     public function auth($transaction)
     {
         $this->requestAuth($transaction);
-
+        // var_dump($transaction);
+        // exit;
         $this->executePayment($transaction);
+        
 
         $this->responseAuth($transaction);
-
+        
         return $transaction->object();
     }
 

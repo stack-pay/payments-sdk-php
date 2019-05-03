@@ -12,6 +12,7 @@ trait HashTransform
             return true;
         }
 
+        // var_dump($response->headers());
         if (! array_key_exists('HashMethod', $response->headers()) ||
             ! array_key_exists('Hash', $response->headers())
         ) {

@@ -12,7 +12,8 @@ trait CreditTransform
             ->setID($body['Transaction'])
             ->setStatus($body['Status'])
             ->setAmount($body['Credit']['Amount'])
-            ->setCurrency($body['Credit']['Currency']);
+            ->setCurrency($body['Credit']['Currency'])
+            ->setSoftDescriptor($body['Credit']['SoftDescriptor']);
         $transaction->object()->createMerchant()->setID($body['Merchant']);
         $transaction->object()->createOrder()->setID($body['Order']);
         $transaction->object()->createCustomer()->setID($body['Credit']['Customer']);

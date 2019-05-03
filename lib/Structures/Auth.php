@@ -11,6 +11,7 @@ class Auth extends Transaction implements Interfaces\Auth
     public $accountHolder;
     public $token;
     public $masterPassTransactionId;
+    public $softDescriptor;
 
     public function type()
     {

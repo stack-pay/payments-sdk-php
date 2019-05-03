@@ -23,6 +23,8 @@ trait ScheduledTransactionTransform
         $transaction->object()->setCurrencyCode($body['data']['currency_code']);
         $transaction->object()->setAmount($body['data']['amount']);
         $transaction->object()->setSubscriptionID($body['data']['subscription_id']);
+        $transaction->object()->setSoftDescriptor($body['data']['soft_descriptor']);
+
 
         $transaction->object()->createPaymentMethod()->setID($body['data']['payment_method']['id'])
             ->createCustomer()->setID($body['data']['payment_method']['customer_id']);
