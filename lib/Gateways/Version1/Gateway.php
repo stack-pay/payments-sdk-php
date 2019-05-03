@@ -80,8 +80,6 @@ class Gateway extends Gateways\Gateway
         $this->responseError($transaction->response());
 
         if (! empty($transaction->response()->body())) {
-            // Transform the response
-            var_dump('BBBBBBBBBBBBBBBBBBB');
             $this->responseV1($transaction->response());
 
             $transaction->response()->rawBody(json_encode($transaction->response()->body()));
