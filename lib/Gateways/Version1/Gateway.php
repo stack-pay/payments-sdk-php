@@ -132,7 +132,7 @@ class Gateway extends Gateways\Gateway
 
     private function executePayment($transaction)
     {
-        $transaction->request()->endpoint($this->paymentsURL);
+        $transaction->request()->endpoint($this->paymentsURL);      
         $transaction->request()->hashKey($transaction->object()->merchant()->hashKey());
 
         $transaction->response()->hashKey($transaction->object()->merchant()->hashKey());
@@ -143,10 +143,7 @@ class Gateway extends Gateways\Gateway
     public function auth($transaction)
     {
         $this->requestAuth($transaction);
-        // var_dump($transaction);
-        // exit;
-        $this->executePayment($transaction);
-        
+        $this->executePayment($transaction);        
 
         $this->responseAuth($transaction);
         

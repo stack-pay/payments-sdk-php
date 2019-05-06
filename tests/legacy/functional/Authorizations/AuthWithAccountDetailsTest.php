@@ -276,22 +276,72 @@ final class AuthWithAccountDetailsTest extends TestCase
 
     public function testBankAccount()
     {
-        $curlProvider = new MockCurlProvider([
-            [
-                'StatusCode' => 200,
-                'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"90d50f4cdfb2688d2eef5e3fad853bd14bb5f6f89fcc562a616633043d95be1c"}},"Body":{"Status":1,"Merchant":4,"Order":557,"Transaction":726,"Payment":{"Customer":534,"PaymentMethod":null,"Amount":10000,"SplitMerchant":2,"SplitAmount":1000,"Currency":"USD","AuthorizationCode":"A11111","AVSCode":"T","CVVResponseCode":"NotPresent"},"PaymentMethod":{"ID":null,"AccountType":"visa","AccountLast4":"1111","ExpirationMonth":1,"ExpirationYear":"2021","BillingAddress":{"AddressLine1":"1234 Windall Lane","AddressLine2":"","City":"Nowhere","State":"HI","Zip":"89765","Country":"USA"}}}}'
-                ,
-                'Headers' => []
-            ]
-        ]);
-
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
             '83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'
         );
 
-        $sdk->setCurlProvider($curlProvider);
+        $merchantHash = 'f72d6a9fab75e16a7219430f2a60d9cbd7f60b304b4c1a8d98d4e54d695b61e8';
+
+        // $curlProvider = new MockCurlProvider([
+        //     [
+        //         'StatusCode' => 200,
+        //         'Body'       =>
+        //             '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":""}},"Body":{"Status":1,"Merchant":4,"Order":557,"Transaction":726,"Payment":{"Customer":534,"PaymentMethod":null,"Amount":10000,"SplitMerchant":2,"SplitAmount":1000,"Currency":"USD","AuthorizationCode":"A11111","AVSCode":"T","CVVResponseCode":"NotPresent","SoftDescriptor":"BSPay - Payment","PaymentMethod":{"ID":null,"AccountType":"visa","AccountLast4":"1111","ExpirationMonth":1,"ExpirationYear":"2021","BillingAddress":{"AddressLine1":"1234 Windall Lane","AddressLine2":"","City":"Nowhere","State":"HI","Zip":"89765","Country":"USA"}}}}'
+        //         ,
+        //         'Headers' => []
+        //     ]
+        // ]);
+
+        $curlBody = [
+            'Status'      => 1,
+            'Merchant'    => 4,
+            'Order'       => 557,
+            'Transaction' => 726,
+            'Payment'     => [
+                'Customer'          => 534,
+                'PaymentMethod'     => null,
+                'Amount'            => 10000,
+                'SplitMerchant'     => 2,
+                'SplitAmount'       => 1000,
+                'Currency'          => 'USD',
+                'AuthorizationCode' => 'A11111',
+                'AVSCode'           => 'T',
+                'CVVResponseCode'   => 'NotPresent',
+                'SoftDescriptor'    => 'BSPAY - Payment',
+            ],
+            'PaymentMethod' => [
+                'ID'              => null,
+                'AccountType'     => 'visa',
+                'AccountLast4'    => '1111',
+                'ExpirationMonth' => 1,
+                'ExpirationYear'  => '2021',
+                'BillingAddress'  => [
+                    'AddressLine1' => '1234 Windall Lane',
+                    'AddressLine2' => '',
+                    'City'         => 'Nowhere',
+                    'State'        => 'HI',
+                    'Zip'          => '89765',
+                    'Country'      => 'USA'
+                ]
+            ]
+        ];
+
+        $respArray = [
+            'Header' => [
+                'Security' => [
+                    'HashMethod' => 'SHA-256',
+                    'Hash'       => hash("sha256",json_encode($curlBody).$merchantHash)
+                ]
+            ],
+            'Body' => $curlBody,
+        ];
+
+        $curlProvider = new MockCurlProvider([[
+            'StatusCode' => 200,
+            'Body'       => json_encode($respArray),
+            'Headers'    => []
+        ]]);
 
         $account = (new Structures\Account())
             ->setType(AccountTypes::CHECKING)
@@ -311,7 +361,7 @@ final class AuthWithAccountDetailsTest extends TestCase
 
         $merchant =(new Structures\Merchant())
             ->setID(4)
-            ->setHashKey('f72d6a9fab75e16a7219430f2a60d9cbd7f60b304b4c1a8d98d4e54d695b61e8');
+            ->setHashKey($merchantHash);
 
         $splitMerchant =(new Structures\Merchant())
             ->setID(2);
@@ -386,6 +436,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                 "Authorization Code" => $auth->authCode(),
                 "AVS Code"           => $auth->avsCode(),
                 "CVV Response Code"  => $auth->cvvResponseCode(),
+                "SoftDescriptor"     => $auth->softDescriptor(),
                 "Merchant" => [
                     "ID" => $auth->merchant()->id(),
                 ],
@@ -439,6 +490,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                                     'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
+                                    'SoftDescriptor'=> 'BSPAY - Payment',
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
@@ -467,7 +519,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'cd96ebcb231a73f7646a15d571e04aad50b77c479a3ce380545587f5053b19ff'
+                                'Hash'       => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)
                             ]
                         ]
                     ],
@@ -476,7 +528,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'cd96ebcb231a73f7646a15d571e04aad50b77c479a3ce380545587f5053b19ff'],
+                        4 => ['Key' => 'Hash',          'Value' => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -558,20 +610,72 @@ final class AuthWithAccountDetailsTest extends TestCase
 
     public function testWithFactory()
     {
-        $curlProvider = new MockCurlProvider([
-            [
-                'StatusCode' => 200,
-                'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"90d50f4cdfb2688d2eef5e3fad853bd14bb5f6f89fcc562a616633043d95be1c"}},"Body":{"Status":1,"Merchant":4,"Order":557,"Transaction":726,"Payment":{"Customer":534,"PaymentMethod":null,"Amount":10000,"SplitMerchant":2,"SplitAmount":1000,"Currency":"USD","AuthorizationCode":"A11111","AVSCode":"T","CVVResponseCode":"NotPresent"},"PaymentMethod":{"ID":null,"AccountType":"visa","AccountLast4":"1111","ExpirationMonth":1,"ExpirationYear":"2021","BillingAddress":{"AddressLine1":"1234 Windall Lane","AddressLine2":"","City":"Nowhere","State":"HI","Zip":"89765","Country":"USA"}}}}'
-                ,
-                'Headers' => []
-            ]
-        ]);
+        // $curlProvider = new MockCurlProvider([
+        //     [
+        //         'StatusCode' => 200,
+        //         'Body'       =>
+        //             '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"90d50f4cdfb2688d2eef5e3fad853bd14bb5f6f89fcc562a616633043d95be1c"}},"Body":{"Status":1,"Merchant":4,"Order":557,"Transaction":726,"Payment":{"Customer":534,"PaymentMethod":null,"Amount":10000,"SplitMerchant":2,"SplitAmount":1000,"Currency":"USD","AuthorizationCode":"A11111","AVSCode":"T","CVVResponseCode":"NotPresent"},"PaymentMethod":{"ID":null,"AccountType":"visa","AccountLast4":"1111","ExpirationMonth":1,"ExpirationYear":"2021","BillingAddress":{"AddressLine1":"1234 Windall Lane","AddressLine2":"","City":"Nowhere","State":"HI","Zip":"89765","Country":"USA"}}}}'
+        //         ,
+        //         'Headers' => []
+        //     ]
+        // ]);
 
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
             '83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'
         );
+
+        $merchantHash = 'f72d6a9fab75e16a7219430f2a60d9cbd7f60b304b4c1a8d98d4e54d695b61e8';
+
+        $curlBody = [
+            'Status'      => 1,
+            'Merchant'    => 4,
+            'Order'       => 557,
+            'Transaction' => 726,
+            'Payment'     => [
+                'Customer'          => 534,
+                'PaymentMethod'     => null,
+                'Amount'            => 10000,
+                'SplitMerchant'     => 2,
+                'SplitAmount'       => 1000,
+                'Currency'          => 'USD',
+                'AuthorizationCode' => 'A11111',
+                'AVSCode'           => 'T',
+                'CVVResponseCode'   => 'NotPresent',
+                'SoftDescriptor'    => 'BSPAY - Payment',
+            ],
+            'PaymentMethod' => [
+                'ID'              => null,
+                'AccountType'     => 'visa',
+                'AccountLast4'    => '1111',
+                'ExpirationMonth' => '1',
+                'ExpirationYear'  => '2021',
+                'BillingAddress'  => [
+                    'AddressLine1' => '1234 Windall Lane',
+                    'AddressLine2' => '',
+                    'City'         => 'Nowhere',
+                    'State'        => 'HI',
+                    'Zip'          => '89765',
+                    'Country'      => 'USA'
+                ]
+            ]
+        ];
+
+        $respArray = [
+            'Header' => [
+                'Security' => [
+                    'HashMethod' => 'SHA-256',
+                    'Hash'       => hash("sha256",json_encode($curlBody).$merchantHash)
+                ]
+            ],
+            'Body' => $curlBody,
+        ];
+
+        $curlProvider = new MockCurlProvider([[
+            'StatusCode' => 200,
+            'Body'       => json_encode($respArray),
+            'Headers'    => []
+        ]]);
 
         $sdk->setCurlProvider($curlProvider);
 
@@ -611,7 +715,8 @@ final class AuthWithAccountDetailsTest extends TestCase
             10000,        // Amount
             null,
             $split,
-            Currency::USD
+            Currency::USD,
+            'BSPAY - Payment'
         );
 
         $auth = $sdk->processTransaction($transaction);
@@ -625,6 +730,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                 "Authorization Code" => "A11111",
                 "AVS Code"           => "T",
                 "CVV Response Code"  => "NotPresent",
+                "SoftDescriptor"     => "BSPAY - Payment",
                 "Merchant" => [
                     "ID" => 4,
                 ],
@@ -668,6 +774,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                 "Authorization Code" => $auth->authCode(),
                 "AVS Code"           => $auth->avsCode(),
                 "CVV Response Code"  => $auth->cvvResponseCode(),
+                "SoftDescriptor"    => "BSPAY - Payment",
                 "Merchant" => [
                     "ID" => $auth->merchant()->id(),
                 ],
@@ -723,6 +830,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                                     'ExternalId'    => null,
                                     'Comment1'      => null,
                                     'Comment2'      => null,
+                                    'SoftDescriptor'=> 'BSPAY - Payment',
                                     'SplitAmount'   => 1000,
                                     'SplitMerchant' => 2,
                                 ],
@@ -752,7 +860,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '3f9f12996836c9a393a5f2580801ea5240459852fd82871609ba9033d4df1358'
+                                'Hash'       => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)
                             ]
                         ]
                     ],
@@ -761,7 +869,7 @@ final class AuthWithAccountDetailsTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '3f9f12996836c9a393a5f2580801ea5240459852fd82871609ba9033d4df1358'],
+                        4 => ['Key' => 'Hash',          'Value' => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
