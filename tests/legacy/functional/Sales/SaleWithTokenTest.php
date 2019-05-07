@@ -255,13 +255,9 @@ final class SaleWithTokenTest extends TestCase
             'error_message' => 'Token is invalid or expired.'
         ];
 
-        $respArray = [
-            'Body' => $curlBody,
-        ];
-
         $curlProvider = new MockCurlProvider([[
             'StatusCode' => 200,
-            'Body'       => json_encode($respArray),
+            'Body'       => json_encode($curlBody),
             'Headers'    => []
         ]]);
 
@@ -273,7 +269,7 @@ final class SaleWithTokenTest extends TestCase
 
             $merchant = (new Structures\Merchant())
                 ->setID(4)
-                ->setHashKey('f72d6a9fab75e16a7219430f2a60d9cbd7f60b304b4c1a8d98d4e54d695b61e8');
+                ->setHashKey($merchantHash);
 
             $splitMerchant = (new Structures\Merchant())
                 ->setID(2);

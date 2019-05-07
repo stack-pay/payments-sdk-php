@@ -38,7 +38,6 @@ final class AuthWithMasterPassTest extends TestCase
                 'AuthorizationCode' => 'A11111',
                 'AVSCode'           => 'T',
                 'CVVResponseCode'   => 'NotPresent',
-                'SoftDescriptor'    => 'BSPAY - Payment',
             ],
             'PaymentMethod' => [
                 'ID'              => null,
@@ -93,8 +92,7 @@ final class AuthWithMasterPassTest extends TestCase
             null,
             $split,
             null,         // Idempotency Key
-            Currency::USD,
-            'BSPAY - Payment'
+            Currency::USD
         );
 
         $this->assertEquals(
@@ -106,7 +104,6 @@ final class AuthWithMasterPassTest extends TestCase
                 "Authorization Code"    => "A11111",
                 "AVS Code"              => "T",
                 "CVV Response Code"     => "NotPresent",
-                "SoftDescriptor"        => "BSPAY - Payment",
                 "Merchant" => [
                     "ID" => 4,
                 ],
@@ -150,7 +147,6 @@ final class AuthWithMasterPassTest extends TestCase
                 "Authorization Code"    => $auth->authCode(),
                 "AVS Code"              => $auth->avsCode(),
                 "CVV Response Code"     => $auth->cvvResponseCode(),
-                "SoftDescriptor"        => $auth->softDescriptor(),
                 "Merchant"              => [
                     "ID" => $auth->merchant()->id(),
                 ],
@@ -206,9 +202,9 @@ final class AuthWithMasterPassTest extends TestCase
                                     'ExternalId'     => null,
                                     'Comment1'       => null,
                                     'Comment2'       => null,
-                                    'SoftDescriptor' => 'BSPAY - Payment',
                                     'SplitAmount'    => 1000,
                                     'SplitMerchant'  => 2,
+                                    'SoftDescriptor' => null,
                                 ],
                                 'MasterPass' => [
                                     'TransactionId' => 'master-pass-transaction-id-12345',
@@ -239,19 +235,9 @@ final class AuthWithMasterPassTest extends TestCase
             $curlProvider->calls
         );
     }
-
+    
     public function testInvalidMasterPassTransactionId()
     {
-        // $curlProvider = new Test\Mocks\Providers\MockCurlProvider([
-        //     [
-        //         'StatusCode' => 502,
-        //         'Body'       =>
-        //             '{"error_code":800,"error_message":"Unable to retrieve payment data from the MasterPass server."}'
-        //         ,
-        //         'Headers' => []
-        //     ]
-        // ]);
-
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
             '83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'
@@ -264,13 +250,9 @@ final class AuthWithMasterPassTest extends TestCase
             'error_message' => 'Unable to retrieve payment data from the MasterPass server.',
         ];
 
-        $respArray = [
-            'Body' => $curlBody,
-        ];
-
-        $curlProvider = new MockCurlProvider([[
+        $curlProvider = new Test\Mocks\Providers\MockCurlProvider([[
             'StatusCode' => 502,
-            'Body'       => json_encode($respArray),
+            'Body'       => json_encode($curlBody),
             'Headers'    => []
         ]]);
 
@@ -295,8 +277,7 @@ final class AuthWithMasterPassTest extends TestCase
                 null,
                 $split,
                 null,         // Idempotency Key
-                Currency::USD,
-                'BSPAY - Payment'
+                Currency::USD
             );
         } catch (Exceptions\RequestErrorException $e) {
             $this->assertEquals('Unable to retrieve payment data from the MasterPass server.', $e->getMessage());
@@ -323,9 +304,9 @@ final class AuthWithMasterPassTest extends TestCase
                                     'ExternalId'     => null,
                                     'Comment1'       => null,
                                     'Comment2'       => null,
-                                    'SoftDescriptor' => 'BSPAY - Payment',
                                     'SplitAmount'    => 1000,
                                     'SplitMerchant'  => 2,
+                                    'SoftDescriptor' => null
                                 ],
                                 'MasterPass' => [
                                     'TransactionId' => 'master-pass-transaction-id-12345',

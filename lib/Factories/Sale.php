@@ -20,7 +20,7 @@ class Sale
             ->setMerchant($merchant)
             ->setAmount($amount)
             ->setSplit($split)
-            ->setSoftDescription($softDescriptor);
+            ->setSoftDescriptor($softDescriptor);
 
         if ($currency) {
             $sale->setCurrency($currency);

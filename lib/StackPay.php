@@ -197,8 +197,7 @@ class StackPay
         Interfaces\Customer $customer = null,
         Interfaces\Split $split = null,
         $idempotencyKey = null,
-        $currency = null,
-        $softDescriptor = null
+        $currency = null
     ) {
         return $this->auth(
             (new Structures\Auth())
@@ -207,8 +206,7 @@ class StackPay
                ->setAmount($amount)
                ->setCustomer($customer)
                ->setCurrency($currency ?: self::$gateway->currency())
-               ->setSplit($split)
-               ->setSoftDescriptor($softDescriptor),
+               ->setSplit($split),
             $idempotencyKey
         );
     }
