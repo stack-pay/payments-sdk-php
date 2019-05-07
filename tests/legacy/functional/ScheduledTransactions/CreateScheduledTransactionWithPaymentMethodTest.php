@@ -32,7 +32,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
         $sdk->setCurlProvider($curlProvider);
 
         $scheduledAt = new DateTime('2018-01-10 12:00');
-        $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
+        $scheduledAt->setTimezone(new DateTimeZone('EST'));
 
         $merchant = (new Structures\Merchant())
             ->setID(4)
@@ -63,7 +63,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
             [
                 'merchant_id'       => 4,
                 'scheduled_at'      => '2018-01-10',
-                'timezone'          => 'America/New_York',
+                'timezone'          => 'EST',
                 'currency_code'     => 'USD',
                 'amount'            => 10000, //amount
                 'split_amount'      => 1000,
@@ -99,7 +99,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                             'merchant_id'       => 4,
                             'external_id'       => null,
                             'scheduled_at'      => '2018-01-10',
-                            'timezone'          => 'America/New_York',
+                            'timezone'          => 'EST',
                             'currency_code'     => 'USD',
                             'amount'            => 10000, //amount
                             'split_amount'      => 1000,
@@ -155,7 +155,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
         $sdk->setCurlProvider($curlProvider);
 
         $scheduledAt = new DateTime('2018-01-10 12:00');
-        $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
+        $scheduledAt->setTimezone(new DateTimeZone('EST'));
 
         $merchant = (new Structures\Merchant())
             ->setID(4)
@@ -199,7 +199,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                             'merchant_id'       => 4,
                             'external_id'       => null,
                             'scheduled_at'      => '2018-01-10',
-                            'timezone'          => 'America/New_York',
+                            'timezone'          => 'EST',
                             'currency_code'     => 'USD',
                             'amount'            => 10000, //amount
                             'split_amount'      => 1000,
@@ -254,7 +254,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
         $sdk->setCurlProvider($curlProvider);
 
         $scheduledAt = new DateTime('2018-01-10 12:00');
-        $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
+        $scheduledAt->setTimezone(new DateTimeZone('EST'));
 
         $merchant = (new Structures\Merchant())
             ->setID(4)
@@ -285,7 +285,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
             [
                 'merchant_id'       => 4,
                 'scheduled_at'      => '2018-01-10',
-                'timezone'          => 'America/New_York',
+                'timezone'          => 'EST',
                 'currency_code'     => 'USD',
                 'amount'            => 10000, //amount
                 'split_amount'      => 1000,
@@ -321,7 +321,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                             'merchant_id'       => 4,
                             'external_id'       => null,
                             'scheduled_at'      => '2018-01-10',
-                            'timezone'          => 'America/New_York',
+                            'timezone'          => 'EST',
                             'currency_code'     => 'USD',
                             'amount'            => 10000, //amount
                             'split_amount'      => 1000,
