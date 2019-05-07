@@ -16,15 +16,6 @@ final class SaleWithAccountDetailsTest extends TestCase
 {
     public function testWithCreditCard()
     {
-        // $curlProvider = new MockCurlProvider([
-        //     [
-        //         'StatusCode' => 200,
-        //         'Body'       =>
-        //             '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"ace77eba288f9f948a97d802b5cf7115f1127e2d77c0bf79c34d2ff33ebbfe58"}},"Body":{"Status":1,"Merchant":4,"Order":560,"Transaction":729,"Payment":{"Customer":535,"PaymentMethod":null,"Amount":10000,"SplitMerchant":2,"SplitAmount":1000,"Currency":"USD","AuthorizationCode":"A11111","AVSCode":"T","CVVResponseCode":"NotPresent"},"PaymentMethod":{"ID":null,"AccountType":"visa","AccountLast4":"1111","ExpirationMonth":1,"ExpirationYear":"2021","BillingAddress":{"AddressLine1":"1234 Windall Lane","AddressLine2":"","City":"Nowhere","State":"HI","Zip":"89765","Country":"USA"}}}}'
-        //         ,
-        //         'Headers' => []
-        //     ]
-        // ]);
 
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
@@ -282,15 +273,6 @@ final class SaleWithAccountDetailsTest extends TestCase
 
     public function testWithBankAccount()
     {
-        // $curlProvider = new MockCurlProvider([
-        //     [
-        //         'StatusCode' => 200,
-        //         'Body'       =>
-        //             '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"ace77eba288f9f948a97d802b5cf7115f1127e2d77c0bf79c34d2ff33ebbfe58"}},"Body":{"Status":1,"Merchant":4,"Order":560,"Transaction":729,"Payment":{"Customer":535,"PaymentMethod":null,"Amount":10000,"SplitMerchant":2,"SplitAmount":1000,"Currency":"USD","AuthorizationCode":"A11111","AVSCode":"T","CVVResponseCode":"NotPresent"},"PaymentMethod":{"ID":null,"AccountType":"visa","AccountLast4":"1111","ExpirationMonth":1,"ExpirationYear":"2021","BillingAddress":{"AddressLine1":"1234 Windall Lane","AddressLine2":"","City":"Nowhere","State":"HI","Zip":"89765","Country":"USA"}}}}'
-        //         ,
-        //         'Headers' => []
-        //     ]
-        // ]);
 
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
@@ -615,15 +597,6 @@ final class SaleWithAccountDetailsTest extends TestCase
 
     public function testWithFactory()
     {
-        // $curlProvider = new MockCurlProvider([
-        //     [
-        //         'StatusCode' => 200,
-        //         'Body'       =>
-        //             '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"ace77eba288f9f948a97d802b5cf7115f1127e2d77c0bf79c34d2ff33ebbfe58"}},"Body":{"Status":1,"Merchant":4,"Order":560,"Transaction":729,"Payment":{"Customer":535,"PaymentMethod":null,"Amount":10000,"SplitMerchant":2,"SplitAmount":1000,"Currency":"USD","AuthorizationCode":"A11111","AVSCode":"T","CVVResponseCode":"NotPresent"},"PaymentMethod":{"ID":null,"AccountType":"visa","AccountLast4":"1111","ExpirationMonth":1,"ExpirationYear":"2021","BillingAddress":{"AddressLine1":"1234 Windall Lane","AddressLine2":"","City":"Nowhere","State":"HI","Zip":"89765","Country":"USA"}}}}'
-        //         ,
-        //         'Headers' => []
-        //     ]
-        // ]);
 
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',

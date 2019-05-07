@@ -243,15 +243,6 @@ final class AuthWithTokenTest extends TestCase
 
     public function testInvalidToken()
     {
-        // $curlProvider = new Test\Mocks\Providers\MockCurlProvider([
-        //     [
-        //         'StatusCode' => 200,
-        //         'Body'       =>
-        //             '{"error_code":404,"error_message":"Token is invalid or expired."}'
-        //         ,
-        //         'Headers' => []
-        //     ]
-        // ]);
 
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
