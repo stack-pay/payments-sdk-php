@@ -16,11 +16,11 @@ class ScheduledTransactionRequestUnitTest extends UnitTestCase
         $this->scheduledTransaction                         = new Structures\ScheduledTransaction;
         $this->scheduledTransaction->id                     = 12345;
         $this->scheduledTransaction->merchant               = $this->merchant;
-        $this->scheduledTransaction->scheduledAt            = new DateTime('2016-01-01', new DateTimeZone('America/New_York'));
+        $this->scheduledTransaction->scheduledAt            = new DateTime('2016-01-01', new DateTimeZone('EST'));
 
         $this->paginatedScheduledTransaction                = new Structures\PaginatedScheduledTransactions;
-        $this->paginatedScheduledTransaction->beforeDate    = new DateTime('2016-01-01', new DateTimeZone('America/New_York'));
-        $this->paginatedScheduledTransaction->afterDate     = new DateTime('2016-01-01', new DateTimeZone('America/New_York'));
+        $this->paginatedScheduledTransaction->beforeDate    = new DateTime('2016-01-01', new DateTimeZone('EST'));
+        $this->paginatedScheduledTransaction->afterDate     = new DateTime('2016-01-01', new DateTimeZone('EST'));
 
 
         $this->request = new ScheduledTransactionRequest($this->scheduledTransaction);
