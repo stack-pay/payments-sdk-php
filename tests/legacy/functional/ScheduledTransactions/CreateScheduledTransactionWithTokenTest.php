@@ -182,15 +182,6 @@ final class CreateScheduledTransactionWithTokenTest extends TestCase
 
     public function testWithPaymentTokenFactory()
     {
-        // $curlProvider = new MockCurlProvider([
-        //     [
-        //         'StatusCode' => 200,
-        //         'Body'       =>
-        //             '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"d1fe5529c88d33eef7495162aa78f1af80db1ecad77be81c36fe1e13790e4f06"}},"Body":{"data":{"id":206,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":25000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":392,"customer_id":400,"address_1":"123 Thumble Lane","city":"New York","zip":"12345","address_2":"Apt. 765","state":"NY","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"1111","expire_month":8,"expire_year":2019}},"meta":{"status":1}}}'
-        //         ,
-        //         'Headers' => []
-        //     ]
-        // ]);
 
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
@@ -273,7 +264,8 @@ final class CreateScheduledTransactionWithTokenTest extends TestCase
             10000,          // Amount
             $scheduledAt,
             Currency::USD,
-            $split
+            $split,
+            'BSPAY - Scheduled Payment'
         );
 
         $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
@@ -287,6 +279,7 @@ final class CreateScheduledTransactionWithTokenTest extends TestCase
                 'amount'            => 10000, //amount
                 'split_amount'      => 1000,
                 'split_merchant_id' => 2,
+                'soft_descriptor'   => 'BSPAY - Scheduled Payment',
                 'payment_method'    => [
                     'method'    => 'token',
                     'token'     => $token->token()
@@ -300,6 +293,7 @@ final class CreateScheduledTransactionWithTokenTest extends TestCase
                 'amount'            => $scheduledTransaction->amount(),
                 'split_amount'      => $scheduledTransaction->split()->amount(),
                 'split_merchant_id' => $scheduledTransaction->split()->merchant()->id(),
+                'soft_descriptor'   => $scheduledTransaction->softDescriptor(),
                 'payment_method'    => [
                     'method'    => 'token',
                     'token'     => $scheduledTransaction->token()->token()
@@ -323,6 +317,7 @@ final class CreateScheduledTransactionWithTokenTest extends TestCase
                             'amount'            => 10000, //amount
                             'split_amount'      => 1000,
                             'split_merchant_id' => 2,
+                            'soft_descriptor'   => 'BSPAY - Scheduled Payment',
                             'payment_method'    => [
                                 'method'    => 'token',
                                 'token'     => $token->token(),
