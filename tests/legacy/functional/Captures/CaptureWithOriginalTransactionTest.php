@@ -14,7 +14,7 @@ use Test\Mocks\Providers\MockCurlProvider;
 
 final class CaptureWithOriginalTransactionTest extends TestCase
 {
-    public function testSucessfulCase()
+    public function testSuccessfulCase()
     {
         $curlProvider = new MockCurlProvider([
             [

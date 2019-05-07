@@ -13,22 +13,65 @@ use Test\Mocks\Providers\MockCurlProvider;
 
 final class AuthWithPaymentMethodTest extends TestCase
 {
-    public function testSucessfulCase()
+    public function testSuccessfulCase()
     {
-        $curlProvider = new MockCurlProvider([
-            [
-                'StatusCode' => 200,
-                'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"8c61e61a55885f476cbf8b0e38aabc574f7d95995278cf2a87ae424272de5c16"}},"Body":{"Status":1,"Merchant":4,"Order":553,"Transaction":722,"Payment":{"Customer":3,"PaymentMethod":3,"Amount":10000,"SplitMerchant":2,"SplitAmount":1000,"Currency":"USD","AuthorizationCode":"A11111","AVSCode":"T","CVVResponseCode":"NotPresent"},"PaymentMethod":{"ID":3,"AccountType":"amex","AccountLast4":"4121","ExpirationMonth":7,"ExpirationYear":2027,"BillingAddress":{"AddressLine1":"69976 Mills Cliffs","AddressLine2":"Suite 479","City":"Feestfort","State":"VT","Zip":"04059-2412","Country":"USA"}}}}'
-                ,
-                'Headers' => []
-            ]
-        ]);
 
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
             '83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'
         );
+
+        $merchantHash = 'f72d6a9fab75e16a7219430f2a60d9cbd7f60b304b4c1a8d98d4e54d695b61e8';
+
+        $curlBody = [
+            'Status'      => 1,
+            'Merchant'    => 4,
+            'Order'       => 553,
+            'Transaction' => 722,
+            'Payment'     => [
+                'Customer'          => 3,
+                'PaymentMethod'     => null,
+                'Amount'            => 10000,
+                'SplitMerchant'     => 2,
+                'SplitAmount'       => 1000,
+                'Currency'          => 'USD',
+                'AuthorizationCode' => 'A11111',
+                'AVSCode'           => 'T',
+                'CVVResponseCode'   => 'NotPresent',
+                'SoftDescriptor'    => 'BSPAY - Payment',
+            ],
+            'PaymentMethod' => [
+                'ID'              => 3,
+                'AccountType'     => 'amex',
+                'AccountLast4'    => '4121',
+                'ExpirationMonth' => '7',
+                'ExpirationYear'  => '2027',
+                'BillingAddress'  => [
+                    'AddressLine1' => '69976 Mills Cliffs',
+                    'AddressLine2' => 'Suite 479',
+                    'City'         => 'Feestfort',
+                    'State'        => 'VT',
+                    'Zip'          => '04059-2412',
+                    'Country'      => 'USA'
+                ]
+            ]
+        ];
+
+        $respArray = [
+            'Header' => [
+                'Security' => [
+                    'HashMethod' => 'SHA-256',
+                    'Hash'       => hash("sha256",json_encode($curlBody).$merchantHash)
+                ]
+            ],
+            'Body' => $curlBody,
+        ];
+
+        $curlProvider = new MockCurlProvider([[
+            'StatusCode' => 200,
+            'Body'       => json_encode($respArray),
+            'Headers'    => []
+        ]]);
 
         $sdk->setCurlProvider($curlProvider);
 
@@ -37,7 +80,7 @@ final class AuthWithPaymentMethodTest extends TestCase
 
         $merchant =(new Structures\Merchant())
             ->setID(4)
-            ->setHashKey('f72d6a9fab75e16a7219430f2a60d9cbd7f60b304b4c1a8d98d4e54d695b61e8');
+            ->setHashKey($merchantHash);
 
         $splitMerchant =(new Structures\Merchant())
             ->setID(2);
@@ -52,7 +95,8 @@ final class AuthWithPaymentMethodTest extends TestCase
             10000,        // Amount
             $split,
             null,         // Idempotency Key
-            Currency::USD
+            Currency::USD,
+            'BSPAY - Payment'
         );
 
         $this->assertEquals(
@@ -64,6 +108,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                 "Authorization Code" => "A11111",
                 "AVS Code"           => "T",
                 "CVV Response Code"  => "NotPresent",
+                "SoftDescriptor"     => "BSPAY - Payment",
                 "Merchant" => [
                     "ID" => 4,
                 ],
@@ -107,6 +152,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                 "Authorization Code" => $auth->authCode(),
                 "AVS Code"           => $auth->avsCode(),
                 "CVV Response Code"  => $auth->cvvResponseCode(),
+                "SoftDescriptor"     => $auth->softDescriptor(),
                 "Merchant" => [
                     "ID" => $auth->merchant()->id(),
                 ],
@@ -156,17 +202,18 @@ final class AuthWithPaymentMethodTest extends TestCase
                             'Merchant' => 4,
                             'Order' => [
                                 'Transaction' => [
-                                    'Type'          => 'Auth',
-                                    'Currency'      => 'USD',
-                                    'Amount'        => 10000,
-                                    'InvoiceNumber' => null,
-                                    'ExternalId'    => null,
-                                    'Comment1'      => null,
-                                    'Comment2'      => null,
-                                    'SplitAmount'   => 1000,
-                                    'SplitMerchant' => 2,
+                                    'Type'           => 'Auth',
+                                    'Currency'       => 'USD',
+                                    'Amount'         => 10000,
+                                    'InvoiceNumber'  => null,
+                                    'ExternalId'     => null,
+                                    'Comment1'       => null,
+                                    'Comment2'       => null,
+                                    'SoftDescriptor' => 'BSPAY - Payment',
+                                    'SplitAmount'    => 1000,
+                                    'SplitMerchant'  => 2,
                                 ],
-                                'PaymentMethod' => '3'
+                                'PaymentMethod' => 3
                             ]
                         ],
                         'Header' => [
@@ -175,7 +222,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '286f93cb4cee16eebc952aa8e589ed5e07202d57eceb5f9730cbacf658976fcd'
+                                'Hash'       => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)
                             ]
                         ]
                     ],
@@ -184,7 +231,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '286f93cb4cee16eebc952aa8e589ed5e07202d57eceb5f9730cbacf658976fcd'],
+                        4 => ['Key' => 'Hash',          'Value' => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -196,20 +243,72 @@ final class AuthWithPaymentMethodTest extends TestCase
 
     public function testWithFactory()
     {
-        $curlProvider = new MockCurlProvider([
-            [
-                'StatusCode' => 200,
-                'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"8c61e61a55885f476cbf8b0e38aabc574f7d95995278cf2a87ae424272de5c16"}},"Body":{"Status":1,"Merchant":4,"Order":553,"Transaction":722,"Payment":{"Customer":3,"PaymentMethod":3,"Amount":10000,"SplitMerchant":2,"SplitAmount":1000,"Currency":"USD","AuthorizationCode":"A11111","AVSCode":"T","CVVResponseCode":"NotPresent"},"PaymentMethod":{"ID":3,"AccountType":"amex","AccountLast4":"4121","ExpirationMonth":7,"ExpirationYear":2027,"BillingAddress":{"AddressLine1":"69976 Mills Cliffs","AddressLine2":"Suite 479","City":"Feestfort","State":"VT","Zip":"04059-2412","Country":"USA"}}}}'
-                ,
-                'Headers' => []
-            ]
-        ]);
+        // $curlProvider = new MockCurlProvider([
+        //     [
+        //         'StatusCode' => 200,
+        //         'Body'       =>
+        //             '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"8c61e61a55885f476cbf8b0e38aabc574f7d95995278cf2a87ae424272de5c16"}},"Body":{"Status":1,"Merchant":4,"Order":553,"Transaction":722,"Payment":{"Customer":3,"PaymentMethod":3,"Amount":10000,"SplitMerchant":2,"SplitAmount":1000,"Currency":"USD","AuthorizationCode":"A11111","AVSCode":"T","CVVResponseCode":"NotPresent"},"PaymentMethod":{"ID":3,"AccountType":"amex","AccountLast4":"4121","ExpirationMonth":7,"ExpirationYear":2027,"BillingAddress":{"AddressLine1":"69976 Mills Cliffs","AddressLine2":"Suite 479","City":"Feestfort","State":"VT","Zip":"04059-2412","Country":"USA"}}}}'
+        //         ,
+        //         'Headers' => []
+        //     ]
+        // ]);
 
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
             '83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'
         );
+
+        $merchantHash = 'f72d6a9fab75e16a7219430f2a60d9cbd7f60b304b4c1a8d98d4e54d695b61e8';
+
+        $curlBody = [
+            'Status'      => 1,
+            'Merchant'    => 4,
+            'Order'       => 553,
+            'Transaction' => 722,
+            'Payment'     => [
+                'Customer'          => 3,
+                'PaymentMethod'     => null,
+                'Amount'            => 10000,
+                'SplitMerchant'     => 2,
+                'SplitAmount'       => 1000,
+                'Currency'          => 'USD',
+                'AuthorizationCode' => 'A11111',
+                'AVSCode'           => 'T',
+                'CVVResponseCode'   => 'NotPresent',
+                'SoftDescriptor'    => 'BSPAY - Payment',
+            ],
+            'PaymentMethod' => [
+                'ID'              => 3,
+                'AccountType'     => 'amex',
+                'AccountLast4'    => '4121',
+                'ExpirationMonth' => '7',
+                'ExpirationYear'  => '2027',
+                'BillingAddress'  => [
+                    'AddressLine1' => '69976 Mills Cliffs',
+                    'AddressLine2' => 'Suite 479',
+                    'City'         => 'Feestfort',
+                    'State'        => 'VT',
+                    'Zip'          => '04059-2412',
+                    'Country'      => 'USA'
+                ]
+            ]
+        ];
+
+        $respArray = [
+            'Header' => [
+                'Security' => [
+                    'HashMethod' => 'SHA-256',
+                    'Hash'       => hash("sha256",json_encode($curlBody).$merchantHash)
+                ]
+            ],
+            'Body' => $curlBody,
+        ];
+
+        $curlProvider = new MockCurlProvider([[
+            'StatusCode' => 200,
+            'Body'       => json_encode($respArray),
+            'Headers'    => []
+        ]]);
 
         $sdk->setCurlProvider($curlProvider);
 
@@ -232,7 +331,8 @@ final class AuthWithPaymentMethodTest extends TestCase
             $merchant,
             10000,        // Amount
             $split,
-            Currency::USD
+            Currency::USD,
+            'BSPAY - Payment'
         );
 
         $auth = $sdk->processTransaction($transaction);
@@ -246,6 +346,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                 "Authorization Code" => "A11111",
                 "AVS Code"           => "T",
                 "CVV Response Code"  => "NotPresent",
+                "SoftDescriptor"     => "BSPAY - Payment",
                 "Merchant" => [
                     "ID" => 4,
                 ],
@@ -289,6 +390,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                 "Authorization Code" => $auth->authCode(),
                 "AVS Code"           => $auth->avsCode(),
                 "CVV Response Code"  => $auth->cvvResponseCode(),
+                "SoftDescriptor"     => $auth->softDescriptor(),
                 "Merchant" => [
                     "ID" => $auth->merchant()->id(),
                 ],
@@ -337,15 +439,16 @@ final class AuthWithPaymentMethodTest extends TestCase
                             'Merchant' => 4,
                             'Order' => [
                                 'Transaction' => [
-                                    'Type'          => 'Auth',
-                                    'Currency'      => 'USD',
-                                    'Amount'        => 10000,
-                                    'InvoiceNumber' => null,
-                                    'ExternalId'    => null,
-                                    'Comment1'      => null,
-                                    'Comment2'      => null,
-                                    'SplitAmount'   => 1000,
-                                    'SplitMerchant' => 2,
+                                    'Type'           => 'Auth',
+                                    'Currency'       => 'USD',
+                                    'Amount'         => 10000,
+                                    'InvoiceNumber'  => null,
+                                    'ExternalId'     => null,
+                                    'Comment1'       => null,
+                                    'Comment2'       => null,
+                                    'SoftDescriptor' => 'BSPAY - Payment',
+                                    'SplitAmount'    => 1000,
+                                    'SplitMerchant'  => 2,
                                 ],
                                 'PaymentMethod' => '3'
                             ]
@@ -356,7 +459,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '286f93cb4cee16eebc952aa8e589ed5e07202d57eceb5f9730cbacf658976fcd'
+                                'Hash'       => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)
                             ]
                         ]
                     ],
@@ -365,7 +468,7 @@ final class AuthWithPaymentMethodTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '286f93cb4cee16eebc952aa8e589ed5e07202d57eceb5f9730cbacf658976fcd'],
+                        4 => ['Key' => 'Hash',          'Value' => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]

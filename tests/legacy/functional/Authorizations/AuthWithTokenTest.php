@@ -13,22 +13,65 @@ use Test\Mocks\Providers\MockCurlProvider;
 
 final class AuthWithTokenTest extends TestCase
 {
-    public function testSucessfulCase()
+    public function testSuccessfulCase()
     {
-        $curlProvider = new MockCurlProvider([
-            [
-                'StatusCode' => 200,
-                'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"082630efe9ced4464736e9c421734ffc105baa92710fb4e2b18d463f46c55135"}},"Body":{"Status":1,"Merchant":4,"Order":552,"Transaction":721,"Payment":{"Customer":529,"PaymentMethod":null,"Amount":10000,"SplitMerchant":2,"SplitAmount":1000,"Currency":"USD","AuthorizationCode":"A11111","AVSCode":"T","CVVResponseCode":"NotPresent"},"PaymentMethod":{"ID":null,"AccountType":"visa","AccountLast4":"1111","ExpirationMonth":8,"ExpirationYear":2018,"BillingAddress":{"AddressLine1":"8100 SW Nyberg Rd","AddressLine2":"Ste 450","City":"Not Real City","State":"OK","Zip":"87609","Country":"USA"}}}}'
-                ,
-                'Headers' => []
-            ]
-        ]);
 
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
             '83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'
         );
+
+        $merchantHash = 'f72d6a9fab75e16a7219430f2a60d9cbd7f60b304b4c1a8d98d4e54d695b61e8';
+
+        $curlBody = [
+            'Status'      => 1,
+            'Merchant'    => 4,
+            'Order'       => 552,
+            'Transaction' => 721,
+            'Payment'     => [
+                'Customer'          => 529,
+                'PaymentMethod'     => null,
+                'Amount'            => 10000,
+                'SplitMerchant'     => 2,
+                'SplitAmount'       => 1000,
+                'Currency'          => 'USD',
+                'AuthorizationCode' => 'A11111',
+                'AVSCode'           => 'T',
+                'CVVResponseCode'   => 'NotPresent',
+                'SoftDescriptor'    => 'BSPAY - Payment',
+            ],
+            'PaymentMethod' => [
+                'ID'              => null,
+                'AccountType'     => 'visa',
+                'AccountLast4'    => '1111',
+                'ExpirationMonth' => '8',
+                'ExpirationYear'  => '2018',
+                'BillingAddress'  => [
+                    'AddressLine1' => '8100 SW Nyberg Rd',
+                    'AddressLine2' => 'Ste 450',
+                    'City'         => 'Not Real City',
+                    'State'        => 'OK',
+                    'Zip'          => '87609',
+                    'Country'      => 'USA'
+                ]
+            ]
+        ];
+
+        $respArray = [
+            'Header' => [
+                'Security' => [
+                    'HashMethod' => 'SHA-256',
+                    'Hash'       => hash("sha256",json_encode($curlBody).$merchantHash)
+                ]
+            ],
+            'Body' => $curlBody,
+        ];
+
+        $curlProvider = new MockCurlProvider([[
+            'StatusCode' => 200,
+            'Body'       => json_encode($respArray),
+            'Headers'    => []
+        ]]);
 
         $sdk->setCurlProvider($curlProvider);
 
@@ -37,7 +80,7 @@ final class AuthWithTokenTest extends TestCase
 
         $merchant =(new Structures\Merchant())
             ->setID(4)
-            ->setHashKey('f72d6a9fab75e16a7219430f2a60d9cbd7f60b304b4c1a8d98d4e54d695b61e8');
+            ->setHashKey($merchantHash);
 
         $splitMerchant =(new Structures\Merchant())
             ->setID(2);
@@ -53,7 +96,8 @@ final class AuthWithTokenTest extends TestCase
             null,
             $split,
             null,         // Idempotency Key
-            Currency::USD
+            Currency::USD,
+            'BSPAY - Payment'
         );
 
         $this->assertEquals(
@@ -65,6 +109,7 @@ final class AuthWithTokenTest extends TestCase
                 "Authorization Code"    => "A11111",
                 "AVS Code"              => "T",
                 "CVV Response Code"     => "NotPresent",
+                "SoftDescriptor"        => "BSPAY - Payment",
                 "Merchant" => [
                     "ID" => 4,
                 ],
@@ -108,6 +153,7 @@ final class AuthWithTokenTest extends TestCase
                 "Authorization Code"    => $auth->authCode(),
                 "AVS Code"              => $auth->avsCode(),
                 "CVV Response Code"     => $auth->cvvResponseCode(),
+                "SoftDescriptor"        => $auth->softDescriptor(),
                 "Merchant"              => [
                     "ID" => $auth->merchant()->id(),
                 ],
@@ -156,15 +202,16 @@ final class AuthWithTokenTest extends TestCase
                             'Merchant' => 4,
                             'Order' => [
                                 'Transaction' => [
-                                    'Type'          => 'Auth',
-                                    'Currency'      => 'USD',
-                                    'Amount'        => 10000,
-                                    'InvoiceNumber' => null,
-                                    'ExternalId'    => null,
-                                    'Comment1'      => null,
-                                    'Comment2'      => null,
-                                    'SplitAmount'   => 1000,
-                                    'SplitMerchant' => 2,
+                                    'Type'           => 'Auth',
+                                    'Currency'       => 'USD',
+                                    'Amount'         => 10000,
+                                    'InvoiceNumber'  => null,
+                                    'ExternalId'     => null,
+                                    'Comment1'       => null,
+                                    'Comment2'       => null,
+                                    'SoftDescriptor' => 'BSPAY - Payment',
+                                    'SplitAmount'    => 1000,
+                                    'SplitMerchant'  => 2,
                                 ],
                                 'Token' => 'PxrUYijyAuXSGDZ'
                             ]
@@ -175,7 +222,7 @@ final class AuthWithTokenTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => 'f10db484c5a3cfc07684263f0bcc97382464c4bfb7de49b708b976e7b3edf744'
+                                'Hash'       => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)
                             ]
                         ]
                     ],
@@ -184,7 +231,7 @@ final class AuthWithTokenTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => 'f10db484c5a3cfc07684263f0bcc97382464c4bfb7de49b708b976e7b3edf744'],
+                        4 => ['Key' => 'Hash',          'Value' => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -196,20 +243,37 @@ final class AuthWithTokenTest extends TestCase
 
     public function testInvalidToken()
     {
-        $curlProvider = new Test\Mocks\Providers\MockCurlProvider([
-            [
-                'StatusCode' => 200,
-                'Body'       =>
-                    '{"error_code":404,"error_message":"Token is invalid or expired."}'
-                ,
-                'Headers' => []
-            ]
-        ]);
+        // $curlProvider = new Test\Mocks\Providers\MockCurlProvider([
+        //     [
+        //         'StatusCode' => 200,
+        //         'Body'       =>
+        //             '{"error_code":404,"error_message":"Token is invalid or expired."}'
+        //         ,
+        //         'Headers' => []
+        //     ]
+        // ]);
 
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
             '83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'
         );
+
+        $merchantHash = 'f72d6a9fab75e16a7219430f2a60d9cbd7f60b304b4c1a8d98d4e54d695b61e8';
+
+        $curlBody = [
+            'error_code'    => 404,
+            'error_message' => 'Token is invalid or expired.'
+        ];
+
+        $respArray = [
+            'Body' => $curlBody,
+        ];
+
+        $curlProvider = new MockCurlProvider([[
+            'StatusCode' => 200,
+            'Body'       => json_encode($respArray),
+            'Headers'    => []
+        ]]);
 
         $sdk->setCurlProvider($curlProvider);
 

@@ -336,7 +336,8 @@ class StackPay
         Interfaces\Customer $customer = null,
         Interfaces\Split $split = null,
         $idempotencyKey = null,
-        $currency = null
+        $currency = null,
+        $softDescriptor = null
     ) {
         return $this->sale(
             (new Structures\Sale())
@@ -346,7 +347,8 @@ class StackPay
                 ->setAmount($amount)
                 ->setCurrency($currency ?: self::$gateway->currency())
                 ->setCustomer($customer)
-                ->setSplit($split),
+                ->setSplit($split)
+                ->setSoftDescriptor($softDescriptor),
             $idempotencyKey
         );
     }
@@ -357,7 +359,8 @@ class StackPay
         $amount,
         Interfaces\Split $split = null,
         $idempotencyKey = null,
-        $currency = null
+        $currency = null,
+        $softDescriptor = null
     ) {
         return $this->sale(
             (new Structures\Sale())
@@ -365,7 +368,8 @@ class StackPay
                 ->setMerchant($merchant)
                 ->setAmount($amount)
                 ->setCurrency($currency ?: self::$gateway->currency())
-                ->setSplit($split),
+                ->setSplit($split)
+                ->setSoftDescriptor($softDescriptor),
             $idempotencyKey
         );
     }
@@ -377,7 +381,8 @@ class StackPay
         Interfaces\Customer $customer = null,
         Interfaces\Split $split = null,
         $idempotencyKey = null,
-        $currency = null
+        $currency = null,
+        $softDescriptor = null
     ) {
         return $this->sale(
             (new Structures\Sale())
@@ -386,7 +391,8 @@ class StackPay
                 ->setAmount($amount)
                 ->setCustomer($customer)
                 ->setCurrency($currency ?: self::$gateway->currency())
-                ->setSplit($split),
+                ->setSplit($split)
+                ->setSoftDescriptor($softDescriptor),
             $idempotencyKey
         );
     }
@@ -397,7 +403,8 @@ class StackPay
         $amount,
         Interfaces\Split $split = null,
         $idempotencyKey = null,
-        $currency = null
+        $currency = null,
+        $softDescriptor = null
     ) {
         return $this->sale(
             (new Structures\Sale())
@@ -405,7 +412,8 @@ class StackPay
                 ->setMerchant($merchant)
                 ->setAmount($amount)
                 ->setCurrency($currency ?: self::$gateway->currency())
-                ->setSplit($split),
+                ->setSplit($split)
+                ->setSoftDescriptor($softDescriptor),
             $idempotencyKey
         );
     }

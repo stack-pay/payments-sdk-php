@@ -13,7 +13,7 @@ use Test\Mocks\Providers\MockCurlProvider;
 
 final class PaymentPlanGetByMerchantTest extends TestCase
 {
-    public function testSucessfulCase()
+    public function testSuccessfulCase()
     {
         $sdk = new StackPay(
             'e3dc59dca5c8f080c8d1b67eb3bcf1e1b73bff0bace6d7bcedc2e756997bd07d',

@@ -12,13 +12,15 @@ class Sale
         Interfaces\Merchant      $merchant,
         $amount,
         Interfaces\Split         $split = null,
-        $currency = null
+        $currency = null,
+        $softDescriptor = null
     ) {
         $sale = (new Structures\Sale())
             ->setPaymentMethod($paymentMethod)
             ->setMerchant($merchant)
             ->setAmount($amount)
-            ->setSplit($split);
+            ->setSplit($split)
+            ->setSoftDescription($softDescriptor);
 
         if ($currency) {
             $sale->setCurrency($currency);
@@ -34,7 +36,8 @@ class Sale
         $amount,
         Interfaces\Customer      $customer = null,
         Interfaces\Split         $split = null,
-        $currency = null
+        $currency = null,
+        $softDescriptor = null
     ) {
         $sale = (new Structures\Sale())
             ->setAccount($account)
@@ -42,7 +45,8 @@ class Sale
             ->setMerchant($merchant)
             ->setAmount($amount)
             ->setCustomer($customer)
-            ->setSplit($split);
+            ->setSplit($split)
+            ->setSoftDescriptor($softDescriptor);
 
         if ($currency) {
             $sale->setCurrency($currency);
