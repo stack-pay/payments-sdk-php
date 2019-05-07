@@ -163,8 +163,6 @@ final class CreateScheduledTransactionWithAccountDetailsTest extends TestCase
 
         $this->assertCount(1, $curlProvider->calls);
 
-        var_dump(json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash);
-        var_dump(hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash));
         $this->assertEquals(
             [
                 0 => [
