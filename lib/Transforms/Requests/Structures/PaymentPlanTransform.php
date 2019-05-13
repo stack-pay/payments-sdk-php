@@ -50,11 +50,18 @@ trait PaymentPlanTransform
             if (!is_null($transaction->object()->configuration()->installments())) {
                 $installments = [];
                 foreach ($transaction->object()->configuration()->installments() as $installmentArray) {
-                    $installment = [
-                        'date' => $installmentArray->date(),
-                        'percentage' => $installmentArray->percentage(),
-                        'interval' => $installmentArray->interval()
-                    ];
+                    $installment = [];
+
+                    if (!is_null($installmentArray->date())){
+                        $installment['date'] = $installmentArray->date();
+                    }
+                    if (!is_null($installmentArray->percentage())){
+                        $installment['percentage'] = $installmentArray->percentage();
+                    }
+                    if (!is_null($installmentArray->interval())){
+                        $installment['interval'] = $installmentArray->interval();
+                    }
+                    
                     $installments [] = $installment;
                 }
                 $request['configuration']['installments'] = $installments;
