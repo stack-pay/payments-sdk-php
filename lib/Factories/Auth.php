@@ -12,13 +12,15 @@ class Auth
         Interfaces\Merchant      $merchant,
         $amount,
         Interfaces\Split         $split = null,
-        $currency = null
+        $currency = null,
+        $softDescriptor = null
     ) {
         $auth = (new Structures\Auth())
             ->setPaymentMethod($paymentMethod)
             ->setMerchant($merchant)
             ->setAmount($amount)
-            ->setSplit($split);
+            ->setSplit($split)
+            ->setSoftDescriptor($softDescriptor);
 
         if ($currency) {
             $auth->setCurrency($currency);
@@ -34,7 +36,8 @@ class Auth
         $amount,
         Interfaces\Customer      $customer = null,
         Interfaces\Split         $split = null,
-        $currency = null
+        $currency = null,
+        $softDescriptor = null
     ) {
         $auth = (new Structures\Auth())
             ->setAccount($account)
@@ -42,7 +45,8 @@ class Auth
             ->setMerchant($merchant)
             ->setAmount($amount)
             ->setCustomer($customer)
-            ->setSplit($split);
+            ->setSplit($split)
+            ->setSoftDescriptor($softDescriptor);
 
         if ($currency) {
             $auth->setCurrency($currency);
@@ -57,14 +61,16 @@ class Auth
         $amount,
         Interfaces\Customer      $customer = null,
         Interfaces\Split         $split = null,
-        $currency = null
+        $currency = null,
+        $softDescriptor = null
     ) {
         $auth = (new Structures\Auth())
             ->setMasterPassTransactionId($masterpassTransID)
             ->setMerchant($merchant)
             ->setAmount($amount)
             ->setCustomer($customer)
-            ->setSplit($split);
+            ->setSplit($split)
+            ->setSoftDescriptor($softDescriptor);
 
         if ($currency) {
             $auth->setCurrency($currency);

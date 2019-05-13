@@ -13,7 +13,7 @@ use Test\Mocks\Providers\MockCurlProvider;
 
 final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 {
-	public function testSucessfulCase()
+	public function testSuccessfulCase()
 	{
 		$sdk = new StackPay(
 			'e3dc59dca5c8f080c8d1b67eb3bcf1e1b73bff0bace6d7bcedc2e756997bd07d',
@@ -408,7 +408,7 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 						'Body' => [
 							'payment_method' => [
 								'method' => 'id',
-								'id' => $subscription->paymentMethod()->id(),
+								'id' => 999,
 							],
 							'amount' => $subscription->amount(),
 							'split_amount' => $subscription->splitAmount()

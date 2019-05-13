@@ -17,6 +17,11 @@ interface Transaction
     public function status();
     public function avsCode();
     public function cvvResponseCode();
+    public function invoiceNumber();
+    public function externalID();
+    public function comment1();
+    public function comment2();
+    public function softDescriptor();
 
     //-------
 
@@ -32,6 +37,11 @@ interface Transaction
     public function setStatus($status = null);
     public function setAvsCode($avsCode = null);
     public function setCvvResponseCode($cvvResponseCode = null);
+    public function setInvoiceNumber($invoiceNumber = null);
+    public function setExternalID($externalID = null);
+    public function setComment1($comment1 = null);
+    public function setComment2($comment2 = null);
+    public function setSoftDescriptor($softDescriptor = null);
 
     //------
 

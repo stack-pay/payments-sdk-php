@@ -34,6 +34,7 @@ trait AuthTransform
                 'ExternalId'    => $auth->externalID() ?: null,
                 'Comment1'      => $auth->comment1() ?: null,
                 'Comment2'      => $auth->comment2() ?: null,
+                'SoftDescriptor'=> $auth->softDescriptor() ?: null,
             ]
         ];
     }

@@ -10,6 +10,7 @@ interface ScheduledTransaction
     public function amount();
     public function scheduledAt();
     public function subscriptionID();
+    public function softDescriptor();
 
     //-------
 
@@ -20,6 +21,7 @@ interface ScheduledTransaction
     public function setScheduledAt(\DateTime $date = null);
     public function setSplit(Split $split = null);
     public function setSubscriptionID($subscriptionId = null);
+    public function setSoftDescriptor($softDescriptor = null);
 
     //------
 

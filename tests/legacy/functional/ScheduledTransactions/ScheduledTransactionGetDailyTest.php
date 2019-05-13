@@ -90,8 +90,8 @@ final class GetDailyScheduledTransactionsTest extends TestCase
 
         // set paginatedScheduledTransaction details
         $transaction = (new Structures\PaginatedScheduledTransactions())
-            ->setBeforeDate(new DateTime('2016-01-01', new DateTimeZone('America/New_York')))
-            ->setAfterDate(new DateTime('2016-01-01', new DateTimeZone('America/New_York')));
+            ->setBeforeDate(new DateTime('2016-01-01', new DateTimeZone('EST')))
+            ->setAfterDate(new DateTime('2016-01-01', new DateTimeZone('EST')));
 
         $transaction = $sdk->getDailyScheduledTransactions($transaction);
 

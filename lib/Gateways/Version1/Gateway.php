@@ -80,7 +80,6 @@ class Gateway extends Gateways\Gateway
         $this->responseError($transaction->response());
 
         if (! empty($transaction->response()->body())) {
-            // Transform the response
             $this->responseV1($transaction->response());
 
             $transaction->response()->rawBody(json_encode($transaction->response()->body()));
@@ -133,7 +132,7 @@ class Gateway extends Gateways\Gateway
 
     private function executePayment($transaction)
     {
-        $transaction->request()->endpoint($this->paymentsURL);
+        $transaction->request()->endpoint($this->paymentsURL);      
         $transaction->request()->hashKey($transaction->object()->merchant()->hashKey());
 
         $transaction->response()->hashKey($transaction->object()->merchant()->hashKey());
@@ -144,11 +143,10 @@ class Gateway extends Gateways\Gateway
     public function auth($transaction)
     {
         $this->requestAuth($transaction);
-
-        $this->executePayment($transaction);
+        $this->executePayment($transaction);        
 
         $this->responseAuth($transaction);
-
+        
         return $transaction->object();
     }
 
