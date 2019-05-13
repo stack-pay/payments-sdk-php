@@ -55,7 +55,7 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 				->setAccountHolder($accountHolder)
 				->setCustomer($customer)
 			)
-			->setExternalId('1000')
+			->setExternalId(1000)
 			->setAmount(20000)
 			->setSplitAmount(10000)
 			->setDownPaymentAmount(1500)
@@ -65,6 +65,11 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 			'Body' => [
 				'data' => [
 					'id' => 1,
+					'completion_fee' => 500,
+					'amount' => 20000,
+					'external_id' => 1000,
+					'split_amount' => 10000,
+                    'down_payment_amount' => 1500,
 					'down_payment_transaction' => [
 						'id' => 8445,
 						'created_at' => '2019-01-23 01:33:51',
@@ -234,6 +239,11 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 			[
 				'data' => [
 					'id'                        => $subscription->id(),
+					'completion_fee' => 500,
+					'amount' => $subscription->amount(),
+					'external_id' => $subscription->externalId(),
+					'split_amount' => $subscription->splitAmount(),
+					'down_payment_amount' => $subscription->downPaymentAmount(),
 					'down_payment_transaction'       => [
 						'id' => $subscription->downPaymentTransaction()->id(),
 						'created_at' => '2019-01-23 01:33:51',
@@ -246,7 +256,7 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 						'invoice_number' => null,
 						'amount' => $subscription->downPaymentTransaction()->amount(),
 						'split_merchant_id' => null,
-						'split_amount' => null,
+						'split_amount' => $subscription->downPaymentTransaction()->split()->amount(),
 						'fee_rate' => 3.65,
 						'fee_flat' => 30,
 						'fee_total' => 213,
@@ -398,7 +408,7 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 						'Body' => [
 							'payment_method' => [
 								'method' => 'id',
-								'id' => $subscription->paymentMethod()->id(),
+								'id' => 999,
 							],
 							'amount' => $subscription->amount(),
 							'split_amount' => $subscription->splitAmount()
