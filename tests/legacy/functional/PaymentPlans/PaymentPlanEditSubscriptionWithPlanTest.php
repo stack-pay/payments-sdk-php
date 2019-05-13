@@ -408,7 +408,7 @@ final class PaymentPlanEditSubscriptionWithPlanTest extends TestCase
 						'Body' => [
 							'payment_method' => [
 								'method' => 'id',
-								'id' => $subscription->paymentMethod()->id(),
+								'id' => 999,
 							],
 							'amount' => $subscription->amount(),
 							'split_amount' => $subscription->splitAmount()
