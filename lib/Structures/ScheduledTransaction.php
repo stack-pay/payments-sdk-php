@@ -16,6 +16,7 @@ class ScheduledTransaction extends Auth implements Interfaces\ScheduledTransacti
     public $currencyCode;
     public $scheduledAt;
     public $subscriptionId;
+    public $softDescriptor;
 
     // V1Translator
     public $split;
@@ -62,6 +63,11 @@ class ScheduledTransaction extends Auth implements Interfaces\ScheduledTransacti
     public function subscriptionId()
     {
         return $this->subscriptionId;
+    }
+
+    public function softDescriptor()
+    {
+        return $this->softDescriptor;
     }
 
     public function split()
@@ -121,6 +127,13 @@ class ScheduledTransaction extends Auth implements Interfaces\ScheduledTransacti
     public function setSubscriptionId($subscriptionId = null)
     {
         $this->subscriptionId = $subscriptionId;
+
+        return $this;
+    }
+
+    public function setSoftDescriptor($softDescriptor = null)
+    {
+        $this->softDescriptor = $softDescriptor;
 
         return $this;
     }

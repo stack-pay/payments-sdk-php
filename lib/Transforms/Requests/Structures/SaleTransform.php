@@ -20,6 +20,7 @@ trait SaleTransform
                     'ExternalId'    => $transaction->object()->externalID() ?: null,
                     'Comment1'      => $transaction->object()->comment1() ?: null,
                     'Comment2'      => $transaction->object()->comment2() ?: null,
+                    'SoftDescriptor'=> $transaction->object()->softDescriptor() ?: null,
                 ]
             ]
         ];

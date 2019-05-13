@@ -6,11 +6,11 @@ Use a DateTime object to set the value for the `scheduledAt` field. Use of a tim
 
 ```php
 $scheduledAt = new DateTime('2018-03-20');
-$scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
+$scheduledAt->setTimezone(new DateTimeZone('EST'));
 
 // or simply
 
-$scheduledAt = new DateTime('2018-03-20', new DateTimeZone('America/New_York'));
+$scheduledAt = new DateTime('2018-03-20', new DateTimeZone('EST'));
 ```
 
 ## Create a Scheduled Transaction
@@ -162,8 +162,8 @@ Returns an array of scheduled transactions of a requested status during the requ
 
 ```php
 $paginatedScheduledTransactions = (new \StackPay\Payments\Structures\PaginatedScheduledTransactions())
-    ->setBeforeDate(new DateTime('2016-01-01', new DateTimeZone('America/New_York')))
-    ->setAfterDate(new DateTime('2016-01-01', new DateTimeZone('America/New_York')));
+    ->setBeforeDate(new DateTime('2016-01-01', new DateTimeZone('EST')))
+    ->setAfterDate(new DateTime('2016-01-01', new DateTimeZone('EST')));
     // Optional
     ->setStatus('scheduled')    // Default: 'scheduled'
     ->setPerPage(10)            // Default: 10

@@ -84,6 +84,7 @@ class Response
         }
 
         $check_hash = hash('sha256', $this->jsonTransform($this->body) . $this->request->getHashKey());
+        
 
         if ($check_hash != $this->http_response->getHeader('Hash')[0]) {
             throw new Exceptions\HashValidationException;

@@ -12,17 +12,18 @@ class Transaction implements Interfaces\Transaction
     public $customer;
     public $merchant;
     public $paymentMethod;
-    public $status;
+    public $amount;
+    public $split;
+    public $currency;
     public $authCode;
+    public $status;
     public $avsCode;
     public $cvvResponseCode;
-    public $currency;
-    public $split;
-    public $amount;
     public $invoiceNumber;
     public $externalID;
     public $comment1;
     public $comment2;
+    public $softDescriptor;
 
     public function __construct($id = null)
     {
@@ -59,14 +60,29 @@ class Transaction implements Interfaces\Transaction
         return $this->paymentMethod;
     }
 
-    public function status()
+    public function amount()
     {
-        return $this->status;
+        return $this->amount;
+    }
+
+    public function split()
+    {
+        return $this->split;
+    }
+
+    public function currency()
+    {
+        return $this->currency;
     }
 
     public function authCode()
     {
         return $this->authCode;
+    }
+
+    public function status()
+    {
+        return $this->status;
     }
 
     public function avsCode()
@@ -77,21 +93,6 @@ class Transaction implements Interfaces\Transaction
     public function cvvResponseCode()
     {
          return $this->cvvResponseCode;
-    }
-
-    public function currency()
-    {
-        return $this->currency;
-    }
-
-    public function split()
-    {
-        return $this->split;
-    }
-
-    public function amount()
-    {
-        return $this->amount;
     }
 
     public function invoiceNumber()
@@ -112,6 +113,11 @@ class Transaction implements Interfaces\Transaction
     public function comment2()
     {
         return $this->comment2;
+    }
+
+    public function softDescriptor()
+    {
+        return $this->softDescriptor;
     }
 
     // ----
@@ -151,11 +157,25 @@ class Transaction implements Interfaces\Transaction
         return $this;
     }
 
-    public function setStatus($status = null)
+    public function setAmount($amount = null)
     {
-         $this->status = $status;
+        $this->amount = $amount;
 
-         return $this;
+        return $this;
+    }
+
+    public function setSplit(Interfaces\Split $split = null)
+    {
+        $this->split = $split;
+
+        return $this;
+    }
+
+    public function setCurrency($currency = null)
+    {
+        $this->currency = $currency;
+
+        return $this;
     }
 
     public function setAuthCode($authCode = null)
@@ -163,6 +183,13 @@ class Transaction implements Interfaces\Transaction
         $this->authCode = $authCode;
 
         return $this;
+    }
+
+    public function setStatus($status = null)
+    {
+         $this->status = $status;
+
+         return $this;
     }
 
     public function setAVSCode($avsCode = null)
@@ -175,27 +202,6 @@ class Transaction implements Interfaces\Transaction
     public function setCvvResponseCode($cvvResponseCode = null)
     {
         $this->cvvResponseCode = $cvvResponseCode;
-
-        return $this;
-    }
-
-    public function setCurrency($currency = null)
-    {
-        $this->currency = $currency;
-
-        return $this;
-    }
-
-    public function setSplit(Interfaces\Split $split = null)
-    {
-        $this->split = $split;
-
-        return $this;
-    }
-
-    public function setAmount($amount = null)
-    {
-        $this->amount = $amount;
 
         return $this;
     }
@@ -224,6 +230,13 @@ class Transaction implements Interfaces\Transaction
     public function setComment2($comment2 = null)
     {
         $this->comment2 = $comment2;
+
+        return $this;
+    }
+
+    public function setSoftDescriptor($softDescriptor = null)
+    {
+        $this->softDescriptor = $softDescriptor;
 
         return $this;
     }

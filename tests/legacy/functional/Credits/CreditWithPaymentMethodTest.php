@@ -13,7 +13,7 @@ use Test\Mocks\Providers\MockCurlProvider;
 
 final class CreditWithPaymentMethodTest extends TestCase
 {
-    public function testSucessfulCase()
+    public function testSuccessfulCase()
     {
         $curlProvider = new MockCurlProvider([
             [

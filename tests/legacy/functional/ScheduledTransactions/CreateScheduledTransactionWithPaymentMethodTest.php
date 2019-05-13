@@ -14,29 +14,71 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
 {
     public function testSuccessfulCase()
     {
-        $curlProvider = new MockCurlProvider([
-            [
-                'StatusCode' => 200,
-                'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"03aa02b3a2cc055dcb2f900ca46ab05b36d664cfecf157762034ff960ba0d0c4"}},"Body":{"data":{"id":154,"merchant_id":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":10000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":1,"customer_id":36,"address_1":"5246 Shanon Union Suite 334","city":"South Ian","zip":"25765-4505","address_2":"Apt. 748","state":"NH","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"509","expire_month":4,"expire_year":2024}},"meta":{"status":1}}}'
-                ,
-                'Headers' => []
-            ]
-        ]);
 
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
             '83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'
         );
 
+        $merchantHash = '4a8fdc1e56261a0b2b2932bd3fb626b9127ae32cd440e9bfa1ad7a7cfce0ddaa';
+
+        $curlBody = [
+            'data' => [
+                'id'                => 206,
+                'merchant_id'       => 4,
+                'scheduled_at'      => '2018-01-10',
+                'currency_code'     => 'USD',
+                'amount'            => 25000,
+                'status'            => 'scheduled',
+                'split_amount'      => 1000,
+                'split_merchant_id' => 2,
+                'soft_descriptor'   => 'BSPAY - Scheduled Payment',
+                'payment_method' => [
+                    'id'                => 392,
+                    'customer_id'       => 400,
+                    'address_1'         => '123 Thumble Lane',
+                    'address_2'         => 'Apt. 765',
+                    'city'              => 'New York',
+                    'zip'               => '12345',
+                    'state'             => 'NY',
+                    'country'           => 'USA',
+                    'type'              => 'credit_card',
+                    'issuer'            => 'visa',
+                    'card_number_last4' => '1111',
+                    'expire_month'      => 8,
+                    'expire_year'       => 2019
+                ]
+
+            ],
+            'meta' => [
+                'status' => 1
+            ]
+        ];
+
+        $respArray = [
+            'Header' => [
+                'Security' => [
+                    'HashMethod' => 'SHA-256',
+                    'Hash'       => hash("sha256",json_encode($curlBody).$merchantHash)
+                ]
+            ],
+            'Body' => $curlBody,
+        ];
+
+        $curlProvider = new MockCurlProvider([[
+            'StatusCode' => 200,
+            'Body'       => json_encode($respArray),
+            'Headers'    => []
+        ]]);
+
         $sdk->setCurlProvider($curlProvider);
 
         $scheduledAt = new DateTime('2018-01-10 12:00');
-        $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
+        $scheduledAt->setTimezone(new DateTimeZone('EST'));
 
         $merchant = (new Structures\Merchant())
             ->setID(4)
-            ->setHashKey('4a8fdc1e56261a0b2b2932bd3fb626b9127ae32cd440e9bfa1ad7a7cfce0ddaa');
+            ->setHashKey($merchantHash);
 
         $paymentMethod = (new Structures\PaymentMethod())
             ->setID(1);
@@ -54,7 +96,8 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
             ->setAmount(10000)
             ->setScheduledAt($scheduledAt)
             ->setCurrencyCode(Currency::USD)
-            ->setSplit($split);
+            ->setSplit($split)
+            ->setSoftDescriptor('BSPAY - Scheduled Payment');
 
 
         $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
@@ -63,11 +106,12 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
             [
                 'merchant_id'       => 4,
                 'scheduled_at'      => '2018-01-10',
-                'timezone'          => 'America/New_York',
+                'timezone'          => 'EST',
                 'currency_code'     => 'USD',
                 'amount'            => 10000, //amount
                 'split_amount'      => 1000,
                 'split_merchant_id' => 2,
+                'soft_descriptor'   => 'BSPAY - Scheduled Payment',
                 'payment_method'    => [
                     'method'    =>  'id',
                     'id'        =>  $paymentMethod->id()
@@ -81,6 +125,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                 'amount'            => $scheduledTransaction->amount(),
                 'split_amount'      => $scheduledTransaction->split()->amount(),
                 'split_merchant_id' => $scheduledTransaction->split()->merchant()->id(),
+                'soft_descriptor'   => $scheduledTransaction->softDescriptor(),
                 'payment_method'    => [
                     'method'    => 'id',
                     'id'        => $scheduledTransaction->paymentMethod()->id()
@@ -99,11 +144,12 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                             'merchant_id'       => 4,
                             'external_id'       => null,
                             'scheduled_at'      => '2018-01-10',
-                            'timezone'          => 'America/New_York',
+                            'timezone'          => 'EST',
                             'currency_code'     => 'USD',
                             'amount'            => 10000, //amount
                             'split_amount'      => 1000,
                             'split_merchant_id' => 2,
+                            'soft_descriptor'   => 'BSPAY - Scheduled Payment',
                             'payment_method'    => [
                                 'method'    =>  'id',
                                 'id'        =>  $paymentMethod->id()
@@ -115,7 +161,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '4ad85a0038536e43594f8544d838e867fb46c01dc3038a5a2ce061683c4586a1'
+                                'Hash'       => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)
                             ]
                         ]
                     ],
@@ -124,7 +170,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '4ad85a0038536e43594f8544d838e867fb46c01dc3038a5a2ce061683c4586a1'],
+                        4 => ['Key' => 'Hash',          'Value' => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -137,29 +183,70 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
     public function testInvalidPaymentMethod()
     {
 
-        $curlProvider = new MockCurlProvider([
-            [
-                'StatusCode' => 200,
-                'Body'       =>
-                    '{"error_code":409,"error_message":"PaymentMethod is invalid or unavailable."}'
-                ,
-                'Headers' => []
-            ]
-        ]);
-
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
             '83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'
         );
 
+        $merchantHash = '4a8fdc1e56261a0b2b2932bd3fb626b9127ae32cd440e9bfa1ad7a7cfce0ddaa';
+
+        $curlBody = [
+            'data' => [
+                'id'                => 206,
+                'merchant_id'       => 4,
+                'scheduled_at'      => '2018-01-10',
+                'currency_code'     => 'USD',
+                'amount'            => 25000,
+                'status'            => 'scheduled',
+                'split_amount'      => 1000,
+                'split_merchant_id' => 2,
+                'soft_descriptor'   => 'BSPAY - Scheduled Payment',
+                'payment_method' => [
+                    'id'                => 392,
+                    'customer_id'       => 400,
+                    'address_1'         => '123 Thumble Lane',
+                    'address_2'         => 'Apt. 765',
+                    'city'              => 'New York',
+                    'zip'               => '12345',
+                    'state'             => 'NY',
+                    'country'           => 'USA',
+                    'type'              => 'credit_card',
+                    'issuer'            => 'visa',
+                    'card_number_last4' => '1111',
+                    'expire_month'      => 8,
+                    'expire_year'       => 2019
+                ]
+
+            ],
+            'meta' => [
+                'status' => 1
+            ]
+        ];
+
+        $respArray = [
+            'Header' => [
+                'Security' => [
+                    'HashMethod' => 'SHA-256',
+                    'Hash'       => hash("sha256",json_encode($curlBody).$merchantHash)
+                ]
+            ],
+            'Body' => $curlBody,
+        ];
+
+        $curlProvider = new MockCurlProvider([[
+            'StatusCode' => 200,
+            'Body'       => json_encode($respArray),
+            'Headers'    => []
+        ]]);
+
         $sdk->setCurlProvider($curlProvider);
 
         $scheduledAt = new DateTime('2018-01-10 12:00');
-        $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
+        $scheduledAt->setTimezone(new DateTimeZone('EST'));
 
         $merchant = (new Structures\Merchant())
             ->setID(4)
-            ->setHashKey('4a8fdc1e56261a0b2b2932bd3fb626b9127ae32cd440e9bfa1ad7a7cfce0ddaa');
+            ->setHashKey($merchantHash);
 
         $paymentMethod = (new Structures\PaymentMethod())
             ->setID(1);
@@ -177,7 +264,8 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
             ->setAmount(10000)
             ->setScheduledAt($scheduledAt)
             ->setCurrencyCode(Currency::USD)
-            ->setSplit($split);
+            ->setSplit($split)
+            ->setSoftDescriptor('BSPAY - Scheduled Payment');
 
         try {
             $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
@@ -199,11 +287,12 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                             'merchant_id'       => 4,
                             'external_id'       => null,
                             'scheduled_at'      => '2018-01-10',
-                            'timezone'          => 'America/New_York',
+                            'timezone'          => 'EST',
                             'currency_code'     => 'USD',
                             'amount'            => 10000, //amount
                             'split_amount'      => 1000,
                             'split_merchant_id' => 2,
+                            'soft_descriptor'   => 'BSPAY - Scheduled Payment',
                             'payment_method'    => [
                                 'method'    =>  'id',
                                 'id'        =>  $paymentMethod->id()
@@ -215,7 +304,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '4ad85a0038536e43594f8544d838e867fb46c01dc3038a5a2ce061683c4586a1'
+                                'Hash'       => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)
                             ]
                         ],
                     ],
@@ -224,7 +313,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '4ad85a0038536e43594f8544d838e867fb46c01dc3038a5a2ce061683c4586a1'],
+                        4 => ['Key' => 'Hash',          'Value' => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]
@@ -236,29 +325,71 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
 
     public function testWithPaymentMethodFactory()
     {
-        $curlProvider = new MockCurlProvider([
-            [
-                'StatusCode' => 200,
-                'Body'       =>
-                    '{"Header":{"Security":{"HashMethod":"SHA-256","Hash":"7235cfc84ccc8203c61ad1c63f807038e1bd704268d6699df3a474eab8c4f869"}},"Body":{"data":{"id":154,"merchant":4,"scheduled_at":"2018-01-10","currency_code":"USD","amount":10000,"status":"scheduled","split_amount":1000,"split_merchant_id":2,"payment_method":{"id":1,"customer_id":36,"address_1":"5246 Shanon Union Suite 334","city":"South Ian","zip":"25765-4505","address_2":"Apt. 748","state":"NH","country":"USA","type":"credit_card","issuer":"visa","card_number_last4":"509","expire_month":4,"expire_year":2024}},"meta":{"status":1}}}'
-                ,
-                'Headers' => []
-            ]
-        ]);
 
         $sdk = new StackPay(
             '8a1b9a5ce8d0ea0a05264746c8fa4f2b6c47a034fa40198cce74cd3af62c3dea',
             '83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'
         );
 
+        $merchantHash = '4a8fdc1e56261a0b2b2932bd3fb626b9127ae32cd440e9bfa1ad7a7cfce0ddaa';
+
+        $curlBody = [
+            'data' => [
+                'id'                => 206,
+                'merchant_id'       => 4,
+                'scheduled_at'      => '2018-01-10',
+                'currency_code'     => 'USD',
+                'amount'            => 25000,
+                'status'            => 'scheduled',
+                'split_amount'      => 1000,
+                'split_merchant_id' => 2,
+                'soft_descriptor'   => 'BSPAY - Scheduled Payment',
+                'payment_method' => [
+                    'id'                => 392,
+                    'customer_id'       => 400,
+                    'address_1'         => '123 Thumble Lane',
+                    'address_2'         => 'Apt. 765',
+                    'city'              => 'New York',
+                    'zip'               => '12345',
+                    'state'             => 'NY',
+                    'country'           => 'USA',
+                    'type'              => 'credit_card',
+                    'issuer'            => 'visa',
+                    'card_number_last4' => '1111',
+                    'expire_month'      => 8,
+                    'expire_year'       => 2019
+                ]
+
+            ],
+            'meta' => [
+                'status' => 1
+            ]
+        ];
+
+        $respArray = [
+            'Header' => [
+                'Security' => [
+                    'HashMethod' => 'SHA-256',
+                    'Hash'       => hash("sha256",json_encode($curlBody).$merchantHash)
+                ]
+            ],
+            'Body' => $curlBody,
+        ];
+
+        $curlProvider = new MockCurlProvider([[
+            'StatusCode' => 200,
+            'Body'       => json_encode($respArray),
+            'Headers'    => []
+        ]]);
+
         $sdk->setCurlProvider($curlProvider);
 
         $scheduledAt = new DateTime('2018-01-10 12:00');
-        $scheduledAt->setTimezone(new DateTimeZone('America/New_York'));
+        $scheduledAt->setTimezone(new DateTimeZone('EST'));
 
         $merchant = (new Structures\Merchant())
             ->setID(4)
-            ->setHashKey('4a8fdc1e56261a0b2b2932bd3fb626b9127ae32cd440e9bfa1ad7a7cfce0ddaa');
+            ->setHashKey($merchantHash);
 
         $paymentMethod = (new Structures\PaymentMethod())
             ->setID(1);
@@ -276,7 +407,8 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
             10000,          // Amount
             $scheduledAt,
             Currency::USD,
-            $split
+            $split,
+            'BSPAY - Scheduled Payment'
         );
 
         $scheduledTransaction = $sdk->createScheduledTransaction($transaction);
@@ -285,11 +417,12 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
             [
                 'merchant_id'       => 4,
                 'scheduled_at'      => '2018-01-10',
-                'timezone'          => 'America/New_York',
+                'timezone'          => 'EST',
                 'currency_code'     => 'USD',
                 'amount'            => 10000, //amount
                 'split_amount'      => 1000,
                 'split_merchant_id' => 2,
+                'soft_descriptor'   => 'BSPAY - Scheduled Payment',
                 'payment_method'    => [
                     'method'    =>  'id',
                     'id'        =>  $paymentMethod->id()
@@ -303,6 +436,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                 'amount'            => $scheduledTransaction->amount(),
                 'split_amount'      => $scheduledTransaction->split()->amount(),
                 'split_merchant_id' => $scheduledTransaction->split()->merchant()->id(),
+                'soft_descriptor'   => $scheduledTransaction->softDescriptor(),
                 'payment_method'    => [
                     'method'    => 'id',
                     'id'        => $scheduledTransaction->paymentMethod()->id()
@@ -321,11 +455,12 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                             'merchant_id'       => 4,
                             'external_id'       => null,
                             'scheduled_at'      => '2018-01-10',
-                            'timezone'          => 'America/New_York',
+                            'timezone'          => 'EST',
                             'currency_code'     => 'USD',
                             'amount'            => 10000, //amount
                             'split_amount'      => 1000,
                             'split_merchant_id' => 2,
+                            'soft_descriptor'   => 'BSPAY - Scheduled Payment',
                             'payment_method'    => [
                                 'method'    =>  'id',
                                 'id'        =>  $paymentMethod->id()
@@ -337,7 +472,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                             'Mode'        => 'production',
                             'Security'    => [
                                 'HashMethod' => 'SHA-256',
-                                'Hash'       => '4ad85a0038536e43594f8544d838e867fb46c01dc3038a5a2ce061683c4586a1'
+                                'Hash'       => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)
                             ]
                         ]
                     ],
@@ -346,7 +481,7 @@ final class CreateScheduledTransactionWithPaymentMethodTest extends TestCase
                         1 => ['Key' => 'ApiVersion',    'Value' => 'v1'],
                         2 => ['Key' => 'Mode',          'Value' => 'production'],
                         3 => ['Key' => 'HashMethod',    'Value' => 'SHA-256'],
-                        4 => ['Key' => 'Hash',          'Value' => '4ad85a0038536e43594f8544d838e867fb46c01dc3038a5a2ce061683c4586a1'],
+                        4 => ['Key' => 'Hash',          'Value' => hash("sha256",json_encode($curlProvider->calls[0]["Body"]["Body"]).$merchantHash)],
                         5 => ['Key' => 'Authorization', 'Value' => 'Bearer 83b7d01a5e43fc4cf5130af05018079b603d61c5ad6ab4a4d128a3d0245e9ba5'],
                         6 => ['Key' => 'Content-Type',  'Value' => 'application/json']
                     ]

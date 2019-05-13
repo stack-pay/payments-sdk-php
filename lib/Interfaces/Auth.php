@@ -13,6 +13,7 @@ interface Auth
     public function split();
     public function token();
     public function authCode();
+    public function softDescriptor();
 
     // ----
 
@@ -25,6 +26,7 @@ interface Auth
     public function setSplit(Split $split = null);
     public function setToken(Token $token = null);
     public function setAuthCode($authCode = null);
+    public function setSoftDescriptor($softDescriptor = null);
 
     // ----
 

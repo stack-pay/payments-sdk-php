@@ -13,7 +13,8 @@ class ScheduleTransaction
         $amount,
         \DateTime                $scheduledAt,
         $currency_code,
-        Interfaces\Split         $split = null
+        Interfaces\Split         $split = null,
+        $softDescriptor
     )
     {
         $scheduledTransaction = (new Structures\ScheduledTransaction())
@@ -22,7 +23,8 @@ class ScheduleTransaction
             ->setAmount($amount)
             ->setScheduledAt($scheduledAt)
             ->setCurrencyCode($currency_code)
-            ->setSplit($split);
+            ->setSplit($split)
+            ->setSoftDescriptor($softDescriptor);
 
         return $scheduledTransaction;
     }
@@ -34,7 +36,8 @@ class ScheduleTransaction
         $amount,
         \DateTime                $scheduledAt,
         $currency_code,
-        Interfaces\Split         $split = null
+        Interfaces\Split         $split = null,
+        $softDescriptor
     )
     {
         $scheduledTransaction = (new Structures\ScheduledTransaction())
@@ -44,7 +47,8 @@ class ScheduleTransaction
             ->setAmount($amount)
             ->setScheduledAt($scheduledAt)
             ->setCurrencyCode($currency_code)
-            ->setSplit($split);
+            ->setSplit($split)
+            ->setSoftDescriptor($softDescriptor);
 
         return $scheduledTransaction;
     }
@@ -55,7 +59,8 @@ class ScheduleTransaction
         $amount,
         \DateTime                $scheduledAt,
         $currency_code,
-        Interfaces\Split         $split = null
+        Interfaces\Split         $split = null,
+        $softDescriptor
     )
     {
         $scheduledTransaction = (new Structures\ScheduledTransaction())
@@ -64,7 +69,8 @@ class ScheduleTransaction
             ->setAmount($amount)
             ->setScheduledAt($scheduledAt)
             ->setCurrencyCode($currency_code)
-            ->setSplit($split);
+            ->setSplit($split)
+            ->setSoftDescriptor($softDescriptor);
 
         return $scheduledTransaction;
     }
