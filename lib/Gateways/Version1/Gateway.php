@@ -265,11 +265,12 @@ class Gateway extends Gateways\Gateway
         return $transaction->object();
     }
 
-    public function generateHostedPageAccessToken($transaction)
+    public function generateHostedPageAccessToken($transaction, $readOnly = 0)
     {
         $object = $transaction->object();
         $url = $this->merchantAccessTokenURL
-            . '?merchant_id=' . $object->id();
+            . '?merchant_id=' . $object->id()
+            . '&read_only=' . (string)$readOnly;
         $transaction->request()->endpoint($url);
         $transaction->request()->hashBody(false);
         $transaction->request()->hashKey($this->privateKey . $object->hashKey());

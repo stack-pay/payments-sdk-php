@@ -11,7 +11,8 @@ $optionalIdempotencyKey = null;
 
 $hostedPageAccessToken = $stackpay->generateHostedPageAccessToken(
     $merchant,
-    $optionalIdempotencyKey
+    $optionalIdempotencyKey,
+    $readOnly
 );
 ```
 
