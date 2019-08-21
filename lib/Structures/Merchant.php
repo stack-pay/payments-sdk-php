@@ -20,6 +20,7 @@ class Merchant implements Interfaces\Merchant
     public $externalID;
     public $applicationName;
     public $hostedPageAccessToken;
+    public $hostedPageReadOnly;
 
     public function __construct($id = null, $request_hash_key = null)
     {
@@ -95,6 +96,11 @@ class Merchant implements Interfaces\Merchant
     public function hostedPageAccessToken()
     {
         return $this->hostedPageAccessToken;
+    }
+
+    public function hostedPageReadOnly()
+    {
+        return $this->hostedPageReadOnly;
     }
 
     //-----------
@@ -192,6 +198,13 @@ class Merchant implements Interfaces\Merchant
     public function setHostedPageAccessToken($hostedPageAccessToken = null)
     {
         $this->hostedPageAccessToken = $hostedPageAccessToken;
+
+        return $this;
+    }
+
+    public function setHostedPageReadOnly($hostedPageReadOnly = null)
+    {
+        $this->hostedPageReadOnly = $hostedPageReadOnly;
 
         return $this;
     }

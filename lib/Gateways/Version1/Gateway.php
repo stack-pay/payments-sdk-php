@@ -269,7 +269,8 @@ class Gateway extends Gateways\Gateway
     {
         $object = $transaction->object();
         $url = $this->merchantAccessTokenURL
-            . '?merchant_id=' . $object->id();
+            . '?merchant_id=' . $object->id()
+            . '&read_only=' . $object->hostedPageReadOnly() ? '1' : '0';
         $transaction->request()->endpoint($url);
         $transaction->request()->hashBody(false);
         $transaction->request()->hashKey($this->privateKey . $object->hashKey());
