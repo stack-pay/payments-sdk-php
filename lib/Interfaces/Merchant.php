@@ -17,6 +17,7 @@ interface Merchant
     public function link();
     public function externalID();
     public function hostedPageAccessToken();
+    public function hostedPageReadOnly();
 
     //-----------
 
@@ -33,6 +34,7 @@ interface Merchant
     public function setLink($rate = null);
     public function setExternalID($externalID = null);
     public function setHostedPageAccessToken($hostedPageAccessToken = null);
+    public function setHostedPageReadOnly($hostedPageReadOnly = null);
 
     //-------
 

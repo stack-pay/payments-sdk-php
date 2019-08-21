@@ -505,12 +505,11 @@ class StackPay
 
     public function generateHostedPageAccessToken(
         Interfaces\Merchant $merchant,
-        $idempotencyKey = null,
-        $readOnly = 0
+        $idempotencyKey = null
     ) {
         $transaction = new Transactions\IdempotentTransaction($merchant);
         $transaction->idempotencyKey($idempotencyKey);
-        return self::$gateway->generateHostedPageAccessToken($transaction, $readOnly);
+        return self::$gateway->generateHostedPageAccessToken($transaction);
     }
 
     public function createScheduledTransaction(
