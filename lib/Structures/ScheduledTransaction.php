@@ -13,6 +13,7 @@ class ScheduledTransaction extends Auth implements Interfaces\ScheduledTransacti
     public $merchant;
     public $paymentMethod;
     public $amount;
+    public $status;
     public $currencyCode;
     public $scheduledAt;
     public $subscriptionId;
@@ -48,6 +49,11 @@ class ScheduledTransaction extends Auth implements Interfaces\ScheduledTransacti
     public function amount()
     {
         return $this->amount;
+    }
+
+    public function status()
+    {
+        return $this->status;
     }
 
     public function currencyCode()
