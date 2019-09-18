@@ -116,6 +116,13 @@ class ScheduledTransaction extends Auth implements Interfaces\ScheduledTransacti
         return $this;
     }
 
+	public function setStatus($status = null)
+	{
+		$this->status = $status;
+
+		return $this;
+	}
+
     public function setScheduledAt(\DateTime $date = null)
     {
         $this->scheduledAt = $date;
