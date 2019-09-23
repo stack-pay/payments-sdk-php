@@ -262,6 +262,7 @@ trait PaymentPlanTransform
                 ->setScheduledAt(new \DateTime($scheduledTransactionArr['scheduled_at']))
                 ->setCurrencyCode($scheduledTransactionArr['currency_code'])
                 ->setAmount($scheduledTransactionArr['amount'])
+                ->setStatus($scheduledTransactionArr['status'])
                 ->setSplit((new Structures\Split())
                     ->setMerchant((new Structures\Merchant())
                         ->setID($scheduledTransactionArr['split_merchant_id'])
